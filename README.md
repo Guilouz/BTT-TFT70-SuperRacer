@@ -45,7 +45,8 @@ Structure du dossier des polices et des icônes :
 
 **Optionnel**, copiez un ou plusieurs fichier(s) de langue à la racine de la carte SD. Cela vous permettra de basculer entre l'anglais et la ou les langues téléchargées, en utilisant la fonction Langue dans les menus de l'écran. Il est recommandé de télécharger le minimum de langues afin de limiter l'utilisation de la mémoire. Par défaut l'écran est configuré pour avoir l'anglais et le français.
 
-![Capture d’écran 2021-04-19 à 02 25 16](https://user-images.githubusercontent.com/12702322/115167147-a523a200-a0b6-11eb-8e2f-fd0627c468ab.jpg)
+
+![Capture d’écran 2021-07-30 à 21 17 52](https://user-images.githubusercontent.com/12702322/127701611-e7833f8c-0edd-4b41-86ce-cdbfa6e403f8.jpg)
 
 
 **Étape 2 :** Insérez la carte SD dans le port SD de l'écran et réinitialisez ce dernier (ou redémarrez votre imprimante) pour démarrer le processus de mise à jour.
