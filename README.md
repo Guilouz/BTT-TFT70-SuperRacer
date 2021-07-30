@@ -82,7 +82,7 @@ En cas d'échec d'une ou plusieurs parties de la mise à jour, une erreur s'affi
 
 Bien que déjà configuré pour la FLSUN Super Racer, le fichier **config.ini** peut être modifié en utilisant un simple éditeur de texte (assurez-vous d'utiliser le codage UTF).
 
-Une fois modifié et enregistré, le fichier config.ini peut être installé sans qu'il soit nécessaire d'installer à nouveau le firmware ou le dossier TFT43, à condition que le firmware et le fichier config.ini soient de la même version.
+Une fois modifié et enregistré, le fichier config.ini peut être installé sans qu'il soit nécessaire d'installer à nouveau le firmware ou le dossier TFT70, à condition que le firmware et le fichier config.ini soient de la même version.
 
 
 ### Modification du fichier de configuration (config.ini)
