@@ -5,9 +5,9 @@ Si vous aimez mon travail, n'hésitez pas à me soutenir en me payant une 🍺 o
 
 <br />
 
-**Firmware pour écran BigTreeTech TFT43 3.0 configuré pour Artillery Sidewinder X1.**
+**Firmware pour écran BigTreeTech TFT70 3.0 configuré pour FLSUN Super Racer.**
 
-Le firmware Marlin 2.0.x bugfix pour Artillery Sidewinder X1 configuré pour cet écran se trouve [ici](https://github.com/Guilouz/Marlin-Sidewinder-X1-SKR1.4-Turbo).
+Le firmware Marlin 2.0.x bugfix pour FLSUN super Racer configuré pour cet écran se trouve [ici](https://github.com/Guilouz/Marlin-SuperRacer-SKR2.0).
 
 <img width=600 src="https://user-images.githubusercontent.com/12702322/115151934-61597a00-a06f-11eb-89db-372e3d1e4647.jpg" />
   
@@ -19,9 +19,9 @@ La mise à jour du firmware TFT se fait en trois étapes décrites ci-dessous et
 
 **ÉLÉMENTS :**
 
-**Élément 1 :** Le firmware binaire (`BIGTREE_TFT*_V*.*.*.bin`). Exemple : `BIGTREE_TFT43_V3.0.27.bin`:
+**Élément 1 :** Le firmware binaire (`BIGTREE_TFT*_V*.*.*.bin`). Exemple : `BIGTREE_TFT70_V3.0.27.bin`:
 
-- `BIGTREE_TFT_43`: modèle
+- `BIGTREE_TFT_70`: modèle
 - `V3.0`: version matériel
 - `27`: version logicielle
 
@@ -120,12 +120,12 @@ Pour éditer le fichier **config.ini** suivez les instructions [ici](config_inst
 |                      Unified Material (thème par défaut)                      | The Round Miracle par **[Acenotass](https://github.com/Acenotass)** |
 | :----------------------------------------------------------: | :----------------------------------------------------------: |
 | ![Unified Material Main Screen](https://user-images.githubusercontent.com/54359396/98742038-03cd4d00-23ae-11eb-9552-36dc02fe66f4.png) | ![Round Miracle Main Screen](https://user-images.githubusercontent.com/54359396/99251566-d77e5a00-280d-11eb-9c7a-0e7c0111eedd.png) |
-| Remplacez le dossier 'TFT43' par celui-ci : [TFT43_Unified_Material.zip](https://github.com/Guilouz/BTT-TFT43-Sidewinder-X1/files/6909177/TFT43_Unified_Material.zip) | Remplacez le dossier 'TFT43' par celui-ci : [TFT43_The_Round_Miracle.zip](https://github.com/Guilouz/BTT-TFT43-Sidewinder-X1/files/6909088/TFT43_The_Round_Miracle.zip) |
+| Remplacez le dossier 'TFT43' par celui-ci : [TFT70_Unified_Material.zip](https://github.com/Guilouz/BTT-TFT70-SuperRacer/files/6909603/TFT70_Unified_Material.zip) | Remplacez le dossier 'TFT43' par celui-ci : [TFT70_The_Round_Miracle.zip](https://github.com/Guilouz/BTT-TFT70-SuperRacer/files/6909604/TFT70_The_Round_Miracle.zip) |
 
 | Hybrid Red Material par **[AntoszHUN](https://github.com/AntoszHUN)** | Hybrid Mono Material par **[bepstein111](https://github.com/bepstein111)** |
 | :----------------------------------------------------------: | :----------------------------------------------------------: |
 | ![Hybrid Red Menu Material Mainscreen](https://user-images.githubusercontent.com/54359396/98869176-a995c000-2471-11eb-94da-a0bc41abf3e9.png) | ![Monochrome TFT35](https://user-images.githubusercontent.com/54359396/110254523-d5dccb80-7f8f-11eb-86a5-2d52ecd7ca4d.png) |
-| Remplacez le dossier 'TFT43' par celui-ci : [TFT43_Hybrid_Red_Material.zip](https://github.com/Guilouz/BTT-TFT43-Sidewinder-X1/files/6909096/TFT43_Hybrid_Red_Material.zip) | Remplacez le dossier 'TFT43' par celui-ci : [TFT43_Hybrid_Mono_Material.zip](https://github.com/Guilouz/BTT-TFT43-Sidewinder-X1/files/6909100/TFT43_Hybrid_Mono_Material.zip) |
+| Remplacez le dossier 'TFT43' par celui-ci : [TFT70_Hybrid_Red_Material.zip](https://github.com/Guilouz/BTT-TFT70-SuperRacer/files/6909606/TFT70_Hybrid_Red_Material.zip) | Remplacez le dossier 'TFT43' par celui-ci : [TFT70_Hybrid_Mono_Material.zip](https://github.com/Guilouz/BTT-TFT70-SuperRacer/files/6909607/TFT70_Hybrid_Mono_Material.zip) |
 
 <br />
 
