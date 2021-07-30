@@ -26,9 +26,9 @@ La mise à jour du firmware TFT se fait en trois étapes décrites ci-dessous et
 - `27`: version logicielle
 
 
-**Élément 2 :** Polices et Icônes (dans le dossier `TFT43`) :
+**Élément 2 :** Polices et Icônes (dans le dossier `TFT70`) :
 
-Le dossier ROOT pour les polices et les icônes est le dossier TFT43.
+Le dossier ROOT pour les polices et les icônes est le dossier TFT70.
 
 Structure du dossier des polices et des icônes :
 - `TFT43/font`: polices
