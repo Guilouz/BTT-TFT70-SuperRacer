@@ -63,7 +63,7 @@ Une mise à jour réussie ressemble à ceci sur l'écran :
 
 ... et le nom des éléments sur la carte SD change comme suit :
 
-![Capture d’écran 2021-04-19 à 02 33 20](https://user-images.githubusercontent.com/12702322/115167391-bae59700-a0b7-11eb-9e5d-bc810cc6430d.jpg)
+![Capture d’écran 2021-07-30 à 21 19 44](https://user-images.githubusercontent.com/12702322/127701813-e0125a0c-1536-4a75-96ef-6f28830f12a2.jpg)
 
 
 En cas d'échec d'une ou plusieurs parties de la mise à jour, une erreur s'affichera. Suivez les informations à l'écran pour mettre à jour les éléments manquants ou obsolètes.
