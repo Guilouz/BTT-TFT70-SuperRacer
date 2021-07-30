@@ -171,7 +171,7 @@ Si les données de filament ne sont pas présentes dans le gCode, les données d
 
 ## Détecteur de fin de filament
 
-- Le détecteur de fin de filament fonctionne sans action requise lors de l’impression via le port microSD/USB de la carte mère ou via Octoprint.
+- Le détecteur de fin de filament fonctionne sans action requise lors de l’impression via les ports microSD/USB de la carte mère ou via Octoprint.
 - Pour faire fonctionner le détecteur de fin de filament via les ports SD et USB de l’écran, il faut ajouter la commande **M75** dans le Start gCode et la commande **M77** dans le End gCode de votre Slicer.
 
 <br />
