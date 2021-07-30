@@ -31,8 +31,8 @@ La mise à jour du firmware TFT se fait en trois étapes décrites ci-dessous et
 Le dossier ROOT pour les polices et les icônes est le dossier TFT70.
 
 Structure du dossier des polices et des icônes :
-- `TFT43/font`: polices
-- `TFT43/bmp`: icônes
+- `TFT70/font`: polices
+- `TFT70/bmp`: icônes
 
 
 **Élément 3 :** Le fichier de configuration `config.ini`
