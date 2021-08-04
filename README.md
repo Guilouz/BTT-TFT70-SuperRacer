@@ -11,10 +11,10 @@ Le firmware Marlin pour FLSUN Super Racer configuré pour cet écran se trouve [
 
 Les fichiers STL nécessaires sont disponibles dans le dossier "_STL" [ici](https://github.com/Guilouz/Marlin-SuperRacer-SKR2.0-LGX/tree/main/_STL).
 
+<br />
 
 <img width=600 src="https://user-images.githubusercontent.com/12702322/127702284-d49a7f69-2e76-4b21-a0f3-07d5f7ec3803.jpg" />
 
-  
 <br />
 
 ## Mise à jour du firmware
