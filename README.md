@@ -125,12 +125,12 @@ Pour éditer le fichier **config.ini** suivez les instructions [ici](config_inst
 |                      Unified Material (thème par défaut)                      | The Round Miracle par **[Acenotass](https://github.com/Acenotass)** |
 | :----------------------------------------------------------: | :----------------------------------------------------------: |
 | ![Unified Material Main Screen](https://user-images.githubusercontent.com/54359396/98742038-03cd4d00-23ae-11eb-9552-36dc02fe66f4.png) | ![Round Miracle Main Screen](https://user-images.githubusercontent.com/54359396/99251566-d77e5a00-280d-11eb-9c7a-0e7c0111eedd.png) |
-| Remplacez le dossier 'TFT70' par celui-ci : [TFT70_Unified_Material.zip](https://github.com/Guilouz/BTT-TFT70-SuperRacer/files/6909603/TFT70_Unified_Material.zip) | Remplacez le dossier 'TFT70' par celui-ci : [TFT70_The_Round_Miracle.zip](https://github.com/Guilouz/BTT-TFT70-SuperRacer/files/6909604/TFT70_The_Round_Miracle.zip) |
+| Remplacez le dossier 'TFT70' par celui-ci : [TFT70_Unified_Material.zip](https://github.com/Guilouz/BTT-TFT70-SuperRacer/files/6949121/TFT70_Unified_Material.zip) | Remplacez le dossier 'TFT70' par celui-ci : [TFT70_The_Round_Miracle.zip](https://github.com/Guilouz/BTT-TFT70-SuperRacer/files/6949123/TFT70_The_Round_Miracle.zip) |
 
 | Hybrid Red Material par **[AntoszHUN](https://github.com/AntoszHUN)** | Hybrid Mono Material par **[bepstein111](https://github.com/bepstein111)** |
 | :----------------------------------------------------------: | :----------------------------------------------------------: |
 | ![Hybrid Red Menu Material Mainscreen](https://user-images.githubusercontent.com/54359396/98869176-a995c000-2471-11eb-94da-a0bc41abf3e9.png) | ![Monochrome TFT35](https://user-images.githubusercontent.com/54359396/110254523-d5dccb80-7f8f-11eb-86a5-2d52ecd7ca4d.png) |
-| Remplacez le dossier 'TFT70' par celui-ci : [TFT70_Hybrid_Red_Material.zip](https://github.com/Guilouz/BTT-TFT70-SuperRacer/files/6909606/TFT70_Hybrid_Red_Material.zip) | Remplacez le dossier 'TFT70' par celui-ci : [TFT70_Hybrid_Mono_Material.zip](https://github.com/Guilouz/BTT-TFT70-SuperRacer/files/6909607/TFT70_Hybrid_Mono_Material.zip) |
+| Remplacez le dossier 'TFT70' par celui-ci : [TFT70_Hybrid_Red_Material.zip](https://github.com/Guilouz/BTT-TFT70-SuperRacer/files/6949128/TFT70_Hybrid_Red_Material.zip) | Remplacez le dossier 'TFT70' par celui-ci : [TFT70_Hybrid_Mono_Material.zip](https://github.com/Guilouz/BTT-TFT70-SuperRacer/files/6949129/TFT70_Hybrid_Mono_Material.zip) |
 
 <br />
 
