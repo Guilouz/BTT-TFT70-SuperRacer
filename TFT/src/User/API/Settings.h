@@ -13,11 +13,11 @@ extern "C" {
 // Config version support
 // change if new elements/keywords are added/removed/changed in the configuration.h Format YYYYMMDD
 // this number should match CONFIG_VERSION in configuration.h
-#define CONFIG_SUPPPORT 20210807
+#define CONFIG_SUPPPORT 20210815
 
 #define FONT_FLASH_SIGN       20210522  // (YYYYMMDD) change if fonts require updating
-#define CONFIG_FLASH_SIGN     20210807  // (YYYYMMDD) change if any keyword(s) in config.ini is added or removed
-#define LANGUAGE_FLASH_SIGN   20210807  // (YYYYMMDD) change if any keyword(s) in language pack is added or removed
+#define CONFIG_FLASH_SIGN     20210815  // (YYYYMMDD) change if any keyword(s) in config.ini is added or removed
+#define LANGUAGE_FLASH_SIGN   20210815  // (YYYYMMDD) change if any keyword(s) in language pack is added or removed
 #define ICON_FLASH_SIGN       20210711  // (YYYYMMDD) change if any icon(s) is added or removed
 
 #define FONT_CHECK_SIGN       (FONT_FLASH_SIGN + WORD_UNICODE + FLASH_SIGN_ADDR)
@@ -97,6 +97,16 @@ typedef enum
 
 typedef enum
 {
+  SHOW_LAYER_HEIGHT,
+  CLEAN_LAYER_HEIGHT,
+  SHOW_LAYER_NUMBER,
+  CLEAN_LAYER_NUMBER,
+  SHOW_LAYER_BOTH,
+  CLEAN_LAYER_BOTH,
+} LAYER_TYPE;
+
+typedef enum
+{
   FEEDRATE_XY = 0,
   FEEDRATE_Z,
   FEEDRATE_E,
@@ -134,6 +144,7 @@ typedef struct
   uint8_t  terminalACK;
   uint8_t  notification_m117;
   uint8_t  prog_disp_type;
+  uint8_t  layer_disp_type;
 
   // Marlin Mode Settings (only for TFT24 V1.1 & TFT28/TFT35/TFT43/TFT50/TFT70 V3.0)
   uint8_t  mode;

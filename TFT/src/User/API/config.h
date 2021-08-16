@@ -10,7 +10,7 @@ extern "C" {
 
 //after changing/adding/removing a keyword, change the CONFIG_FLASH_SIGN in Settings.h and PARA_SIGN in FlashStore.c
 
-#define LINE_MAX_CHAR                 100
+#define LINE_MAX_CHAR                 200
 #define CONFIG_FILE_PATH              "0:config.ini"
 #define LANG_FILE_PATH                "0:language.ini"
 
@@ -43,6 +43,7 @@ extern "C" {
 #define CONFIG_TERMINAL_ACK           "terminal_ack:"
 #define CONFIG_NOTIFICATION_M117      "notification_m117:"
 #define CONFIG_PROG_DISP_TYPE         "prog_disp_type:"
+#define CONFIG_LAYER_DISP_TYPE        "layer_disp_type:"
 //-----------------------------Marlin Mode Settings (only for TFT24 V1.1 & TFT28/TFT35/TFT43/TFT50/TFT70 V3.0)
 #define CONFIG_MODE                   "default_mode:"
 #define CONFIG_SERIAL_ON              "serial_always_on:"
