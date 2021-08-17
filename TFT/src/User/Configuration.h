@@ -262,7 +262,7 @@
 // Extrude speed (mm/min)
 #define EXTRUDE_SLOW_SPEED     60
 #define EXTRUDE_NORMAL_SPEED  600
-#define EXTRUDE_FAST_SPEED   1200
+#define EXTRUDE_FAST_SPEED   1000
 
 // Pause Settings
 #define NOZZLE_PAUSE_RETRACT_LENGTH               15  // (mm)
@@ -398,6 +398,14 @@
  *   Options: [disable: 0, enable: 1]
  */
 #define FIL_RUNOUT_INVERTING 1  // Default: 1
+
+/**
+ * Filament runout sensor NC(Normal Close)
+ * Invert the logic of the sensor.
+ *
+ *   Options: [Normal Open: 0, Normal Close: 1]
+ */
+#define FIL_RUNOUT_NC 1  // Default: 1
 
 // Filament Noise Threshold
 // Pause print when filament runout is detected at least for this time period.
