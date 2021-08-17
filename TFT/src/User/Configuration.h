@@ -267,8 +267,8 @@
 // Pause Settings
 #define NOZZLE_PAUSE_RETRACT_LENGTH               15  // (mm)
 #define NOZZLE_RESUME_PURGE_LENGTH                16  // (mm)
-#define NOZZLE_PAUSE_X_POSITION     (X_MIN_POS + 10)  // (mm) Must be an integer
-#define NOZZLE_PAUSE_Y_POSITION     (Y_MAX_POS - 10)  // (mm) Must be an integer
+#define NOZZLE_PAUSE_X_POSITION     0  // (mm) Must be an integer
+#define NOZZLE_PAUSE_Y_POSITION     -122  // (mm) Must be an integer
 #define NOZZLE_PAUSE_Z_RAISE                      10  // (mm)
 #define NOZZLE_PAUSE_E_FEEDRATE                  600  // (mm/min) retract & purge feedrate
 #define NOZZLE_PAUSE_XY_FEEDRATE                3000  // (mm/min) X and Y axes feedrate
