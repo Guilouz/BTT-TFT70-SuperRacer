@@ -17,7 +17,7 @@ static inline void mblStart(void)
   mustStoreCmd("G28\n");
   mustStoreCmd("G29 S1\n");  // home and move to first point for Z height adjustment
 
-  #ifdef ENABLE_MBL_START_Z
+  #ifdef MBL_START_Z
     probeHeightStart(infoSettings.level_z_pos, false);  // raise nozzle
   #endif
 
@@ -45,7 +45,7 @@ static inline void mblAbort(void)
 
   mblStop();
 
-  BUZZER_PLAY(sound_error);
+  BUZZER_PLAY(SOUND_ERROR);
 
   popupReminder(DIALOG_TYPE_ERROR, LABEL_MBL_SETTINGS, LABEL_PROCESS_ABORTED);
 }
@@ -57,7 +57,7 @@ void mblUpdateStatus(bool succeeded)
 
   if (succeeded)  // if bed leveling process successfully terminated, allow to save to EEPROM
   {
-    BUZZER_PLAY(sound_success);
+    BUZZER_PLAY(SOUND_SUCCESS);
 
     LABELCHAR(tempMsg, LABEL_BL_COMPLETE);
 
@@ -75,7 +75,7 @@ void mblUpdateStatus(bool succeeded)
   }
   else  // if bed leveling process failed, provide an error dialog
   {
-    BUZZER_PLAY(sound_error);
+    BUZZER_PLAY(SOUND_ERROR);
 
     popupReminder(DIALOG_TYPE_ERROR, LABEL_MBL_SETTINGS, LABEL_PROCESS_ABORTED);
   }
@@ -101,7 +101,7 @@ void mblDrawHeader(uint8_t *point)
   if (point != NULL)
   {
     sprintf(tempstr, "P:%-4d", *point);
-    GUI_SetColor(infoSettings.sd_reminder_color);
+    GUI_SetColor(infoSettings.status_color);
   }
   else
   {
@@ -243,7 +243,7 @@ void menuMBL(void)
         {
           storeCmd("G29 S2\n");  // save Z height and move to next mesh point
 
-          #ifdef ENABLE_MBL_START_Z
+          #ifdef MBL_START_Z
             probeHeightStart(infoSettings.level_z_pos, false);  // raise nozzle
           #endif
 

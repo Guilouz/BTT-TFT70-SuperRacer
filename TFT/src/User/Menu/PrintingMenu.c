@@ -99,7 +99,7 @@ void menuBeforePrinting(void)
       {
         uint32_t size;
 
-        size = request_M23_M36(infoFile.title + 5);
+        size = request_M23_M36(infoFile.title + (infoMachineSettings.firmwareType == FW_REPRAPFW ? 0 : 5));
         //if (powerFailedCreate(infoFile.title) == false)
         //{
         //
@@ -151,10 +151,12 @@ void menuBeforePrinting(void)
       return;
   }
 
-  // initialize things before print start
+  // initialize things before the print starts
   progDisplayType = infoSettings.prog_disp_type;
   layerDisplayType = infoSettings.layer_disp_type * 2;
   setLayerNumber(0);
+  coordinateSetAxisActual(Z_AXIS, 0);
+  coordinateSetAxisTarget(Z_AXIS, 0);
   setM73_presence(false);
   setTotalTime(0);
   
@@ -164,7 +166,7 @@ void menuBeforePrinting(void)
 static inline void reDrawPrintingValue(uint8_t icon_pos, uint8_t draw_type)
 {
   uint8_t icon = printingIcon[icon_pos];
-  char tempstr[10];
+  char tempstr[14];
 
   switch (icon_pos)
   {
@@ -276,9 +278,9 @@ static inline void reDrawPrintingValue(uint8_t icon_pos, uint8_t draw_type)
 
       case ICON_POS_FAN:
         if (infoSettings.fan_percentage == 1)
-          sprintf(tempstr, "%3d%%", fanGetCurPercent(currentFan));
+          sprintf(tempstr, "%3d%%", fanGetCurPercent(currentFan));  // 4 chars
         else
-          sprintf(tempstr, "%3d", fanGetCurSpeed(currentFan));
+          sprintf(tempstr, "%3d ", fanGetCurSpeed(currentFan));  // 4 chars
         break;
 
       case ICON_POS_TIM:
@@ -299,7 +301,7 @@ static inline void reDrawPrintingValue(uint8_t icon_pos, uint8_t draw_type)
         {
           sprintf(tempstr, "%3.2fmm", (infoFile.source >= BOARD_SD) ? coordinateGetAxisActual(Z_AXIS) : coordinateGetAxisTarget(Z_AXIS));
         }
-        else if (layerDisplayType == SHOW_LAYER_NUMBER || layerDisplayType == SHOW_LAYER_BOTH) // layer number or height & number (both)
+        else if (layerDisplayType == SHOW_LAYER_NUMBER || layerDisplayType == SHOW_LAYER_BOTH)  // layer number or height & number (both)
         {
           if (getLayerNumber() > 0)
           {
@@ -559,7 +561,7 @@ void menuPrinting(void)
 
   if (lastPrinting == true)
   {
-    if (infoMachineSettings.long_filename_support == ENABLED && infoFile.source == BOARD_SD)
+    if (infoMachineSettings.longFilename == ENABLED && infoFile.source == BOARD_SD)
       printingItems.title.address = (uint8_t *) infoFile.Longfile[infoFile.fileIndex];
     else
       printingItems.title.address = getPrintName(infoFile.title);
@@ -681,6 +683,7 @@ void menuPrinting(void)
       if (curLayerNumber != prevLayerNumber)
       {
         prevLayerNumber = curLayerNumber;
+        RAPID_SERIAL_LOOP();  // perform backend printing loop before drawing to avoid printer idling
         reDrawPrintingValue(ICON_POS_Z, PRINT_BOTTOM_ROW);
       }
     }

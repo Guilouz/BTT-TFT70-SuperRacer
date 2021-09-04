@@ -164,7 +164,7 @@ long request_M23_M36(char *filename)
                             NULL,        // The second error magic
                             NULL);       // The third error magic
 
-    mustStoreCmd("M36 %s\n", filename);
+    mustStoreCmd("M36 /%s\n", filename);
     offset = 6;
     sizeTag = "size\":";  // reprap firmware reports size JSON
   }
@@ -178,7 +178,7 @@ long request_M23_M36(char *filename)
     return 0;
   }
   if (infoMachineSettings.firmwareType == FW_REPRAPFW)
-    mustStoreCmd("M23 %s\n", filename);  //send M23 for reprap firmware
+    mustStoreCmd("M23 /%s\n", filename);  //send M23 for reprap firmware
   // Find file size and report its.
   char *ptr;
   long size = strtol(strstr(requestCommandInfo.cmd_rev_buf, sizeTag) + offset, &ptr, 10);
@@ -245,8 +245,8 @@ void request_M0(void)
 
 void request_M98(char *filename)
 {
-  char command[CMD_MAX_CHAR];
-  snprintf(command, CMD_MAX_CHAR, "M98 P/%s\n", filename);
+  CMD command;
+  snprintf(command, CMD_MAX_SIZE, "M98 P/%s\n", filename);
   rrfStatusSetMacroBusy();
   mustStoreCmd(command);
   // prevent a race condition when rrfStatusQuery returns !busy before executing the macro
@@ -261,8 +261,8 @@ void request_M98(char *filename)
   rrfStatusQueryNormal();
 }
 
-// nextdir path must start with "macros"
-char *request_M20_macros(char *nextdir)
+// nextdir path must start with "macros" or "gcodes"
+char *request_M20_rrf(char *nextdir)
 {
   resetRequestCommandInfo("{", "}", "Error:", NULL, NULL);
 

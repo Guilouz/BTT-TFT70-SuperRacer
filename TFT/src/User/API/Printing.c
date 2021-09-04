@@ -203,7 +203,7 @@ void shutdownLoop(void)
 
   for (uint8_t i = NOZZLE0; i < infoSettings.hotend_count; i++)
   {
-    if (heatGetCurrentTemp(i) >= AUTO_SHUT_DOWN_MAXTEMP)
+    if (heatGetCurrentTemp(i) >= infoSettings.auto_shutdown_temp)
       tempIsLower = false;
   }
 
@@ -218,7 +218,7 @@ void shutdownStart(void)
   char tempstr[75];
 
   LABELCHAR(tempbody, LABEL_WAIT_TEMP_SHUT_DOWN);
-  sprintf(tempstr, tempbody, infoSettings.auto_off_temp);
+  sprintf(tempstr, tempbody, infoSettings.auto_shutdown_temp);
 
   for (uint8_t i = 0; i < infoSettings.fan_count; i++)
   {
@@ -238,7 +238,7 @@ void initPrintSummary(void)
 
 void preparePrintSummary(void)
 {
-  if (infoMachineSettings.long_filename_support == ENABLED && infoFile.source == BOARD_SD)
+  if (infoMachineSettings.longFilename == ENABLED && infoFile.source == BOARD_SD)
     sprintf(infoPrintSummary.name,"%." STRINGIFY(SUMMARY_NAME_LEN) "s", infoFile.Longfile[infoFile.fileIndex]);
   else
     sprintf(infoPrintSummary.name,"%." STRINGIFY(SUMMARY_NAME_LEN) "s", getPrintName(infoFile.title));
@@ -356,7 +356,7 @@ void printStart(FIL * file, uint32_t size)
       infoPrinting.file = *file;
       infoPrinting.cur = infoPrinting.file.fptr;
 
-      if (infoSettings.send_start_gcode == 1 && infoPrinting.cur == 0)  // PLR continue printing, CAN NOT use start gcode
+      if (GET_BIT(infoSettings.send_gcodes, SEND_GCODES_START_PRINT) && infoPrinting.cur == 0)  // PLR continue printing, CAN NOT use start gcode
       {
         sendPrintCodes(0);
       }
@@ -390,20 +390,18 @@ void printEnd(void)
   setPrintRemainingTime(0);
   preparePrintSummary();  // update print summary. infoPrinting are used
 
-  if (infoSettings.send_end_gcode == 1)
-  {
+  if (GET_BIT(infoSettings.send_gcodes, SEND_GCODES_END_PRINT))
     sendPrintCodes(1);
-  }
 
   heatClearIsWaiting();
 }
 
 void printComplete(void)
 {
-  BUZZER_PLAY(sound_success);
+  BUZZER_PLAY(SOUND_SUCCESS);
   printEnd();
 
-  if (infoSettings.auto_off)  // Auto shut down after print
+  if (infoSettings.auto_shutdown)  // Auto shutdown after print
   {
     shutdownStart();
   }
@@ -461,7 +459,7 @@ void printAbort(void)
       break;
   }
 
-  if (infoSettings.send_cancel_gcode == 1)
+  if (GET_BIT(infoSettings.send_gcodes, SEND_GCODES_CANCEL_PRINT))
     sendPrintCodes(2);
 
   printEnd();
@@ -647,11 +645,12 @@ void loopPrintFromTFT(void)
   bool    read_comment = false;
   bool    read_leading_space = true;
   char    read_char;
+  CMD     gcode;
   uint8_t gCode_count = 0;
   uint8_t comment_count = 0;
   UINT    br = 0;
 
-  if (heatHasWaiting() || infoCmd.count || infoPrinting.pause) return;
+  if (heatHasWaiting() || isNotEmptyCmdQueue() || infoPrinting.pause) return;
 
   if (moveCacheToCmd() == true) return;
 
@@ -670,11 +669,9 @@ void loopPrintFromTFT(void)
     {
       if (gCode_count != 0)
       {
-        infoCmd.queue[infoCmd.index_w].gcode[gCode_count++] = '\n';
-        infoCmd.queue[infoCmd.index_w].gcode[gCode_count] = 0;  // terminate string
-        infoCmd.queue[infoCmd.index_w].src = SERIAL_PORT;
-        infoCmd.index_w = (infoCmd.index_w + 1) % CMD_MAX_LIST;
-        infoCmd.count++;
+        gcode[gCode_count++] = '\n';
+        gcode[gCode_count] = 0;  // terminate string
+        storeCmdFromUART(PORT_1, gcode);
       }
 
       if (comment_count != 0)
@@ -692,9 +689,9 @@ void loopPrintFromTFT(void)
       read_comment = false;
       read_leading_space = true;
     }
-    else if (!read_comment && gCode_count >= CMD_MAX_CHAR - 2)
+    else if (!read_comment && gCode_count >= CMD_MAX_SIZE - 2)
     {}  // if command length is beyond the maximum, ignore the following bytes
-    else if (read_comment && comment_count >= CMD_MAX_CHAR - 2)
+    else if (read_comment && comment_count >= CMD_MAX_SIZE - 2)
     {}  // if comment length is beyond the maximum, ignore the following bytes
     else
     {
@@ -713,11 +710,11 @@ void loopPrintFromTFT(void)
 
         if (!read_leading_space && read_char != '\r')
         {
-          if (!read_comment)   // normal gcode
+          if (!read_comment)  // normal gcode
           {
-            infoCmd.queue[infoCmd.index_w].gcode[gCode_count++] = read_char;
+            gcode[gCode_count++] = read_char;
           }
-          else // comment
+          else  // comment
           {
             gCode_comment.content[comment_count++] = read_char;
           }
