@@ -132,10 +132,10 @@ Pour éditer le fichier **config.ini** suivez les instructions [ici](config_inst
 | ![Hybrid Red Menu Material Mainscreen](https://user-images.githubusercontent.com/54359396/98869176-a995c000-2471-11eb-94da-a0bc41abf3e9.png) | ![Monochrome TFT35](https://user-images.githubusercontent.com/54359396/110254523-d5dccb80-7f8f-11eb-86a5-2d52ecd7ca4d.png) |
 | Remplacez le dossier 'TFT70' par celui-ci : [TFT70_Hybrid_Red_Material.zip](https://github.com/Guilouz/BTT-TFT70-SuperRacer/files/7132295/TFT70_Hybrid_Red_Material.zip) | Remplacez le dossier 'TFT70' par celui-ci : [TFT70_Hybrid_Mono_Material.zip](https://github.com/Guilouz/BTT-TFT70-SuperRacer/files/7132296/TFT70_Hybrid_Mono_Material.zip) |
 
-| Rep Rap Firmware Dark par **[xPew](https://github.com/xPew)** |                                                              |
-| :----------------------------------------------------------: | ------------------------------------------------------------ |
+| Rep Rap Firmware Dark par **[xPew](https://github.com/xPew)** |                                                                  |
+| :----------------------------------------------------------: | :----------------------------------------------------------: |
 | ![Mainscreen-Rep Rap FW Dark](https://user-images.githubusercontent.com/54359396/132403911-067d5cba-942e-496a-9f24-c4b1c9be99d5.png) | ![Mainscreen](https://user-images.githubusercontent.com/54359396/132404369-948e7677-6d17-4a9a-ad7e-25ebc46b3fdb.png) |
-| Remplacez le dossier 'TFT70' par celui-ci : [TFT70_Rep_Rap_Firmware_Dark.zip](https://github.com/Guilouz/BTT-TFT70-SuperRacer/files/7132300/TFT70_Rep_Rap_Firmware_Dark.zip) |                                                              |
+| Remplacez le dossier 'TFT70' par celui-ci : [TFT70_Rep_Rap_Firmware_Dark.zip](https://github.com/Guilouz/BTT-TFT70-SuperRacer/files/7132300/TFT70_Rep_Rap_Firmware_Dark.zip)) |                                                               |
 
 <br />
 
