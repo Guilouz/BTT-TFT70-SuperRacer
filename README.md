@@ -135,7 +135,7 @@ Pour éditer le fichier **config.ini** suivez les instructions [ici](config_inst
 | Rep Rap Firmware Dark par **[xPew](https://github.com/xPew)** |                                                                  |
 | :----------------------------------------------------------: | :----------------------------------------------------------: |
 | ![Mainscreen-Rep Rap FW Dark](https://user-images.githubusercontent.com/54359396/132403911-067d5cba-942e-496a-9f24-c4b1c9be99d5.png) | ![blank](https://user-images.githubusercontent.com/12702322/132599340-efff3892-735c-4689-932b-1d32f86000f7.png) |
-| Remplacez le dossier 'TFT70' par celui-ci : [TFT70_Rep_Rap_Firmware_Dark.zip](https://github.com/Guilouz/BTT-TFT70-SuperRacer/files/7132300/TFT70_Rep_Rap_Firmware_Dark.zip)) |                                                               |
+| Remplacez le dossier 'TFT70' par celui-ci : [TFT70_Rep_Rap_Firmware_Dark.zip](https://github.com/Guilouz/BTT-TFT70-SuperRacer/files/7132300/TFT70_Rep_Rap_Firmware_Dark.zip)) ||
 
 <br />
 
