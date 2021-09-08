@@ -122,6 +122,17 @@ Pour éditer le fichier **config.ini** suivez les instructions [ici](config_inst
 
 ## Thèmes
 
+<table style="padding:10px">
+  <tr>
+    <td align="center">Unified Material (thème par défaut)</td>
+    <td align="center">The Round Miracle par **[Acenotass](https://github.com/Acenotass)**</td>
+  </tr>
+  <tr>
+   <td><img src="https://user-images.githubusercontent.com/54359396/98742038-03cd4d00-23ae-11eb-9552-36dc02fe66f4.png" alt="3" width = 480px height = 320px></td>
+   <td><img src="https://user-images.githubusercontent.com/54359396/99251566-d77e5a00-280d-11eb-9c7a-0e7c0111eedd.png" alt="3" width = 480px height = 320px></td>
+  </tr>
+</table>
+
 |                      Unified Material (thème par défaut)                      | The Round Miracle par **[Acenotass](https://github.com/Acenotass)** |
 | :----------------------------------------------------------: | :----------------------------------------------------------: |
 | ![Unified Material Main Screen](https://user-images.githubusercontent.com/54359396/98742038-03cd4d00-23ae-11eb-9552-36dc02fe66f4.png) | ![Round Miracle Main Screen](https://user-images.githubusercontent.com/54359396/99251566-d77e5a00-280d-11eb-9c7a-0e7c0111eedd.png) |
