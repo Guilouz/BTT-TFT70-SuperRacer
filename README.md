@@ -124,16 +124,16 @@ Pour éditer le fichier **config.ini** suivez les instructions [ici](config_inst
 
 <table>
   <tr>
-    <td align="center"><b>Unified Material (thème par défaut)</b></td>
-    <td align="center"><b>The Round Miracle par <a href="https://github.com/Acenotass">Acenotass</a></b></td>
+    <td><b>Unified Material (thème par défaut)</b></td>
+    <td><b>The Round Miracle par <a href="https://github.com/Acenotass">Acenotass</a></b></td>
   </tr>
   <tr>
-    <td align="center"><img src="https://user-images.githubusercontent.com/54359396/98742038-03cd4d00-23ae-11eb-9552-36dc02fe66f4.png" alt="Unified Material" width ="400" height="267"></td>
-   <td align="center"><img src="https://user-images.githubusercontent.com/54359396/99251566-d77e5a00-280d-11eb-9c7a-0e7c0111eedd.png" alt="The Round Miracle" width ="400" height="267"></td>
+    <td><img src="https://user-images.githubusercontent.com/54359396/98742038-03cd4d00-23ae-11eb-9552-36dc02fe66f4.png" alt="Unified Material" width ="400" height="267"></td>
+   <td><img src="https://user-images.githubusercontent.com/54359396/99251566-d77e5a00-280d-11eb-9c7a-0e7c0111eedd.png" alt="The Round Miracle" width ="400" height="267"></td>
   </tr>
   <tr>
-    <td align="center">Remplacez le dossier 'TFT70' par celui-ci : <a href="https://github.com/Guilouz/BTT-TFT70-SuperRacer/files/7132291/TFT70_Unified_Material.zip">TFT70_Unified_Material.zip</a></td>
-    <td align="center">Remplacez le dossier 'TFT70' par celui-ci : <a href="https://github.com/Guilouz/BTT-TFT70-SuperRacer/files/7132293/TFT70_The_Round_Miracle.zip">TFT70_The_Round_Miracle.zip</a></td>
+    <td>Remplacez le dossier 'TFT70' par celui-ci : <a href="https://github.com/Guilouz/BTT-TFT70-SuperRacer/files/7132291/TFT70_Unified_Material.zip">TFT70_Unified_Material.zip</a></td>
+    <td>Remplacez le dossier 'TFT70' par celui-ci : <a href="https://github.com/Guilouz/BTT-TFT70-SuperRacer/files/7132293/TFT70_The_Round_Miracle.zip">TFT70_The_Round_Miracle.zip</a></td>
   </tr>
 </table>
 
