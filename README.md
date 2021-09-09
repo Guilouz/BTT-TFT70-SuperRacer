@@ -125,7 +125,7 @@ Pour éditer le fichier **config.ini** suivez les instructions [ici](config_inst
 <table>
   <tr>
     <td align="center"><b>Unified Material (thème par défaut)</b></td>
-    <td  align="center"><b>The Round Miracle par <a href="https://github.com/Acenotass">Acenotass</a></b></td>
+    <td  align="center"><b>The Round Miracle par <a href="https://github.com/Acenotass" target="_blank">Acenotass</a></b></td>
   </tr>
   <tr>
     <td align="center"><img src="https://user-images.githubusercontent.com/54359396/98742038-03cd4d00-23ae-11eb-9552-36dc02fe66f4.png" alt="Unified Material" width ="390" height="260"></td>
@@ -139,8 +139,8 @@ Pour éditer le fichier **config.ini** suivez les instructions [ici](config_inst
 
 <table>
   <tr>
-    <td align="center"><b>Hybrid Red Material par <a href="https://github.com/AntoszHUN">AntoszHUN</a></b></b></td>
-    <td align="center"><b>Hybrid Mono Material par <a href="https://github.com/bepstein111">bepstein111</a></b></td>
+    <td align="center"><b>Hybrid Red Material par <a href="https://github.com/AntoszHUN" target="_blank">AntoszHUN</a></b></b></td>
+    <td align="center"><b>Hybrid Mono Material par <a href="https://github.com/bepstein111" target="_blank">bepstein111</a></b></td>
   </tr>
   <tr>
     <td align="center"><img src="https://user-images.githubusercontent.com/54359396/98869176-a995c000-2471-11eb-94da-a0bc41abf3e9.png" alt="Hybrid Red Material"   width ="390" height="260"></td>
@@ -154,7 +154,7 @@ Pour éditer le fichier **config.ini** suivez les instructions [ici](config_inst
 
 <table>
   <tr>
-    <td align="center"><b>Rep Rap Firmware Dark par <a href="https://github.com/xPew">xPew</a></b></b></td>
+    <td align="center"><b>Rep Rap Firmware Dark par <a href="https://github.com/xPew" target="_blank">xPew</a></b></b></td>
   </tr>
   <tr>
     <td align="center"><img src="https://user-images.githubusercontent.com/54359396/132403911-067d5cba-942e-496a-9f24-c4b1c9be99d5.png" alt="Rep Rap Firmware Dark"  width ="390" height="260"></td>
