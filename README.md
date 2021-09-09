@@ -122,7 +122,7 @@ Pour éditer le fichier **config.ini** suivez les instructions [ici](config_inst
 
 ## Thèmes
 
-<table style="padding:10px">
+<table>
   <tr>
     <td align="center"><b>Unified Material (thème par défaut)</b></td>
     <td align="center"><b>The Round Miracle par <a href="https://github.com/Acenotass">Acenotass</a></b></td>
@@ -137,7 +137,7 @@ Pour éditer le fichier **config.ini** suivez les instructions [ici](config_inst
   </tr>
 </table>
 
-<table style="padding:10px">
+<table>
   <tr>
     <td align="center"><b>Hybrid Red Material par <a href="https://github.com/AntoszHUN">AntoszHUN</a></b></b></td>
     <td align="center"><b>Hybrid Mono Material par <a href="https://github.com/bepstein111">bepstein111</a></b></td>
@@ -152,7 +152,7 @@ Pour éditer le fichier **config.ini** suivez les instructions [ici](config_inst
   </tr>
 </table>
 
-<table cellpadding="10" width="1000">
+<table>
   <tr>
     <td align="center"><b>Rep Rap Firmware Dark par <a href="https://github.com/xPew">xPew</a></b></b></td>
   </tr>
