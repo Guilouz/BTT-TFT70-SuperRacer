@@ -152,7 +152,7 @@ Pour éditer le fichier **config.ini** suivez les instructions [ici](config_inst
   </tr>
 </table>
 
-<table style="padding:10px; wdth="420px">
+<table style="padding:10px; width:420px">
   <tr>
     <td align="center"><b>Rep Rap Firmware Dark par <a href="https://github.com/xPew">xPew</a></b></b></td>
   </tr>
