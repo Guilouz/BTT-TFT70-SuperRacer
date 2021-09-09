@@ -34,10 +34,14 @@ typedef enum
 } ECHO_ID;
 
 //void setIgnoreEcho(ECHO_ID msgId, bool state);
-bool isHostDialog();
+void setHostDialog(bool isHostDialog);
+bool getHostDialog(void);
 void setCurrentAckSrc(SERIAL_PORT_INDEX portIndex);
 void parseACK(void);
-void parseRcvGcode(void);
+
+#ifdef SERIAL_PORT_2
+  void parseRcvGcode(void);
+#endif
 
 #ifdef __cplusplus
 }
