@@ -123,8 +123,8 @@ Pour éditer le fichier **config.ini** suivez les instructions [ici](config_inst
    <td align="center"><img src="https://user-images.githubusercontent.com/54359396/98742038-03cd4d00-23ae-11eb-9552-36dc02fe66f4.png" alt="status screen 1" width ="390" height="260"></td>
   </tr>
   <tr>
-    <td align="center">Dans le fichier config.ini définir dans<br># UI Settings / #### Status Screen<br/><br/><b>status_screen:0</b></td>
-    <td align="center">Dans le fichier config.ini définir dans<br># UI Settings / #### Status Screen<br/><br/><b>status_screen:1</b></td>
+    <td align="center">Dans le fichier config.ini définir dans<br># UI Settings / #### Status Screen<br/><b>status_screen:0</b></td>
+    <td align="center">Dans le fichier config.ini définir dans<br># UI Settings / #### Status Screen<br/><b>status_screen:1</b></td>
   </tr>
 </table>
 
