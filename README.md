@@ -113,10 +113,20 @@ Pour éditer le fichier **config.ini** suivez les instructions [ici](config_inst
 
 ## Menus
 
-|                    Écran d'état DÉSACTIVÉ                    |                    Écran d'état ACTIVÉ                     |
-| :----------------------------------------------------------: | :----------------------------------------------------------: |
-| ![status screen 0](https://user-images.githubusercontent.com/54359396/103319145-09035b80-4a31-11eb-91d0-dd761a48b6f5.png) | ![Unified Material Main Screen](https://user-images.githubusercontent.com/54359396/98742038-03cd4d00-23ae-11eb-9552-36dc02fe66f4.png) |
-| Dans le fichier config.ini définir : General Settings<br/>Enable Status Screen<br/># Select the Main Screen flavour<br/># Options: [Enable: 1, Disable: 0]<br/>**status_screen: 0** | Dans le fichier config.ini définir : General Settings<br/>Enable Status Screen<br/># Select the Main Screen flavour<br/># Options: [Enable: 1, Disable: 0]<br/>**status_screen: 1** |
+<table>
+  <tr>
+    <td align="center"><b>Écran d'état DÉSACTIVÉ</b></td>
+    <td align="center"><b>Écran d'état ACTIVÉ</b></td>
+  </tr>
+  <tr>
+    <td align="center"><img src="https://user-images.githubusercontent.com/54359396/103319145-09035b80-4a31-11eb-91d0-dd761a48b6f5.png" alt="status screen 0" width ="390" height="260"></td>
+   <td align="center"><img src="https://user-images.githubusercontent.com/54359396/98742038-03cd4d00-23ae-11eb-9552-36dc02fe66f4.png" alt="status screen 1" width ="390" height="260"></td>
+  </tr>
+  <tr>
+    <td align="center">Dans le fichier config.ini définir : General Settings<br/>Enable Status Screen<br/># Select the Main Screen flavour<br/># Options: [Enable: 1, Disable: 0]<br/><b>status_screen:0</b></td>
+    <td align="center">Dans le fichier config.ini définir : General Settings<br/>Enable Status Screen<br/># Select the Main Screen flavour<br/># Options: [Enable: 1, Disable: 0]<br/><b>status_screen:1</b></td>
+  </tr>
+</table>
 
 <br />
 
@@ -125,7 +135,7 @@ Pour éditer le fichier **config.ini** suivez les instructions [ici](config_inst
 <table>
   <tr>
     <td align="center"><b>Unified Material (thème par défaut)</b></td>
-    <td  align="center"><b>The Round Miracle par <a href="https://github.com/Acenotass">Acenotass</a></b></td>
+    <td align="center"><b>The Round Miracle par <a href="https://github.com/Acenotass">Acenotass</a></b></td>
   </tr>
   <tr>
     <td align="center"><img src="https://user-images.githubusercontent.com/54359396/98742038-03cd4d00-23ae-11eb-9552-36dc02fe66f4.png" alt="Unified Material" width ="390" height="260"></td>
