@@ -155,19 +155,17 @@ Pour éditer le fichier **config.ini** suivez les instructions [ici](config_inst
 <table style="padding:10px">
   <tr>
     <td align="center"><b>Rep Rap Firmware Dark par <a href="https://github.com/xPew">xPew</a></b></b></td>
+    <td align="center"> </td>
   </tr>
   <tr>
     <td align="center"><img src="https://user-images.githubusercontent.com/54359396/132403911-067d5cba-942e-496a-9f24-c4b1c9be99d5.png" alt="Rep Rap Firmware Dark" width = 400px height = 267px></td>
+  <td align="center"><img src="https://user-images.githubusercontent.com/12702322/132602271-ecafecfe-9757-4514-bcfd-2f9edd47904a.png" alt="" width = 400px height = 267px></td>
   </tr>
   <tr>
     <td align="center">Remplacez le dossier 'TFT70' par celui-ci : <a href="https://github.com/Guilouz/BTT-TFT70-SuperRacer/files/7132300/TFT70_Rep_Rap_Firmware_Dark.zip">TFT70_Rep_Rap_Firmware_Dark.zip</a></td>
+  <td align="center"> </td>
   </tr>
 </table>
-
-| Rep Rap Firmware Dark par **[xPew](https://github.com/xPew)** |                                                                  |
-| :----------------------------------------------------------: | :----------------------------------------------------------: |
-| ![Mainscreen-Rep Rap FW Dark](https://user-images.githubusercontent.com/54359396/132403911-067d5cba-942e-496a-9f24-c4b1c9be99d5.png) | ![blank](https://user-images.githubusercontent.com/12702322/132599340-efff3892-735c-4689-932b-1d32f86000f7.png) |
-| Remplacez le dossier 'TFT70' par celui-ci : [TFT70_Rep_Rap_Firmware_Dark.zip](https://github.com/Guilouz/BTT-TFT70-SuperRacer/files/7132300/TFT70_Rep_Rap_Firmware_Dark.zip)) ||
 
 <br />
 
