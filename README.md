@@ -124,37 +124,37 @@ Pour éditer le fichier **config.ini** suivez les instructions [ici](config_inst
 
 <table>
   <tr>
-    <td align="center"><b>Unified Material<br>(thème par défaut)</b></td>
-    <td  align="center"><b>The Round Miracle par<br><a href="https://github.com/Acenotass">Acenotass</a></b></td>
+    <td align="center"><b>Unified Material (thème par défaut)</b></td>
+    <td  align="center"><b>The Round Miracle par <a href="https://github.com/Acenotass">Acenotass</a></b></td>
   </tr>
   <tr>
     <td align="center"><img src="https://user-images.githubusercontent.com/54359396/98742038-03cd4d00-23ae-11eb-9552-36dc02fe66f4.png" alt="Unified Material" width ="400" height="267"></td>
    <td align="center"><img src="https://user-images.githubusercontent.com/54359396/99251566-d77e5a00-280d-11eb-9c7a-0e7c0111eedd.png" alt="The Round Miracle" width ="400" height="267"></td>
   </tr>
   <tr>
-    <td align="center">Remplacez le dossier 'TFT70' par celui-ci : <a href="https://github.com/Guilouz/BTT-TFT70-SuperRacer/files/7132291/TFT70_Unified_Material.zip">TFT70_Unified_Material.zip</a></td>
-    <td align="center">Remplacez le dossier 'TFT70' par celui-ci : <a href="https://github.com/Guilouz/BTT-TFT70-SuperRacer/files/7132293/TFT70_The_Round_Miracle.zip">TFT70_The_Round_Miracle.zip</a></td>
+    <td align="center">Remplacez le dossier 'TFT70' par celui-ci :<br><a href="https://github.com/Guilouz/BTT-TFT70-SuperRacer/files/7132291/TFT70_Unified_Material.zip">TFT70_Unified_Material.zip</a></td>
+    <td align="center">Remplacez le dossier 'TFT70' par celui-ci :<br><a href="https://github.com/Guilouz/BTT-TFT70-SuperRacer/files/7132293/TFT70_The_Round_Miracle.zip">TFT70_The_Round_Miracle.zip</a></td>
   </tr>
 </table>
 
 <table>
   <tr>
-    <td align="center"><b>Hybrid Red Material par<br><a href="https://github.com/AntoszHUN">AntoszHUN</a></b></b></td>
-    <td align="center"><b>Hybrid Mono Material par<br><a href="https://github.com/bepstein111">bepstein111</a></b></td>
+    <td align="center"><b>Hybrid Red Material par <a href="https://github.com/AntoszHUN">AntoszHUN</a></b></b></td>
+    <td align="center"><b>Hybrid Mono Material par <a href="https://github.com/bepstein111">bepstein111</a></b></td>
   </tr>
   <tr>
     <td align="center"><img src="https://user-images.githubusercontent.com/54359396/98869176-a995c000-2471-11eb-94da-a0bc41abf3e9.png" alt="Hybrid Red Material" width ="400" height="267"></td>
    <td align="center"><img src="https://user-images.githubusercontent.com/54359396/110254523-d5dccb80-7f8f-11eb-86a5-2d52ecd7ca4d.png" alt="Hybrid Mono Material" width ="400" height="267"></td>
   </tr>
   <tr>
-    <td align="center">Remplacez le dossier 'TFT70' par celui-ci : <a href="https://github.com/Guilouz/BTT-TFT70-SuperRacer/files/7132295/TFT70_Hybrid_Red_Material.zip">TFT70_Hybrid_Red_Material.zip</a></td>
-    <td align="center">Remplacez le dossier 'TFT70' par celui-ci : <a href="https://github.com/Guilouz/BTT-TFT70-SuperRacer/files/7132296/TFT70_Hybrid_Mono_Material.zip">TFT70_Hybrid_Mono_Material.zip</a></td>
+    <td align="center">Remplacez le dossier 'TFT70' par celui-ci :<br><a href="https://github.com/Guilouz/BTT-TFT70-SuperRacer/files/7132295/TFT70_Hybrid_Red_Material.zip">TFT70_Hybrid_Red_Material.zip</a></td>
+    <td align="center">Remplacez le dossier 'TFT70' par celui-ci :<br><a href="https://github.com/Guilouz/BTT-TFT70-SuperRacer/files/7132296/TFT70_Hybrid_Mono_Material.zip">TFT70_Hybrid_Mono_Material.zip</a></td>
   </tr>
 </table>
 
 <table>
   <tr>
-    <td align="center"><b>Rep Rap Firmware Dark par<br><a href="https://github.com/xPew">xPew</a></b></b></td>
+    <td align="center"><b>Rep Rap Firmware Dark par <a href="https://github.com/xPew">xPew</a></b></b></td>
   </tr>
   <tr>
     <td align="center"><img src="https://user-images.githubusercontent.com/54359396/132403911-067d5cba-942e-496a-9f24-c4b1c9be99d5.png" alt="Rep Rap Firmware Dark" width ="400" height="267"></td>
