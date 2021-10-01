@@ -12,6 +12,7 @@ static bool was_printing = false;
 
 static uint16_t rrf_query_interval = RRF_NORMAL_STATUS_QUERY_MS;
 static bool macro_busy = false;
+bool starting_print = false;
 
 void rrfStatusSet(char status)
 {
@@ -29,8 +30,9 @@ void rrfStatusSet(char status)
             setPrintResume(true);
             break;
           case 'I':
-            // parseACK will take care of going to the print screen
+            // RRFParseACK will take care of going to the print screen
             mustStoreCmd("M409 K\"job.file.fileName\"\n");
+            starting_print = true;
             break;
         }
         break;
@@ -57,6 +59,7 @@ void rrfStatusSet(char status)
         if (rrf_status == 'P')
           setPrintPause(false, PAUSE_EXTERNAL);
         break;
+
       case 'B':
         switch (rrf_status)
         {
