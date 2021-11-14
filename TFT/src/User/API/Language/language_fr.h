@@ -4,6 +4,7 @@
     // config.ini Parameter Settings - Screen Settings and Feature Settings
     #define STRING_EMULATED_M600          "Emuler la fonction M600"
     #define STRING_EMULATED_M109_M190     "Emuler les fonctions M109 / M190"
+    #define STRING_FILE_COMMENT_PARSING   "Analyse des commentaires du Gcode"
     #define STRING_ROTATED_UI             "Rotation"
     #define STRING_LANGUAGE               "Français"
     #define STRING_ACK_NOTIFICATION       "Style des notifications ACK"

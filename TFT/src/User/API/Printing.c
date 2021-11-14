@@ -4,8 +4,8 @@
 typedef struct
 {
   FIL        file;
-  uint32_t   size;                // Gcode file total size
-  uint32_t   cur;                 // Gcode file printed size
+  uint32_t   size;                // gcode file total size
+  uint32_t   cur;                 // gcode file printed size
   uint32_t   expectedTime;        // expected print duration in sec
   uint32_t   time;                // current elapsed time in sec
   uint32_t   remainingTime;       // current remaining time in sec (if set with M73 or M117)
@@ -424,7 +424,9 @@ void printEnd(void)
   preparePrintSummary();  // update print summary. infoPrinting are used
 
   if (GET_BIT(infoSettings.send_gcodes, SEND_GCODES_END_PRINT))
+  {
     sendPrintCodes(1);
+  }
 
   heatClearIsWaiting();
 }
@@ -447,7 +449,6 @@ void printAbort(void)
   static bool loopDetected = false;
 
   if (loopDetected) return;
-
   if (!infoPrinting.printing) return;
 
   switch (infoFile.source)
@@ -493,7 +494,9 @@ void printAbort(void)
   }
 
   if (GET_BIT(infoSettings.send_gcodes, SEND_GCODES_CANCEL_PRINT))
+  {
     sendPrintCodes(2);
+  }
 
   printEnd();
   clearInfoPrint();  // finally clear infoPrinting and exit from dir
@@ -507,8 +510,8 @@ bool printPause(bool isPause, PAUSE_TYPE pauseType)
   // the queue infoCmd and the function loopProcess() is invoked by this function
   static bool loopDetected = false;
 
-  if (loopDetected)                  return false;
-  if (!infoPrinting.printing)        return false;
+  if (loopDetected) return false;
+  if (!infoPrinting.printing) return false;
   if (infoPrinting.pause == isPause) return false;
 
   loopDetected = true;
@@ -672,93 +675,127 @@ void setPrintResume(bool updateHost)
   }
 }
 
+uint32_t handlePrintError(uint32_t cur, uint8_t * errorNum)
+{
+  // TO DO
+  // PUT HERE ANY SPECIFIC ERROR HANDLING PROCEDURE
+  // (E.G. MAXIMUM RETRY ATTEMPTS, DEVICE RE-INITIALIZATION ETC...)
+
+  // ALWAYS return "infoPrinting.size" to force a print abort or "cur - 1" to force a read retry on "cur" position
+  return infoPrinting.size;
+}
+
 // get gcode command from TFT (SD card or USB)
 void loopPrintFromTFT(void)
 {
-  bool    read_comment = false;
-  bool    read_leading_space = true;
-  char    read_char;
-  CMD     gcode;
-  uint8_t gCode_count = 0;
-  uint8_t comment_count = 0;
-  UINT    br = 0;
-
   if (heatHasWaiting() || isNotEmptyCmdQueue() || infoPrinting.pause) return;
-
   if (moveCacheToCmd() == true) return;
-
   if (!infoPrinting.printing || infoFile.source >= BOARD_SD) return;
 
   powerFailedCache(infoPrinting.file.fptr);
 
-  for (; infoPrinting.cur < infoPrinting.size;)
+  CMD      gcode;
+  uint8_t  gcode_count = 0;
+  uint8_t  comment_count = 0;
+  char     read_char = '0';
+  UINT     br = 0;
+  FIL *    ip_file = &infoPrinting.file;
+  uint32_t ip_cur = infoPrinting.cur;
+  uint32_t ip_size = infoPrinting.size;
+
+  for (uint8_t error_num = 0; ip_cur < ip_size; ip_cur++)  // parse only the gcode (not the comment, if any)
   {
-    if (f_read(&infoPrinting.file, &read_char, 1, &br) != FR_OK) break;
+    if (f_read(ip_file, &read_char, 1, &br) != FR_OK)
+    { // in case of error reading from file, invoke error handling function.
+      // Returned "ip_size" for print abort or "ip_cur - 1" for read retry on "ip_cur" position
+      ip_cur = handlePrintError(ip_cur, &error_num);
+      continue;  // "continue" will force also to execute "ip_cur++" in the "for" statement
+    }
 
-    infoPrinting.cur++;
-
-    // Gcode or comment
-    if (read_char == '\n' )  // '\n' is end flag for per command
+    if (read_char == '\n' || read_char == ';')  // '\n' is command end flag, ';' is command comment flag
     {
-      if (gCode_count != 0)
+      if (gcode_count != 0)  // if a gcode was found, finalize and enqueue the gcode and exit from loop
       {
-        gcode[gCode_count++] = '\n';
-        gcode[gCode_count] = 0;  // terminate string
+        gcode[gcode_count++] = '\n';
+        gcode[gcode_count] = 0;  // terminate string
         storeCmdFromUART(PORT_1, gcode);
-      }
 
-      if (comment_count != 0)
-      {
-        gCode_comment.content[comment_count++] = '\n';
-        gCode_comment.content[comment_count] = 0;  // terminate string
-        gCode_comment.handled = false;
-      }
-
-      if (gCode_count + comment_count > 0)
-      {
         break;
       }
 
-      read_comment = false;
-      read_leading_space = true;
+      if (read_char == ';')  // if a comment was found, exit from loop. Otherwise (empty line found), continue parsing the next line
+        break;
     }
-    else if (!read_comment && gCode_count >= CMD_MAX_SIZE - 2)
-    {}  // if command length is beyond the maximum, ignore the following bytes
-    else if (read_comment && comment_count >= CMD_MAX_SIZE - 2)
-    {}  // if comment length is beyond the maximum, ignore the following bytes
-    else
+    else if (read_char == ' ' && gcode_count == 0)  // ignore initial ' ' space bytes
+    {}
+    else if (read_char != '\r')
     {
-      if (read_char == ';')  // ';' is comment flag
-      {
-        read_comment = true;
-        read_leading_space = true;  // comment might come after a gCode in the same line
-        comment_count = 0;  // there might be a comment in a commented line
+      if (gcode_count < CMD_MAX_SIZE - 2)
+        gcode[gcode_count++] = read_char;
+      else  // if command length is beyond the maximum, skip gcode (avoid to send a truncated gcode) and also further comment, if any
+        break;
+    }
+  }
+
+  if (read_char != '\n')  // continue to parse the line (e.g. comment) until command end flag
+  {
+    // if file comment parsing is enabled and a comment tag was previously intercepted parsing the gcode, enable comment parsing
+    bool comment_parsing = (GET_BIT(infoSettings.general_settings, INDEX_FILE_COMMENT_PARSING) == 1 &&
+                            read_char == ';') ? true : false;
+
+    for (uint8_t error_num = 0; ip_cur < ip_size; ip_cur++)  // continue to parse the line (e.g. comment) until command end flag
+    {
+      if (f_read(ip_file, &read_char, 1, &br) != FR_OK)
+      { // in case of error reading from file, invoke error handling function.
+        // Returned "ip_size" for print abort or "ip_cur - 1" for read retry on "ip_cur" position
+        ip_cur = handlePrintError(ip_cur, &error_num);
+        continue;  // "continue" will force also to execute "ip_cur++" in the "for" statement
       }
-      else
+
+      if (read_char == '\n')  // '\n' is command end flag
       {
-        if (read_leading_space && read_char != ' ')  // ignore ' ' space bytes
+        if (comment_parsing && comment_count != 0)  // if a comment was found, finalize the comment data structure
         {
-          read_leading_space = false;
+          gCode_comment.content[comment_count++] = '\n';
+          gCode_comment.content[comment_count] = 0;  // terminate string
+          gCode_comment.handled = false;
         }
 
-        if (!read_leading_space && read_char != '\r')
+        break;  // line was parsed so always exit from loop
+      }
+      else if (comment_parsing)
+      {
+        if (read_char == ';')  // ';' is command comment flag
         {
-          if (!read_comment)  // normal gcode
-          {
-            gcode[gCode_count++] = read_char;
-          }
-          else  // comment
-          {
+          comment_count = 0;  // there might be a comment in a commented line. We always consider the last comment
+        }
+        else if (read_char == ' ' && comment_count == 0)  // ignore initial ' ' space bytes
+        {}
+        else if (read_char != '\r')
+        {
+          if (comment_count < COMMENT_MAX_CHAR - 2)
             gCode_comment.content[comment_count++] = read_char;
-          }
+          else  // if comment length is beyond the maximum, skip comment but continue to parse the line until command end flag
+            comment_parsing = false;
         }
       }
     }
   }
 
-  if (infoPrinting.printing && (infoPrinting.cur >= infoPrinting.size))  // end of .gcode file
+  if (ip_cur > ip_size)  // in case of print abort (ip_cur == ip_size + 1), display an error message and abort the print
+  {
+    BUZZER_PLAY(SOUND_ERROR);
+    popupReminder(DIALOG_TYPE_ERROR, (infoFile.source == TFT_SD) ? LABEL_READ_TFTSD_ERROR : LABEL_READ_U_DISK_ERROR, LABEL_PROCESS_ABORTED);
+
+    printAbort();
+  }
+  else if (ip_cur == ip_size)  // in case of end of gcode file, finalize the print
   {
     printComplete();
+  }
+  else
+  {
+    infoPrinting.cur = ip_cur;  // update infoPrinting.cur with current file position
   }
 }
 

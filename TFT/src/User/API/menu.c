@@ -474,7 +474,7 @@ void loopReminderClear(void)
       break;
 
     case STATUS_LISTENING:
-      if (GET_BIT(infoSettings.general_settings, LISTENING_MODE) == 1)
+      if (GET_BIT(infoSettings.general_settings, INDEX_LISTENING_MODE) == 1)
         return;
       break;
 
@@ -968,8 +968,11 @@ void loopBackEnd(void)
   sendQueueCmd();
   // Parse the received slave response information
   parseACK();
-  // Parse comment from gCode file
-  parseComment();
+
+  if (GET_BIT(infoSettings.general_settings, INDEX_FILE_COMMENT_PARSING) == 1)  // if file comment parsing is enabled
+  {
+    parseComment();  // Parse comment from gCode file
+  }
 
   #ifdef SERIAL_PORT_2
     // Parse the received Gcode from other UART, such as: ESP3D, etc...

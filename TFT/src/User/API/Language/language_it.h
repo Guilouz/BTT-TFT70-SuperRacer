@@ -4,6 +4,7 @@
     // config.ini Parameter Settings - Screen Settings and Feature Settings
     #define STRING_EMULATED_M600          "M600 emulato"
     #define STRING_EMULATED_M109_M190     "M109 / M190 emulati"
+    #define STRING_FILE_COMMENT_PARSING   "File comment parsing"
     #define STRING_ROTATED_UI             "Ruota"
     #define STRING_LANGUAGE               "Italiano"
     #define STRING_ACK_NOTIFICATION       "Tipo di popup"
