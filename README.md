@@ -213,12 +213,16 @@ Octoprint peut éventuellement déclencher certaines actions sur le TFT envoyant
 
 Avant le démarrage de l'impression :
 M118 A1 action:print_start
+
 Après l'impression :
 M118 A1 action:print_end
+
 Après l'annulation de l'impression :
 M118 A1 action:cancel
+
 Après la mise en pause de l'impression :
 M118 A1 action:pause
+
 Avant la reprise de l'impression :
 M118 A1 action:resume
 
