@@ -226,6 +226,8 @@ Lorsque le déclencheur "print_start" est reçu, le TFT passe au menu Impression
 Une fois dans le menu Impression, les boutons "Pause", "Reprendre" et "Stopper" du menu seront désactivés.
 Cela signifie que seul Octoprint contrôlera l'impression et ce n'est qu'à la fin de l'impression ou à l'annulation de l'impression que le menu Impression TFT est finalisé (statistiques disponibles etc...) et déverrouillé (il peut être fermé).
 
+Ces commandes peuvent être enregistrées dans les paramètres Octoprint section Script GCode.
+
 <br />
 
 ## Détecteur de fin de filament
