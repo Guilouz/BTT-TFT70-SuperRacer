@@ -209,8 +209,22 @@ Si les données de filament ne sont pas présentes dans le gCode, les données d
 
 ## Informations Octoprint
 
-- Lors de l’impression via Octoprint, l’écran ne bascule pas en mode « Impression » cependant toutes les fonctionnalités restent accessibles (babysteps, etc...) et les ordres reçus par l’écran (M600, détection de fin de filament, etc...) s’affichent correctement.
-- Les actions requises par l’utilisateur peuvent être gérées depuis l’écran ou directement via Octoprint.
+Octoprint peut éventuellement déclencher certaines actions sur le TFT envoyant des gcodes spécifiques. Les actions suivantes et les gcodes déclencheurs associés sont actuellement pris en charge par le firmware TFT :
+
+Avant le démarrage de l'impression :
+M118 A1 action:print_start
+Après l'impression :
+M118 A1 action:print_end
+Après l'annulation de l'impression :
+M118 A1 action:cancel
+Après la mise en pause de l'impression :
+M118 A1 action:pause
+Avant la reprise de l'impression :
+M118 A1 action:resume
+
+Lorsque le déclencheur "print_start" est reçu, le TFT passe au menu Impression.
+Une fois dans le menu Impression, les boutons "pause", "reprise" et "arrêt" du menu seront désactivés.
+Cela signifie que seul Octoprint contrôlera l'impression et ce n'est qu'à la fin de l'impression ou à l'annulation de l'impression que le menu Impression TFT est finalisé (statistiques disponibles etc...) et déverrouillé (il peut être fermé).
 
 <br />
 
