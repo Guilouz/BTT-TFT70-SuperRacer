@@ -369,3 +369,4 @@ X_WORD (MESH_VALID)
 X_WORD (CONNECT_PROBE)
 X_WORD (DISCONNECT_PROBE)
 X_WORD (CALIBRATION)
+// After changing/adding/removing a word, change the LANGUAGE_FLASH_SIGN in Settings.h

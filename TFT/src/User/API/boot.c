@@ -11,17 +11,17 @@ GUI_POINT bmp_size;
 
 // This List is Auto-Generated. Please add new icons in icon_list.inc only
 const char * const  iconBmpName[] = {
-  #define  X_ICON(NAME) #NAME ,
-  #include "icon_list.inc"
-  #undef   X_ICON
+  #define X_ICON(NAME) #NAME ,
+    #include "icon_list.inc"
+  #undef X_ICON
   // add new icons in icon_list.inc only
 };
 
 // This List is Auto-Generated. Please add new icons in small_icon_list.inc only
 const char * const  smallIconBmpName[] = {
-  #define  X_SMALLICON(NAME) #NAME ,
-  #include "small_icon_list.inc"
-  #undef   X_SMALLICON
+  #define X_SMALLICON(NAME) #NAME ,
+    #include "small_icon_list.inc"
+  #undef X_SMALLICON
   // add new icons in small_icon_list.inc only
 };
 

@@ -11,3 +11,4 @@
 //X_SMALLICON (INC)
 //X_SMALLICON (DEC)
 //X_SMALLICON (NUMPAD)
+// After changing/adding/removing an icon, change the ICON_FLASH_SIGN in Settings.h

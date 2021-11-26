@@ -58,9 +58,9 @@ extern "C" {
 // This List is Auto-Generated. Please add new icons in icon_list.inc only
 enum
 {
-  #define  X_ICON(NAME) ICON_##NAME ,
-  #include "icon_list.inc"
-  #undef   X_ICON
+  #define X_ICON(NAME) ICON_##NAME ,
+    #include "icon_list.inc"
+  #undef X_ICON
   // add new icons in icon_list.inc only
   //ICON_RESERVE
 
@@ -73,9 +73,9 @@ enum
 // This List is Auto-Generated. Please add new icons in small_icon_list.inc only
 enum
 {
-  #define  X_SMALLICON(NAME) SMALL_ICON_##NAME ,
-  #include "small_icon_list.inc"
-  #undef   X_SMALLICON
+  #define X_SMALLICON(NAME) SMALL_ICON_##NAME ,
+    #include "small_icon_list.inc"
+  #undef X_SMALLICON
   // add new icons in small_icon_list.inc only
   // Back ground sign
   SMALL_ICON_BACKGROUND

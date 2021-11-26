@@ -40,9 +40,9 @@ enum
 };
 
 enum {
-  #define  X_WORD(NAME) LABEL_##NAME ,
-  #include "Language.inc"
-  #undef   X_WORD
+  #define X_WORD(NAME) LABEL_##NAME ,
+    #include "Language.inc"
+  #undef X_WORD
 
   // add new keywords in 'Language.inc' file only
   // keep the following always at the end of this list

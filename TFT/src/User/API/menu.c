@@ -993,7 +993,7 @@ void loopBackEnd(void)
 
   if (infoMachineSettings.onboardSD == ENABLED)
   {
-    loopPrintFromHost();  // handle a print from onboard SD or remote host, if any
+    loopPrintFromOnboardSD();  // handle a print from (remote) onboard SD, if any
   }
 
   #ifdef U_DISK_SUPPORT

@@ -233,9 +233,9 @@ void showError(CONFIG_STATS stat);
 // This List is Auto-Generated. Please add new config in config.inc only
 enum
 {
-  #define  X_CONFIG(NAME) C_INDEX_##NAME ,
-  #include "config.inc"
-  #undef   X_CONFIG
+  #define X_CONFIG(NAME) C_INDEX_##NAME ,
+    #include "config.inc"
+  #undef X_CONFIG
 
   CONFIG_COUNT,
 };
