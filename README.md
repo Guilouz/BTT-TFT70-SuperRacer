@@ -212,15 +212,15 @@ Si les données de filament ne sont pas présentes dans le gCode, les données d
 
 Octoprint peut éventuellement déclencher certaines actions sur le TFT envoyant des gcodes spécifiques. Les actions suivantes et les gcodes déclencheurs associés sont actuellement pris en charge par le firmware TFT :
 
-* Avant le démarrage de l'impression : `M118 A1 action:print_start`
+* Avant le démarrage de l'impression : `M118 A1 P0 action:print_start`
 
-* Après l'impression : `M118 A1 action:print_end`
+* Après l'impression : `M118 A1 P0 action:print_end`
 
-* Après l'annulation de l'impression : `M118 A1 action:cancel`
+* Après l'annulation de l'impression : `M118 A1 P0 action:cancel`
 
-* Après la mise en pause de l'impression : `M118 A1 action:pause`
+* Après la mise en pause de l'impression : `M118 A1 P0 action:pause`
 
-* Avant la reprise de l'impression : `M118 A1 action:resume`
+* Avant la reprise de l'impression : `M118 A1 P0 action:resume`
 
 Lorsque le déclencheur "print_start" est reçu, le TFT passe au menu Impression.
 Une fois dans le menu Impression, les boutons "Pause", "Reprendre" et "Stopper" du menu seront désactivés.
