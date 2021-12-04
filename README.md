@@ -228,6 +228,11 @@ Cela signifie que seul Octoprint contrôlera l'impression et ce n'est qu'à la f
 
 Ces commandes peuvent être enregistrées dans les paramètres Octoprint section Script GCode.
 
+Pour obtenir les informations (pourcentage, temps écoulé et temps restant) sur l'écran il est nécessaire d'utiliser l'extension de post-traitement `Display Progress on LCD` sous Cura avec cette configuration :
+
+![Capture d’écran 2021-12-04 à 12 37 24](https://user-images.githubusercontent.com/12702322/144708676-e66995c0-2ca4-449e-bc57-0104ec7f0f90.jpg)
+
+
 <br />
 
 ## Détecteur de fin de filament
