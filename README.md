@@ -15,7 +15,7 @@ Les fichiers STL nécessaires sont disponibles dans le dossier `_STL` [ici](http
 
 <img width=600 src="https://user-images.githubusercontent.com/12702322/127702284-d49a7f69-2e76-4b21-a0f3-07d5f7ec3803.jpg" />
 
-![TFT70 Pins](https://user-images.githubusercontent.com/12702322/145124024-48c0278d-bd56-4e24-b3d1-2ec92edade96.png)
+![TFT70 Pins](https://user-images.githubusercontent.com/12702322/145124137-a25e8ec8-740e-4a78-abbb-4ac16c4200b5.png)
 
 <br />
 
