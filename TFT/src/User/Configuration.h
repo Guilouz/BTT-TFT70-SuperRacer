@@ -1,7 +1,7 @@
 #ifndef _CONFIGURATION_H_
 #define _CONFIGURATION_H_
 
-#define CONFIG_VERSION 20211111
+#define CONFIG_VERSION 20211130
 
 //====================================================================================================
 //=============================== Settings Configurable On config.ini ================================
@@ -63,7 +63,7 @@
  *
  *   Options: [disable: 0, enable: 1]
  */
-#define EMULATED_M109_M190 1  // Default: 1
+#define EMULATED_M109_M190 0  // Default: 1
 
 /**
  * G-code File Comment Parsing
@@ -178,6 +178,14 @@
  *   Options: [disable: 0, enable: 1]
  */
 #define FILES_LIST_MODE 1  // Default: 1
+
+/**
+ * Files Fullname View
+ * Display fullname for files in List Mode / Icon Mode menu.
+ * If disabled, any file extension starting with ".g" or ".G" (e.g. ".g", ".gco", ".gcode" etc.) will be hidden.
+ *   Options: [disable: 0, enable: 1]
+ */
+#define FILES_FULLNAME_VIEW 0  // Default: 1
 
 /**
  * Fan Speed In Percentage
@@ -1258,11 +1266,27 @@
 #define TERMINAL_KEYBOARD_LAYOUT 0  // Default: 0
 
 /**
+ * Progress Bar Color (Printing menu)
+ * The color of the progress bar during print.
+ *   Options: [Orange: 0, Yellow: 1, Red: 2, Green: 3, Blue: 4, Cyan: 5, Magenta: 6, Purple: 7, Lime: 8, Gray: 9]
+ */
+#define PROGRESS_BAR_COLOR 0  // Default: 0
+
+/**
  * Progress Bar Layout (Printing menu)
  * Uncomment to enable a progress bar with 10% markers.
  * Comment to enable a standard progress bar.
  */
 #define MARKED_PROGRESS_BAR  // Default: commented (disabled)
+
+/**
+ * Live Text Common Color Layout (Status Screen menu)
+ * Some topics require to use a common color for live text in Status Screen menu.
+ * Uncomment to use the color of live text 1 (name) also for live text 2 (value)
+ * (e.g. for THEME_Rep Rap Firmware Dark theme).
+ * Comment to use standard colors.
+ */
+//#define LIVE_TEXT_COMMON_COLOR  // Default: commented (disabled)
 
 /**
  * Live Text Background Color Rendering Technique (Printing menu and Status Screen menu)
