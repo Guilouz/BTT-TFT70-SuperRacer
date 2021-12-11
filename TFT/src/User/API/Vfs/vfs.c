@@ -5,12 +5,12 @@ MYFILE infoFile = {"?:", {0}, {0}, 0, 0, 0, 0, TFT_SD, {0}};
 
 void setPrintModelIcon(bool exist)
 {
-  infoFile.model_icon = exist;
+  infoFile.modelIcon = exist;
 }
 
 bool isPrintModelIcon(void)
 {
-  return infoFile.model_icon;
+  return infoFile.modelIcon;
 }
 
 bool mountFS(void)
@@ -49,9 +49,9 @@ void clearInfoFile(void)
     free(infoFile.file[i]);
     infoFile.file[i] = 0;
 
-    if (infoFile.Longfile[i] != 0)  // long filename is optional so we need to check its presence
-      free(infoFile.Longfile[i]);
-    infoFile.Longfile[i] = 0;
+    if (infoFile.longFile[i] != 0)  // long filename is optional so we need to check its presence
+      free(infoFile.longFile[i]);
+    infoFile.longFile[i] = 0;
   }
   infoFile.folderCount = 0;
   infoFile.fileCount = 0;
@@ -131,7 +131,7 @@ bool IsRootDir(void)
   return !strchr(infoFile.title, '/');
 }
 
-// check if filename provides a supported file extension
+// check if filename provides a supported filename extension
 char * isSupportedFile(char * filename)
 {
   char * extPos = strstr(filename, ".g");  // support "*.g","*.gco" and "*.gcode"
@@ -147,24 +147,24 @@ char * hideFileExtension(uint8_t index)
   char * filename = infoFile.file[index];
   char * extPos;
 
-  if (infoSettings.files_fullname_view == 0)  // if fullname view is disabled
+  if (infoSettings.filename_extension == 0)  // if filename extension is disabled
   {
     extPos = isSupportedFile(filename);
 
-    if (extPos != NULL)  // if filename provides a supported file extension
-      filename[extPos - filename] = 0;  // temporary hide file extension
+    if (extPos != NULL)  // if filename provides a supported filename extension
+      filename[extPos - filename] = 0;  // temporary hide filename extension
   }
 
   if (infoMachineSettings.longFilename == ENABLED && infoFile.source == BOARD_SD)
   {
-    filename = infoFile.Longfile[index];
+    filename = infoFile.longFile[index];
 
-    if (infoSettings.files_fullname_view == 0)  // if fullname view is disabled
+    if (infoSettings.filename_extension == 0)  // if filename extension is disabled
     {
       extPos = isSupportedFile(filename);
 
-      if (extPos != NULL)  // if filename provides a supported file extension
-        filename[extPos - filename] = 0;  // temporary hide file extension
+      if (extPos != NULL)  // if filename provides a supported filename extension
+        filename[extPos - filename] = 0;  // temporary hide filename extension
     }
   }
 
@@ -175,20 +175,20 @@ char * restoreFileExtension(uint8_t index)
 {
   char * filename = infoFile.file[index];
 
-  if (infoSettings.files_fullname_view == 0)  // if fullname view is disabled
+  if (infoSettings.filename_extension == 0)  // if filename extension is disabled
   {
-    if (filename[strlen(filename) + 1] != 0)  // check extra byte for file extension check. If 0, no file extension was previously hidden
-      filename[strlen(filename)] = '.';       // restore file extension
+    if (filename[strlen(filename) + 1] != 0)  // check extra byte for filename extension check. If 0, no filename extension was previously hidden
+      filename[strlen(filename)] = '.';       // restore filename extension
   }
 
   if (infoMachineSettings.longFilename == ENABLED && infoFile.source == BOARD_SD)
   {
-    filename = infoFile.Longfile[index];
+    filename = infoFile.longFile[index];
 
-    if (infoSettings.files_fullname_view == 0)  // if fullname view is disabled
+    if (infoSettings.filename_extension == 0)  // if filename extension is disabled
     {
-      if (filename[strlen(filename) + 1] != 0)  // check extra byte for file extension check. If 0, no file extension was previously hidden
-        filename[strlen(filename)] = '.';       // restore file extension
+      if (filename[strlen(filename) + 1] != 0)  // check extra byte for filename extension check. If 0, no filename extension was previously hidden
+        filename[strlen(filename)] = '.';       // restore filename extension
     }
   }
 

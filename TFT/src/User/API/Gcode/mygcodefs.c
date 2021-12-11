@@ -57,23 +57,25 @@ bool scanPrintFilesGcodeFs(void)
   strcpy(data, ret);
   clearRequestCommandInfo();
 
-  char * s = strstr(data, "\r\n") ? "\r\n" : "\n";  // smoothieware report with \r\n, marlin reports with \n
+  char *s = strstr(data, "\r\n") ? "\r\n" : "\n";  // smoothieware report with \r\n, marlin reports with \n
   char *line = strtok(data, s);
 
   for (; line != NULL; line = strtok(NULL, s))
   {
-    if (strcmp(line, "Begin file list") == 0 || strcmp(line, "End file list") == 0 || strcmp(line, "ok") == 0)  // Start and Stop tag
+    if (strlen(line) == 0 || strcmp(line, "ok") == 0 ||
+        strcmp(line, "Begin file list") == 0 || strcmp(line, "End file list") == 0 )  // Start and Stop tag
       continue;
 
-    if (strlen(line) < strlen(infoFile.title) - 4)  // if "line" cannot include current directory
-      continue;
+    if (line[0] == '/')  // old Marlin fw provides "/" at the beginning while latest Marlin fw doesn't, so skip it if present
+      line++;            // (use a common file path) e.g. "/sub_dir/cap.gcode" -> "sub_dir/cap.gcode"
 
     // "line" never has "/" at the beginning of a path (e.g. "sub_dir/cap.gcode") while "infoFile.title" has it
     // (e.g. "bSD:/sub_dir"), so we skip it during the check of current directory match (index 5 used instead of 4)
     if (strlen(infoFile.title) > 5 && strstr(line, infoFile.title + 5) == NULL)  // if "line" doesn't include current directory
       continue;
 
-    char *pline = line + strlen(infoFile.title) - 4;  // e.g. "cap.gcode", "sub_dir_2/base.gcode" etc...
+    // e.g. "sub_dir/cap.gcode" -> "cap.gcode", "sub_dir/sub_dir_2/cap2.gcode" -> "sub_dir_2/cap.gcode"
+    char *pline = line + (strlen(infoFile.title) - 4);  // we remove the 4 bytes related to prefix "bSD:" in infoFile.title
 
     if (strchr(pline, '/') == NULL)  // if FILE
     {
@@ -110,27 +112,27 @@ bool scanPrintFilesGcodeFs(void)
         else
           Pstr_tmp++;
 
-        infoFile.Longfile[infoFile.fileCount] = malloc(strlen(Pstr_tmp) + 2);  // plus one extra byte for file extension check
-        if (infoFile.Longfile[infoFile.fileCount] == NULL)
+        infoFile.longFile[infoFile.fileCount] = malloc(strlen(Pstr_tmp) + 2);  // plus one extra byte for filename extension check
+        if (infoFile.longFile[infoFile.fileCount] == NULL)
         {
           clearRequestCommandInfo();
           break;
         }
-        strcpy(infoFile.Longfile[infoFile.fileCount], Pstr_tmp);
-        infoFile.Longfile[infoFile.fileCount][strlen(Pstr_tmp) + 1] = 0;  // set to 0 the extra byte for file extension check
+        strcpy(infoFile.longFile[infoFile.fileCount], Pstr_tmp);
+        infoFile.longFile[infoFile.fileCount][strlen(Pstr_tmp) + 1] = 0;  // set to 0 the extra byte for filename extension check
         clearRequestCommandInfo();  // finally free the buffer allocated by M33, if any
       }
       else  // if long filename is not supported
       {
-        infoFile.Longfile[infoFile.fileCount] = 0;  // long filename is not supported, so always set it to 0
+        infoFile.longFile[infoFile.fileCount] = 0;  // long filename is not supported, so always set it to 0
       }
 
       char* rest = pline;
       char* file = strtok_r(rest, " ", &rest);  // remove file size from pline
 
-      // NOTE: no need to filter files based on file extension because files are already filtered by Marlin,
+      // NOTE: no need to filter files based on filename extension because files are already filtered by Marlin,
       // so leave the following block commented
-/*      if (IsSupportedFile(file) == NULL)  // if filename doesn't provide a supported file extension
+/*      if (IsSupportedFile(file) == NULL)  // if filename doesn't provide a supported filename extension
       {
         if (infoFile.Longfile[infoFile.fileCount] != 0)
           free(infoFile.Longfile[infoFile.fileCount]);
@@ -138,17 +140,17 @@ bool scanPrintFilesGcodeFs(void)
         continue;
       }*/
 
-      infoFile.file[infoFile.fileCount] = malloc(strlen(file) + 2);  // plus one extra byte for file extension check
+      infoFile.file[infoFile.fileCount] = malloc(strlen(file) + 2);  // plus one extra byte for filename extension check
       if (infoFile.file[infoFile.fileCount] == NULL)
       {
-        if (infoFile.Longfile[infoFile.fileCount] != 0)
-          free(infoFile.Longfile[infoFile.fileCount]);
+        if (infoFile.longFile[infoFile.fileCount] != 0)
+          free(infoFile.longFile[infoFile.fileCount]);
 
         break;
       }
 
       strcpy(infoFile.file[infoFile.fileCount], file);
-      infoFile.file[infoFile.fileCount][strlen(file) + 1] = 0;  // set to 0 the extra byte for file extension check
+      infoFile.file[infoFile.fileCount][strlen(file) + 1] = 0;  // set to 0 the extra byte for filename extension check
       infoFile.fileCount++;
     }
     else  // if DIRECTORY
