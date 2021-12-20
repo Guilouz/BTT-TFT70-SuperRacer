@@ -17,8 +17,6 @@ Les fichiers STL nécessaires sont disponibles dans le dossier `_STL` [ici](http
 
 ![TFT70 Pins](https://user-images.githubusercontent.com/12702322/146797719-accf8830-ca27-4406-88a5-1fe4a39294a0.jpg)
 
-<br />
-
 ## Mise à jour du firmware
 
 La mise à jour du firmware TFT se fait en trois étapes décrites ci-dessous et comprend jusqu'à quatre éléments :
