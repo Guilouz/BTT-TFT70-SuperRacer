@@ -204,41 +204,41 @@ Pour obtenir les informations (pourcentage, temps écoulé et temps restant) sur
 
 <br />
 
-## Informations sur la fonction Evénements LED (Neopixel)
+## Informations sur la fonction LED Neopixel
 
-**Fonctionnement de la fonction Evénements LED pendant une impression (appliquée selon le paramètre "event_led" dans le fichier config.ini) :**
+**Fonctionnement de la fonction LED Neopixel pendant une impression (appliquée selon le paramètre "event_led" dans le fichier config.ini) :**
 
 1. Lors du démarrage d'une impression à partir du port TFT SD / TFT USB, si le paramètre `emulated_m109_m190` dans le fichier config.ini est défini sur :
   - disable: 0 :
-    - La chauffe est contrôlée par l'imprimante. Le TFT ne peut pas contrôler les LEDs (Neopixel) de l'imprimante pendant la chauffe. Il contrôlera uniquement la LED du bouton du TFT.
+    - La chauffe est contrôlée par l'imprimante. Le TFT ne peut pas contrôler les LEDs de l'imprimante pendant la chauffe. Il contrôlera uniquement la LED du bouton du TFT.
     - La couleur de la LED du bouton TFT est définie sur BLEU (si le plateau est chauffé en premier) ou sur VIOLET (si la hotend est chauffée en première).
     - La couleur de la LED du bouton TFT passe progressivement au ROUGE jusqu'à ce que les températures cibles soient atteintes.
   - enable: 1 :
-  	- La couleur des LEDs (Neopixel) de l'imprimante et la couleur de la LED du bouton TFT, sont définies sur BLEU (si le plateau est chauffé en premier) ou VIOLET (si la hotend est chauffée en première).
-  	- La couleur des LEDs (Neopixel) de l'imprimante et la couleur de la LED du bouton TFT passent progressivement au ROUGE jusqu'à ce que les températures cibles soient atteintes.
-  	- La couleur des LEDs (Neopixel) de l'imprimante sont définies sur BLANC (pour éclairer la surface d'impression) lorsque les températures cibles sont atteintes et que l'impression peut démarrer.
+  	- La couleur des LEDs de l'imprimante et la couleur de la LED du bouton TFT, sont définies sur BLEU (si le plateau est chauffé en premier) ou VIOLET (si la hotend est chauffée en première).
+  	- La couleur des LEDs de l'imprimante et la couleur de la LED du bouton TFT passent progressivement au ROUGE jusqu'à ce que les températures cibles soient atteintes.
+  	- La couleur des LEDs de l'imprimante sont définies sur BLANC (pour éclairer la surface d'impression) lorsque les températures cibles sont atteintes et que l'impression peut démarrer.
   	
  2. La couleur de la LED du bouton TFT est définie sur sa couleur par défaut (paramètre "knob_led_color" dans le fichier config.ini) lorsque les températures cibles sont atteintes et que l'impression peut démarrer.
  
- 3. La couleur des LEDs (Neopixel) de l'imprimante et la couleur de la LED du bouton TFT sont définies sur VERT lorsque l'impression se termine.
+ 3. La couleur des LEDs de l'imprimante et la couleur de la LED du bouton TFT sont définies sur VERT lorsque l'impression se termine.
  
- 4. Les LEDs (Neopixel) de l'imprimante s'éteignent lors de la sortie du menu Impression.
+ 4. Les LEDs de l'imprimante s'éteignent lors de la sortie du menu Impression.
  
  5. La couleur de la LED du bouton TFT est redéfinie sur sa couleur par défaut (paramètre "knob_led_color" dans le fichier config.ini) lors de la sortie du menu Impression.
 
 <br>
 
-**Fonctionnement de la fonction Evénements LED pendant un PID (toujours appliquée, indépendante du paramètre "event_led" dans le fichier config.ini) :**
+**Fonctionnement de la fonction LED Neopixel pendant un PID (toujours appliquée, indépendante du paramètre "event_led" dans le fichier config.ini) :**
 
-1. La couleur des LEDs (Neopixel) de l'imprimante et la couleur de la LED du bouton TFT sont définies sur ROUGE lors du démarrage du processus PID.
+1. La couleur des LEDs de l'imprimante et la couleur de la LED du bouton TFT sont définies sur ROUGE lors du démarrage du processus PID.
 
-2. La couleur des LEDs (Neopixel) de l'imprimante sont définies sur BLEU (si un PID plateau est réalisé) ou VIOLET (si un PID hotend est réalisé) lors du démarrage du processus PID.
+2. La couleur des LEDs de l'imprimante sont définies sur BLEU (si un PID plateau est réalisé) ou VIOLET (si un PID hotend est réalisé) lors du démarrage du processus PID.
 
-3. La couleur des LEDs (Neopixel) de l'imprimante passent progressivement au ROUGE lorsque la température cible est atteinte.
+3. La couleur des LEDs de l'imprimante passent progressivement au ROUGE lorsque la température cible est atteinte.
   
-4. La couleur des LEDs (Neopixel) de l'imprimante et la couleur de la LED du bouton TFT sont définies sur VERT lorsque le processus PID se termine ou s'interrompt.
+4. La couleur des LEDs de l'imprimante et la couleur de la LED du bouton TFT sont définies sur VERT lorsque le processus PID se termine ou s'interrompt.
 
-5. Les LEDs (Neopixel) de l'imprimante s'éteignent lors de la sortie du menu PID.
+5. Les LEDs de l'imprimante s'éteignent lors de la sortie du menu PID.
 
 6. La couleur de la LED du bouton TFT est redéfinie sur sa couleur par défaut (paramètre "knob_led_color" dans lefichier config.ini) lors de la sortie du menu PID.
 
