@@ -240,7 +240,7 @@ Pour obtenir les informations (pourcentage, temps écoulé et temps restant) sur
 
 5. Les LEDs de l'imprimante s'éteignent lors de la sortie du menu PID.
 
-6. La couleur de la LED du bouton TFT est redéfinie sur sa couleur par défaut (paramètre "knob_led_color" dans lefichier config.ini) lors de la sortie du menu PID.
+6. La couleur de la LED du bouton TFT est redéfinie sur sa couleur par défaut (paramètre "knob_led_color" dans le fichier config.ini) lors de la sortie du menu PID.
 
 <br />
 
