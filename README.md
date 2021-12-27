@@ -226,6 +226,7 @@ Pour obtenir les informations (pourcentage, temps écoulé et temps restant) sur
  
  5. La couleur de la LED du bouton TFT est redéfinie sur sa couleur par défaut (paramètre "knob_led_color" dans le fichier config.ini) lors de la sortie du menu Impression.
 
+<br>
 
 **Fonctionnement de la fonction Evénements LED pendant un PID (toujours appliquée, indépendante du paramètre "event_led" dans le fichier config.ini) :**
 
