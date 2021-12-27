@@ -4,6 +4,7 @@
     // config.ini Parameter Settings - Screen Settings and Feature Settings
     #define STRING_EMULATED_M600          "Emuler la fonction M600"
     #define STRING_EMULATED_M109_M190     "Emuler les fonctions M109 / M190"
+    #define STRING_EVENT_LED              "LED Neopixel"
     #define STRING_FILE_COMMENT_PARSING   "Analyse des commentaires du Gcode"
     #define STRING_ROTATED_UI             "Rotation"
     #define STRING_LANGUAGE               "Français"
@@ -161,15 +162,15 @@
 
     // TFT SD, U_DISK, Onboard SD, Filament Runout Process Commands / Status / Info
     #define STRING_TFTSD                  "SD TFT"
-    #define STRING_READ_TFTSD_ERROR       "Erreur de lecture de la carte SD TFT !"
+    #define STRING_READ_TFTSD_ERROR       "Erreur de lecture de la carte SD !"
     #define STRING_TFTSD_INSERTED         "Carte insérée !"
     #define STRING_TFTSD_REMOVED          "Carte retirée !"
-    #define STRING_U_DISK                 "Clé USB"
+    #define STRING_U_DISK                 "USB TFT"
     #define STRING_READ_U_DISK_ERROR      "Erreur de lecture de la clé USB !"
     #define STRING_U_DISK_INSERTED        "Clé USB insérée !"
     #define STRING_U_DISK_REMOVED         "Clé USB retirée !"
-    #define STRING_ONBOARDSD              "SD interne"
-    #define STRING_READ_ONBOARDSD_ERROR   "Erreur de lecture de la carte SD interne !"
+    #define STRING_ONBOARDSD              "Port CM"
+    #define STRING_READ_ONBOARDSD_ERROR   "Erreur de lecture du port de la carte mère !"
     #define STRING_FILAMENT_RUNOUT        "Fin de Filament !"
 
     // Steppers, Print, Probe Process Commands / Status / Info
