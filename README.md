@@ -177,6 +177,88 @@ Pour éditer le fichier **config.ini** suivez les instructions [ici](config_inst
 
 <br />
 
+## Informations Octoprint
+
+Octoprint peut éventuellement déclencher certaines actions sur le TFT envoyant des gcodes spécifiques. Les actions suivantes et les gcodes déclencheurs associés sont actuellement pris en charge par le firmware TFT :
+
+* Avant le démarrage de l'impression : `M118 A1 P0 action:print_start`
+
+* Après l'impression : `M118 A1 P0 action:print_end`
+
+* Après l'annulation de l'impression : `M118 A1 P0 action:cancel`
+
+* Après la mise en pause de l'impression : `M118 A1 P0 action:pause`
+
+* Avant la reprise de l'impression : `M118 A1 P0 action:resume`
+
+Lorsque le déclencheur "print_start" est reçu, le TFT passe au menu Impression.
+Une fois dans le menu Impression, les boutons "Pause", "Reprendre" et "Stopper" du menu seront désactivés.
+Cela signifie que seul Octoprint contrôlera l'impression et ce n'est qu'à la fin de l'impression ou à l'annulation de l'impression que le menu Impression TFT est finalisé (statistiques disponibles etc...) et déverrouillé (il peut être fermé).
+
+Ces commandes peuvent être enregistrées dans les paramètres Octoprint section Script GCode.
+
+Pour obtenir les informations (pourcentage, temps écoulé et temps restant) sur l'écran il est nécessaire d'utiliser l'extension de post-traitement `Display Progress on LCD` sous Cura avec cette configuration :
+
+![Capture d’écran 2021-12-04 à 12 37 24](https://user-images.githubusercontent.com/12702322/144708676-e66995c0-2ca4-449e-bc57-0104ec7f0f90.jpg)
+
+
+<br />
+
+## Informations sur la fonction Evénements LED (Neopixel)
+
+**Fonctionnement de la fonction Evénements LED pendant une impression (appliquée selon le paramètre "event_led" dans le fichier config.ini) :**
+
+1. Lors du démarrage d'une impression à partir du port TFT SD / TFT USB, si le paramètre `emulated_m109_m190` dans le fichier config.ini est défini sur :
+  - disable: 0 :
+    - La chauffe est contrôlée par l'imprimante. Le TFT ne peut pas contrôler les LEDs (Neopixel) de l'imprimante pendant la chauffe. Il contrôlera uniquement la LED du bouton du TFT.
+    - La couleur de la LED du bouton TFT est définie sur BLEU (si le plateau est chauffé en premier) ou sur VIOLET (si la hotend est chauffée en première).
+    - La couleur de la LED du bouton TFT passe progressivement au ROUGE jusqu'à ce que les températures cibles soient atteintes.
+  - enable: 1 :
+  	- La couleur des LEDs (Neopixel) de l'imprimante et la couleur de la LED du bouton TFT, sont définies sur BLEU (si le plateau est chauffé en premier) ou VIOLET (si la hotend est chauffée en première).
+  	- La couleur des LEDs (Neopixel) de l'imprimante et la couleur de la LED du bouton TFT passent progressivement au ROUGE jusqu'à ce que les températures cibles soient atteintes.
+  	- La couleur des LEDs (Neopixel) de l'imprimante sont définies sur BLANC (pour éclairer la surface d'impression) lorsque les températures cibles sont atteintes et que l'impression peut démarrer.
+  	
+ 2. La couleur de la LED du bouton TFT est définie sur sa couleur par défaut (paramètre "knob_led_color" dans le fichier config.ini) lorsque les températures cibles sont atteintes et que l'impression peut démarrer.
+ 
+ 3. La couleur des LEDs (Neopixel) de l'imprimante et la couleur de la LED du bouton TFT sont définies sur VERT lorsque l'impression se termine.
+ 
+ 4. Les LEDs (Neopixel) de l'imprimante s'éteignent lors de la sortie du menu Impression.
+ 
+ 5. La couleur de la LED du bouton TFT est redéfinie sur sa couleur par défaut (paramètre "knob_led_color" dans le fichier config.ini) lors de la sortie du menu Impression.
+
+
+**Fonctionnement de la fonction Evénements LED pendant un PID (toujours appliquée, indépendante du paramètre "event_led" dans le fichier config.ini) :**
+
+1. La couleur des LEDs (Neopixel) de l'imprimante et la couleur de la LED du bouton TFT sont définies sur ROUGE lors du démarrage du processus PID.
+
+2. La couleur des LEDs (Neopixel) de l'imprimante sont définies sur BLEU (si un PID plateau est réalisé) ou VIOLET (si un PID hotend est réalisé) lors du démarrage du processus PID.
+
+3. La couleur des LEDs (Neopixel) de l'imprimante passent progressivement au ROUGE lorsque la température cible est atteinte.
+  
+4. La couleur des LEDs (Neopixel) de l'imprimante et la couleur de la LED du bouton TFT sont définies sur VERT lorsque le processus PID se termine ou s'interrompt.
+
+5. Les LEDs (Neopixel) de l'imprimante s'éteignent lors de la sortie du menu PID.
+
+6. La couleur de la LED du bouton TFT est redéfinie sur sa couleur par défaut (paramètre "knob_led_color" dans lefichier config.ini) lors de la sortie du menu PID.
+
+<br />
+
+## Détecteur de fin de filament
+
+- Le détecteur de fin de filament fonctionne sans action requise lors de l’impression via les ports microSD/USB de la carte mère ou via Octoprint.
+- Pour faire fonctionner le détecteur de fin de filament via les ports SD et USB de l’écran, il faut ajouter la commande **M75** dans le Start gCode et la commande **M77** dans le End gCode de votre Slicer.
+
+<br />
+
+## Reprise après coupure de courant
+
+- La reprise après coupure de courant n’est fonctionnelle que lors de l’impression via les ports SD et USB de l’écran.
+- Cette fonctionnalité est activée par défaut, elle créée un fichier nommé PLR à la racine de la carte SD et/ou clé USB qui enregistre l’état au fur et à mesure de l’impression.
+- Si vous n’utilisez pas cette fonctionnalité désactivez-la pour préserver la carte SD et/ou clé USB via **Menu - Options - Paramètres - Reprise après coupure**.
+- Pour reprendre l’impression après coupure, il suffit de se rendre à nouveau à l’emplacement de votre fichier gCode, l’écran demandera alors si vous désirez reprendre ou non l’impression.
+
+<br />
+
 ## Afficher plus de statistiques à la fin de l'impression
 
 Des statistiques telles que la longueur du filament, le poids du filament et le coût du filament peuvent être intégrées dans le gCode. 
@@ -205,49 +287,6 @@ L'inclusion des données de filament dans le gCode peut être automatisée. Dans
 Dans le cas où le fichier gCode a été généré à l'aide du plugin [BTT 3D Plug-In Suit](https://github.com/bigtreetech/Bigtree3DPluginSuit), les données sont automatiquement ajoutées.
 
 Si les données de filament ne sont pas présentes dans le gCode, les données de longueur de filament sont calculées pendant l'impression. La longueur est calculée indépendamment de l'utilisation du port USB du TFT, du port SD du TFT ou du port SD intégré. Les calculs sont effectués en mode d'extrusion absolu ou relatif. Les données de filament tiennent également compte du débit, mais avec une mise en garde. Le débit doit être le même pendant toute la durée de l'impression, car le résultat final est calculé en fonction du débit au moment où l'impression est terminée. Si le débit change pendant l'impression, les résultats ne seront plus précis.
-
-<br />
-
-## Informations Octoprint
-
-Octoprint peut éventuellement déclencher certaines actions sur le TFT envoyant des gcodes spécifiques. Les actions suivantes et les gcodes déclencheurs associés sont actuellement pris en charge par le firmware TFT :
-
-* Avant le démarrage de l'impression : `M118 A1 P0 action:print_start`
-
-* Après l'impression : `M118 A1 P0 action:print_end`
-
-* Après l'annulation de l'impression : `M118 A1 P0 action:cancel`
-
-* Après la mise en pause de l'impression : `M118 A1 P0 action:pause`
-
-* Avant la reprise de l'impression : `M118 A1 P0 action:resume`
-
-Lorsque le déclencheur "print_start" est reçu, le TFT passe au menu Impression.
-Une fois dans le menu Impression, les boutons "Pause", "Reprendre" et "Stopper" du menu seront désactivés.
-Cela signifie que seul Octoprint contrôlera l'impression et ce n'est qu'à la fin de l'impression ou à l'annulation de l'impression que le menu Impression TFT est finalisé (statistiques disponibles etc...) et déverrouillé (il peut être fermé).
-
-Ces commandes peuvent être enregistrées dans les paramètres Octoprint section Script GCode.
-
-Pour obtenir les informations (pourcentage, temps écoulé et temps restant) sur l'écran il est nécessaire d'utiliser l'extension de post-traitement `Display Progress on LCD` sous Cura avec cette configuration :
-
-![Capture d’écran 2021-12-04 à 12 37 24](https://user-images.githubusercontent.com/12702322/144708676-e66995c0-2ca4-449e-bc57-0104ec7f0f90.jpg)
-
-
-<br />
-
-## Détecteur de fin de filament
-
-- Le détecteur de fin de filament fonctionne sans action requise lors de l’impression via les ports microSD/USB de la carte mère ou via Octoprint.
-- Pour faire fonctionner le détecteur de fin de filament via les ports SD et USB de l’écran, il faut ajouter la commande **M75** dans le Start gCode et la commande **M77** dans le End gCode de votre Slicer.
-
-<br />
-
-## Reprise après coupure de courant
-
-- La reprise après coupure de courant n’est fonctionnelle que lors de l’impression via les ports SD et USB de l’écran.
-- Cette fonctionnalité est activée par défaut, elle créée un fichier nommé PLR à la racine de la carte SD et/ou clé USB qui enregistre l’état au fur et à mesure de l’impression.
-- Si vous n’utilisez pas cette fonctionnalité désactivez-la pour préserver la carte SD et/ou clé USB via **Menu - Options - Paramètres - Reprise après coupure**.
-- Pour reprendre l’impression après coupure, il suffit de se rendre à nouveau à l’emplacement de votre fichier gCode, l’écran demandera alors si vous désirez reprendre ou non l’impression.
 
 <br />
 
