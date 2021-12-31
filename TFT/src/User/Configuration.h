@@ -465,9 +465,9 @@
  *   Unit: [feedrate in mm/min]
  *   Value range: [min: 10, max: 12000]
  */
-#define EXTRUDE_SLOW_SPEED     60  // Default: 60
-#define EXTRUDE_NORMAL_SPEED  600  // Default: 600
-#define EXTRUDE_FAST_SPEED   1000  // Default: 1200
+#define EXTRUDE_SLOW_SPEED     100  // Default: 60
+#define EXTRUDE_NORMAL_SPEED  150  // Default: 600
+#define EXTRUDE_FAST_SPEED   200  // Default: 1200
 
 /**
  * Auto Save/Load Bed Leveling Data
@@ -856,7 +856,7 @@
  * Knob LED color at startup.
  *   Options: [OFF: 0, WHITE: 1, RED: 2, ORANGE: 3, YELLOW: 4, GREEN: 5, BLUE: 6, INDIGO: 7, VIOLET: 8]
  */
-#define KNOB_LED_COLOR 5  // Default: 1
+#define KNOB_LED_COLOR 1  // Default: 1
 
 // Keep the LED state in Marlin Mode
 #define KEEP_KNOB_LED_COLOR_MARLIN_MODE  // Default: uncommented (enabled)
