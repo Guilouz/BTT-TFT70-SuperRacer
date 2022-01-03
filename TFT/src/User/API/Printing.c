@@ -408,7 +408,7 @@ void printRemoteStart(const char * filename)
   }
   else
   {
-    strcpy(infoFile.title, "Remote printing...");
+    strcpy(infoFile.title, "Octoprint...");
     infoFile.source = REMOTE_HOST;
   }
 
