@@ -179,7 +179,7 @@ Pour éditer le fichier **config.ini** suivez les instructions [ici](config_inst
 
 ## Informations Octoprint
 
-Octoprint peut éventuellement déclencher certaines actions sur le TFT envoyant des gcodes spécifiques. Les actions suivantes et les gcodes déclencheurs associés sont actuellement pris en charge par le firmware TFT :
+Octoprint peut éventuellement déclencher certaines actions sur le TFT en envoyant des gcodes spécifiques. Les actions suivantes et les gcodes déclencheurs associés sont actuellement pris en charge par le firmware TFT :
 
 * Avant le démarrage de l'impression : `M118 A1 P0 action:print_start`
 
