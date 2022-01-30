@@ -246,18 +246,17 @@ bool inLimit(int val, int min, int max)
 // check if config keyword exits in the buffer line
 bool key_seen(const char * keyStr)
 {
-  uint16_t str_len = strlen(keyStr);
-  char* pStr_tmp;
-
-  if (str_len > strlen(cur_line))  // if keyStr is longer than current config line, no match can be found
-    return false;
-
-  if ((pStr_tmp = strstr(cur_line, keyStr)) != NULL)
+  uint16_t i;
+  for (c_index = 0; c_index < LINE_MAX_CHAR && cur_line[c_index] != 0; c_index++)
   {
-    c_index = pStr_tmp - cur_line + str_len;
-    return true;
+    for (i = 0; (c_index + i) < LINE_MAX_CHAR && keyStr[i] != 0 && cur_line[c_index + i] == keyStr[i]; i++)
+    {}
+    if (keyStr[i] == 0)
+    {
+      c_index += i;
+      return true;
+    }
   }
-
   return false;
 }
 
@@ -991,14 +990,27 @@ void parseConfigKey(uint16_t index)
         break;
     #endif
 
-    #ifdef LED_COLOR_PIN
+    case C_INDEX_LED_COLOR:
+      if (key_seen("R:")) SET_VALID_INT_VALUE(infoSettings.led_color[0], MIN_LED_COLOR_COMP, MAX_LED_COLOR_COMP);
+      if (key_seen("G:")) SET_VALID_INT_VALUE(infoSettings.led_color[1], MIN_LED_COLOR_COMP, MAX_LED_COLOR_COMP);
+      if (key_seen("B:")) SET_VALID_INT_VALUE(infoSettings.led_color[2], MIN_LED_COLOR_COMP, MAX_LED_COLOR_COMP);
+      if (key_seen("W:")) SET_VALID_INT_VALUE(infoSettings.led_color[3], MIN_LED_COLOR_COMP, MAX_LED_COLOR_COMP);
+      if (key_seen("P:")) SET_VALID_INT_VALUE(infoSettings.led_color[4], MIN_LED_COLOR_COMP, MAX_LED_COLOR_COMP);
+      if (key_seen("I:")) SET_VALID_INT_VALUE(infoSettings.led_color[5], MIN_LED_COLOR_COMP, MAX_LED_COLOR_COMP);
+      break;
+
+    case C_INDEX_LED_ALWAYS_ON:
+      infoSettings.led_always_on = getOnOff();
+      break;
+
+    #ifdef KNOB_LED_COLOR_PIN
       case C_INDEX_KNOB_LED_COLOR:
-        SET_VALID_INT_VALUE(infoSettings.knob_led_color, 0, LED_COLOR_COUNT - 1);
+        SET_VALID_INT_VALUE(infoSettings.knob_led_color, 0, KNOB_LED_COLOR_COUNT - 1);
         break;
 
       #ifdef LCD_LED_PWM_CHANNEL
         case C_INDEX_KNOB_LED_IDLE:
-          SET_VALID_INT_VALUE(infoSettings.knob_led_idle, 0, 1);
+          infoSettings.knob_led_idle = getOnOff();
           break;
       #endif
 

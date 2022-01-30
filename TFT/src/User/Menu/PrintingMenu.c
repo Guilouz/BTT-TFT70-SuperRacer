@@ -171,7 +171,7 @@ void menuBeforePrinting(void)
         break;
       }
 
-    case TFT_UDISK:
+    case TFT_USB_DISK:
     case TFT_SD:  // GCode from file on TFT SD
       {
         FIL file;
@@ -564,7 +564,7 @@ void menuPrinting(void)
       {ICON_NULL,                    LABEL_NULL},
       {ICON_NULL,                    LABEL_NULL},
       {ICON_NULL,                    LABEL_NULL},
-      {ICON_NULL,              LABEL_BABYSTEP},
+      {ICON_NULL,                    LABEL_BABYSTEP},
       {ICON_MORE,                    LABEL_MORE},
       {ICON_STOP,                    LABEL_STOP},
     }
@@ -589,29 +589,29 @@ void menuPrinting(void)
 
   if (lastPrinting == true)
   {
-    if (infoMachineSettings.longFilename == ENABLED && infoFile.source == BOARD_SD)
-      printingItems.title.address = (uint8_t *) infoFile.longFile[infoFile.fileIndex];
-    else
-      printingItems.title.address = (uint8_t *) infoFile.file[infoFile.fileIndex];
-
     printingItems.items[KEY_ICON_4] = itemIsPause[lastPause];
     printingItems.items[KEY_ICON_5].icon = (infoFile.source < BOARD_SD && isPrintModelIcon()) ? ICON_PREVIEW : ICON_BABYSTEP;
   }
   else  // returned to this menu after a print was done (ex: after a popup)
   {
-    printingItems.title.address = (uint8_t *)infoPrintSummary.name;
-
     printingItems.items[KEY_ICON_4] = itemIsPrinting[1];  // MainScreen
     printingItems.items[KEY_ICON_5] = itemIsPrinting[0];  // BackGround
     printingItems.items[KEY_ICON_6] = itemIsPrinting[0];  // BackGround
     printingItems.items[KEY_ICON_7] = itemIsPrinting[2];  // Back
   }
 
+    if (infoMachineSettings.longFilename == ENABLED && infoFile.source == BOARD_SD)
+    printingItems.title.address = (uint8_t *) infoFile.longFile[infoFile.fileIndex];
+  else
+    printingItems.title.address = (uint8_t *) infoFile.file[infoFile.fileIndex];
+
   menuDrawPage(&printingItems);
   printingDrawPage();
 
-  if (lastPrinting == false)
-    drawPrintInfo();
+  #ifndef PORTRAIT_MODE
+    if (lastPrinting == false)
+      drawPrintInfo();
+  #endif
 
   while (MENU_IS(menuPrinting))
   {
@@ -736,6 +736,12 @@ void menuPrinting(void)
     if (lastPrinting != isPrinting())
     {
       lastPrinting = isPrinting();
+
+      #ifdef PORTRAIT_MODE
+        if (lastPrinting == false)
+          printSummaryPopup();
+      #endif
+
       return;  // It will restart this interface if directly return this function without modify the value of infoMenu
     }
 
@@ -764,7 +770,7 @@ void menuPrinting(void)
         break;
 
       case PS_KEY_4:
-        layerDisplayType ++;  // trigger cleaning previous values
+        layerDisplayType++;  // trigger cleaning previous values
         if (layerDisplayType != CLEAN_LAYER_HEIGHT)
         {
           reDrawPrintingValue(ICON_POS_Z, PRINT_TOP_ROW);
@@ -784,7 +790,7 @@ void menuPrinting(void)
         break;
 
       case PS_KEY_6:
-        if (isPrinting())
+        if (lastPrinting == true)  // if printing
         { // Pause button
           if (getHostDialog() || isRemoteHostPrinting())
             addToast(DIALOG_TYPE_ERROR, (char *)textSelect(LABEL_BUSY));
@@ -810,7 +816,7 @@ void menuPrinting(void)
         break;
 
       case PS_KEY_9:
-        if (isPrinting())
+        if (lastPrinting == true)  // if printing
         {
           if (isRemoteHostPrinting())
           {

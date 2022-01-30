@@ -362,7 +362,7 @@ void printComplete(void)
       coordinateQuery(0);  // disable auto report position
       break;
 
-    case TFT_UDISK:
+    case TFT_USB_DISK:
     case TFT_SD:
       f_close(&infoPrinting.file);
       powerFailedClose();   // close Power-loss Recovery file
@@ -430,7 +430,7 @@ void printStart(FIL * file, uint32_t size)
       request_M27(infoSettings.m27_refresh_time);  // use gcode M27 in case of a print running from onboard SD
       break;
 
-    case TFT_UDISK:
+    case TFT_USB_DISK:
     case TFT_SD:
       infoPrinting.file = *file;
       infoPrinting.cur = infoPrinting.file.fptr;
@@ -450,7 +450,7 @@ void printEnd(void)
       break;
 
     case BOARD_SD:
-    case TFT_UDISK:
+    case TFT_USB_DISK:
     case TFT_SD:
       if (GET_BIT(infoSettings.send_gcodes, SEND_GCODES_END_PRINT))
       {
@@ -513,7 +513,7 @@ void printAbort(void)
 
       if (infoHost.printing)
       {
-        REDRAW_MENU();
+        REDRAW_MENU();  
         setDialogText(LABEL_SCREEN_INFO, LABEL_BUSY, LABEL_NULL, LABEL_NULL);
         showDialog(DIALOG_TYPE_INFO, NULL, NULL, NULL);
 
@@ -522,7 +522,7 @@ void printAbort(void)
 
       break;
 
-    case TFT_UDISK:
+    case TFT_USB_DISK:
     case TFT_SD:
       clearCmdQueue();
       break;
@@ -565,7 +565,7 @@ bool printPause(bool isPause, PAUSE_TYPE pauseType)
         request_M24(0);  // resume
       break;
 
-    case TFT_UDISK:
+    case TFT_USB_DISK:
     case TFT_SD:
       if (isPause == true && pauseType == PAUSE_M0)
         loopProcessToCondition(&isNotEmptyCmdQueue);  // wait for the communication to be clean
@@ -580,8 +580,7 @@ bool printPause(bool isPause, PAUSE_TYPE pauseType)
         {
           popupReminder(DIALOG_TYPE_ALERT, LABEL_PAUSE, LABEL_PAUSE);
         }
-        else  // send command only if the pause originated from TFT
-        if (pauseType == PAUSE_NORMAL)
+        else if (pauseType == PAUSE_NORMAL)  // send command only if the pause originated from TFT
         {
           coordinateGetAll(&tmp);
 
@@ -614,8 +613,7 @@ bool printPause(bool isPause, PAUSE_TYPE pauseType)
         {
           breakAndContinue();  // clear the queue and send a break and continue
         }
-        else  // send command only if the pause originated from TFT
-        if (pauseType == PAUSE_NORMAL)
+        else if (pauseType == PAUSE_NORMAL)  // send command only if the pause originated from TFT
         {
           if (isCoorRelative == true)    mustStoreCmd("G90\n");
           if (isExtrudeRelative == true) mustStoreCmd("M82\n");
@@ -716,7 +714,7 @@ void setPrintResume(bool updateHost)
   }
 }
 
-// get gcode command from TFT (SD card or USB stick)
+// get gcode command from TFT (SD card or USB disk)
 void loopPrintFromTFT(void)
 {
   if (!infoPrinting.printing) return;
@@ -821,7 +819,7 @@ void loopPrintFromTFT(void)
   else if (ip_cur > ip_size)  // in case of print abort (ip_cur == ip_size + 1), display an error message and abort the print
   {
     BUZZER_PLAY(SOUND_ERROR);
-    popupReminder(DIALOG_TYPE_ERROR, (infoFile.source == TFT_SD) ? LABEL_READ_TFTSD_ERROR : LABEL_READ_U_DISK_ERROR, LABEL_PROCESS_ABORTED);
+    popupReminder(DIALOG_TYPE_ERROR, (infoFile.source == TFT_SD) ? LABEL_READ_TFTSD_ERROR : LABEL_READ_USB_DISK_ERROR, LABEL_PROCESS_ABORTED);
 
     printAbort();
   }

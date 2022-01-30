@@ -3,7 +3,7 @@
 #include "ListItem.h"
 #include "Notification.h"
 
-#define STATUS_BAR_REFRESH_TIME 2000 // refresh time in ms
+#define STATUS_BAR_REFRESH_TIME 2000  // refresh time in ms
 
 const GUI_RECT exhibitRect = {
 #ifdef PORTRAIT_MODE
@@ -320,18 +320,19 @@ const GUI_RECT rect_of_keyPS_end[] = {
   {START_X+PICON_LG_WIDTH*0+PICON_SPACE_X*0,                  1*ICON_HEIGHT+1*SPACE_Y+ICON_START_Y+PICON_HEIGHT*1+PICON_SPACE_Y*1,
    START_X+PICON_LG_WIDTH*0+PICON_SPACE_X*0+PICON_SM_WIDTH*1, 1*ICON_HEIGHT+1*SPACE_Y+ICON_START_Y+PICON_HEIGHT*2+PICON_SPACE_Y*1},
 
-  // 3 bottom icons area
+  // 1st bottom icon
   {0*ICON_WIDTH+0*SPACE_X+START_X,  2*ICON_HEIGHT+2*SPACE_Y+ICON_START_Y,  1*ICON_WIDTH+0*SPACE_X+START_X,  3*ICON_HEIGHT+2*SPACE_Y+ICON_START_Y},
-  {0, 0, 0, 0},
-  {0, 0, 0, 0},
   // 1 side icon next to layer and speed area
-  {2*ICON_WIDTH+2*SPACE_X+START_X,  1*ICON_HEIGHT+1*SPACE_Y+ICON_START_Y,  3*ICON_WIDTH+2*SPACE_X+START_X,  2*ICON_HEIGHT+1*SPACE_Y+ICON_START_Y},
+  {0, 0, 0, 0},
+  // 2nd and 3rd icon bottom area
+  {0, 0, 0, 0},
+  {2*ICON_WIDTH+2*SPACE_X+START_X,  2*ICON_HEIGHT+2*SPACE_Y+ICON_START_Y,  3*ICON_WIDTH+2*SPACE_X+START_X,  3*ICON_HEIGHT+2*SPACE_Y+ICON_START_Y},
 
   // title bar area
   {0, 0, LCD_WIDTH, ICON_START_Y},
 
   // infobox
-  {1*SPACE_X_PER_ICON,  3*ICON_HEIGHT+2*SPACE_Y+ICON_START_Y,  3*ICON_WIDTH+2*SPACE_X+START_X,  3*ICON_HEIGHT+2*SPACE_Y+ICON_START_Y}
+  {0, 0, 0, 0}
 #else  // Landscape Mode
   // hotend area DEFAULT LANDSCAPE GUI
   {START_X+PICON_LG_WIDTH*0+PICON_SPACE_X*0,                  PICON_START_Y+PICON_HEIGHT*0+PICON_SPACE_Y*0,
@@ -663,6 +664,7 @@ void reminderMessage(int16_t inf, SYS_STATUS status)
   reminder.inf = inf;
   reminder.status = status;
   reminder.time = OS_GetTimeMs() + STATUS_BAR_REFRESH_TIME;
+
   if (menuType != MENU_TYPE_FULLSCREEN)
   {
     GUI_SetColor(infoSettings.reminder_color);
@@ -806,11 +808,11 @@ void menuDrawTitle(const uint8_t *content)
   GUI_SetBkColor(infoSettings.title_bg_color);
   if (content)
   {
-    if (MENU_IS(menuPrinting) && infoSettings.filename_extension == 0)
-    { // hide file extension in printing menu title if needed
-      hideExtension((char *)content);
+    if (MENU_IS(menuPrinting))
+    {
+      hideFileExtension(infoFile.fileIndex);
       GUI_DispLenString(10, start_y, content, LCD_WIDTH - 20, true);
-      restoreExtension((char *)content);
+      restoreFileExtension(infoFile.fileIndex);
     }
     else
     {
@@ -1084,9 +1086,9 @@ KEY_VALUES menuKeyGetValue(void)
           {
             tempkey = (KEY_VALUES)KEY_GetValue(COUNT(rect_of_keySS), rect_of_keySS);
           }
-          else if(MENU_IS(menuPrinting))
+          else if (MENU_IS(menuPrinting))
           {
-            if(isPrinting() || infoHost.printing == true)
+            if (isPrinting() || infoHost.printing == true)
               tempkey = (KEY_VALUES)KEY_GetValue(COUNT(rect_of_keyPS), rect_of_keyPS);
             else
               tempkey = (KEY_VALUES)KEY_GetValue(COUNT(rect_of_keyPS_end), rect_of_keyPS_end);
@@ -1274,8 +1276,8 @@ void loopBackEnd(void)
     loopPrintFromOnboardSD();  // handle a print from (remote) onboard SD, if any
   }
 
-  #ifdef U_DISK_SUPPORT
-    USBH_Process(&USB_OTG_Core, &USB_Host);
+  #ifdef USB_FLASH_DRIVE_SUPPORT
+    USB_LoopProcess();
   #endif
 
   #ifdef FIL_RUNOUT_PIN
@@ -1323,7 +1325,7 @@ void loopBackEnd(void)
 // UI-related background loop tasks
 void loopFrontEnd(void)
 {
-  // Check if volume source(SD/U disk) insert
+  // Check if volume source (SD/USB) insert
   loopVolumeSource();
   // Loop to check and run toast messages
   loopToast();

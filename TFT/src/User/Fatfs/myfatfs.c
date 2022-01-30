@@ -51,11 +51,11 @@ bool mountSDCard(void)
 }
 
 /*
- mount U disk from Fatfs
+ mount USB disk from Fatfs
 */
 bool mountUDisk(void)
 {
-  return (f_mount(&fatfs[VOLUMES_U_DISK], "U:", 1) == FR_OK);
+  return (f_mount(&fatfs[VOLUMES_USB_DISK], "U:", 1) == FR_OK);
 }
 
 /*
@@ -116,7 +116,7 @@ bool scanPrintFilesFatFs(void)
       fileDate[infoFile.fileCount] = ((uint32_t)(finfo.fdate) << 16) | finfo.ftime;
       // copy file name and set the flag for filename extension check
       strncpy(infoFile.file[infoFile.fileCount], finfo.fname, len + 1);  // "+ 1": the flag for filename extension check
-      infoFile.longFile[infoFile.fileCount] = 0;   // long filename is not supported, so always set it to 0
+      infoFile.longFile[infoFile.fileCount] = NULL;   // long filename is not supported, so always set it to NULL
       infoFile.fileCount++;
     }
   }

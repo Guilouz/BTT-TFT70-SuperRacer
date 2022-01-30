@@ -3,7 +3,11 @@
 
 void HW_GetClocksFreq(CLOCKS *clk)
 {
+#ifdef GD32F2XX
+  RCU_GetClocksFreq(&clk->rccClocks);
+#else
   RCC_GetClocksFreq(&clk->rccClocks);
+#endif
 
   if (clk->rccClocks.PCLK1_Frequency < clk->rccClocks.HCLK_Frequency)  // if (APBx presc = 1) x1 else x2
     clk->PCLK1_Timer_Frequency = clk->rccClocks.PCLK1_Frequency * 2;
@@ -19,18 +23,19 @@ void HW_GetClocksFreq(CLOCKS *clk)
 void HW_Init(void)
 {
   HW_GetClocksFreq(&mcuClocks);
-
+#ifdef GD32F2XX
+  nvic_priority_group_set(NVIC_PRIGROUP_PRE2_SUB2);
+#else
   NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);
+#endif
   Delay_init();
 
   #ifdef DISABLE_JTAG
-    RCC_APB2PeriphClockCmd(RCC_APB2Periph_AFIO, ENABLE);
-    GPIO_PinRemapConfig(GPIO_Remap_SWJ_JTAGDisable, ENABLE);  // disable JTAG, enable SWD
+    DISABLE_JTAG();  // disable JTAG, enable SWD
   #endif
 
   #ifdef DISABLE_DEBUG
-    RCC_APB2PeriphClockCmd(RCC_APB2Periph_AFIO, ENABLE);
-    GPIO_PinRemapConfig(GPIO_Remap_SWJ_Disable, ENABLE);  // disable JTAG & SWD
+    DISABLE_DEBUG();  // disable JTAG & SWD
   #endif
 
   #if defined(MKS_TFT)
@@ -53,26 +58,13 @@ void HW_Init(void)
   checkflashSign();                               // check font/icon/config signature in SPI flash for update
   initMachineSettings();                          // load default machine settings
 
-  #ifdef LED_COLOR_PIN
-    knob_LED_Init();
-    Knob_LED_SetColor(led_colors[infoSettings.knob_led_color], infoSettings.neopixel_pixels);  // set last saved color after initialization
-  #endif
-
-  #ifdef BUZZER_PIN
-    Buzzer_Config();
-  #endif
-
   #if !defined(MKS_TFT)
     // causes hang if we deinit spi1
     SD_DeInit();
   #endif
 
-  #if LCD_ENCODER_SUPPORT
-    LCD_Enc_Init();
-  #endif
-
-  #if ENC_ACTIVE_SIGNAL
-    LCD_Enc_InitActiveSignal(infoSettings.marlin_type == LCD12864);
+  #ifdef USB_FLASH_DRIVE_SUPPORT
+    USB_Init();
   #endif
 
   #ifdef PS_ON_PIN
@@ -83,8 +75,21 @@ void HW_Init(void)
     FIL_Runout_Init();
   #endif
 
-  #ifdef U_DISK_SUPPORT
-    USBH_Init(&USB_OTG_Core, USB_OTG_FS_CORE_ID, &USB_Host, &USBH_MSC_cb, &USR_cb);
+  #ifdef BUZZER_PIN
+    Buzzer_Config();
+  #endif
+
+  #ifdef KNOB_LED_COLOR_PIN
+    knob_LED_Init();
+    Knob_LED_SetColor(knob_led_colors[infoSettings.knob_led_color], infoSettings.neopixel_pixels);  // set last saved color after initialization
+  #endif
+
+  #if LCD_ENCODER_SUPPORT
+    LCD_Enc_Init();
+  #endif
+
+  #if ENC_ACTIVE_SIGNAL
+    LCD_Enc_InitActiveSignal(infoSettings.marlin_type == LCD12864);
   #endif
 
   if (readIsTSCExist() == false)  // read settings parameter
@@ -100,6 +105,8 @@ void HW_Init(void)
 
   LCD_SET_BRIGHTNESS(lcd_brightness[infoSettings.lcd_brightness]);
 
+  LED_SetColor(&infoSettings.led_color, false);  // set (neopixel) LED light current color to configured color
+
   Mode_Switch();
 }
 
@@ -113,7 +120,7 @@ void HW_InitMode(uint8_t mode)
       Buzzer_Config();
     #endif
 
-    #if LED_COLOR_PIN  // enable knob LED only in Touch mode
+    #if KNOB_LED_COLOR_PIN  // enable knob LED only in Touch mode
       #ifndef KEEP_KNOB_LED_COLOR_MARLIN_MODE  // set last saved color after initialization
         knob_LED_Init();
         Knob_LED_SetColor(led_colors[infoSettings.knob_led_color], infoSettings.neopixel_pixels);
@@ -131,11 +138,16 @@ void HW_InitMode(uint8_t mode)
     else  // disable serial comm if `serial_always_on` is disabled
       Serial_DeInit(ALL_PORTS);
 
+    #if !defined(MKS_TFT)
+      // causes hang if we deinit spi1
+      SD_DeInit();
+    #endif
+
     #ifdef BUZZER_PIN  // disable buzzer in Marlin mode
       Buzzer_DeConfig();
     #endif
 
-    #if LED_COLOR_PIN  // disable knob LED in Marlin mode
+    #if KNOB_LED_COLOR_PIN  // disable knob LED in Marlin mode
       #ifndef KEEP_KNOB_LED_COLOR_MARLIN_MODE
         knob_LED_DeInit();
       #endif
@@ -143,11 +155,6 @@ void HW_InitMode(uint8_t mode)
 
     #if ENC_ACTIVE_SIGNAL  // set encoder active signal if Marlin mode is active
       LCD_Enc_SetActiveSignal(infoSettings.marlin_type == LCD12864, 1);
-    #endif
-
-    #if !defined(MKS_TFT)
-      // causes hang if we deinit spi1
-      SD_DeInit();
     #endif
   }
 }

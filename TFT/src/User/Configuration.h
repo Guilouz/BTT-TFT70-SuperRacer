@@ -1,7 +1,7 @@
 #ifndef _CONFIGURATION_H_
 #define _CONFIGURATION_H_
 
-#define CONFIG_VERSION 20211213
+#define CONFIG_VERSION 20220124
 
 //====================================================================================================
 //=============================== Settings Configurable On config.ini ================================
@@ -67,8 +67,8 @@
 
 /**
  * Event LED
- * When printing from TFT SD / TFT U Disk, the TFT periodically sets the printer's (neopixel) LED color
- * and TFT's knob LED color, if any, according to the current nozzle and bed temperatures.
+ * When printing from TFT SD card / TFT USB disk, the TFT periodically sets the printer's (neopixel)
+ * LED color and TFT's knob LED color, if any, according to the current nozzle and bed temperatures.
  *
  * NOTE: If "EMULATED_M109_M190" is disabled (heating controlled by printer), the TFT cannot control the
  *       printer's (neopixel) LED during heating. It will control only the TFT's knob LED, if any.
@@ -178,7 +178,7 @@
  * Files Sorting
  * Sort files and folders based on the selected option.
  *
- * NOTE: Only applicable for files in TFT SD Card and TFT USB Stick.
+ * NOTE: Only applicable for files in TFT SD card and TFT USB disk.
  *
  *   Options: [Date Newest First: 0, Date Oldest First: 1, Name Ascending: 2, Name Descending: 3]
  */
@@ -434,7 +434,7 @@
 #define Z_MIN_POS   0  // Default: 0
 #define X_MAX_POS 132  // Default: 235
 #define Y_MAX_POS 132  // Default: 235
-#define Z_MAX_POS 320  // Default: 250
+#define Z_MAX_POS 330  // Default: 250
 
 /**
  * X & Y Move Speeds/Feedrates
@@ -767,7 +767,7 @@
 /**
  * Power Loss Recovery Mode
  * Enable power loss recovery.
- * Disable to reduce the loss of SD card or U disk.
+ * Disable to reduce the loss of TFT SD card or TFT USB disk.
  *   Options: [disable: 0, enable: 1]
  */
 #define PL_RECOVERY 0  // Default: 1
@@ -850,6 +850,33 @@
  *   Options: [disable: 0, enable: 1]
  */
 #define LCD_LOCK_ON_IDLE 1  // Default: 0
+
+/**
+ * LED Color
+ * Printer's LED color used by some features such as Event LED and PID processes.
+ *   Format: [led_color: R:<component> G:<component> B:<component> W:<component> P:<component> I:<component>
+ *   Target component: R: Red
+ *                     G: Green
+ *                     B: Blue
+ *                     W: White;     NEOPIXEL or RGB(W)
+ *                     P: Intensity; NEOPIXEL
+ *                     I: Index;     NEOPIXEL
+ *   Value range: [min: 0, max: 255]
+ */
+#define LED_R 255  // R: Red (Default: 0)
+#define LED_G 255  // G: Green (Default: 0)
+#define LED_B 255  // B: Blue (Default: 0)
+#define LED_W 255  // W: White;     NEOPIXEL or RGB(W) (Default: 0)
+#define LED_P 255  // P: Intensity; NEOPIXEL (Default: 0)
+#define LED_I 255  // I: Index;     NEOPIXEL (Default: 0)
+
+/**
+ * LED Always ON
+ * Keep printers's LED on at startup and after Event LED and PID processes terminate.
+ * The printer's LED color is configured in "LED_COLOR".
+ *   Options: [disable: 0, enable: 1]
+ */
+#define LED_ALWAYS_ON 1  // Default: 1
 
 /**
  * Knob LED Color (only for TFT28/TFT35_E3/TFT43/TFT50/TFT70 V3.0)
@@ -1063,8 +1090,8 @@
 
 // Z Fade limits
 #define Z_FADE_MIN_VALUE      0.0f  // Default: 0.0f
-#define Z_FADE_MAX_VALUE     320.0f  // Default: 20.0f
-#define Z_FADE_DEFAULT_VALUE 320.0f  // Default: 10.0f
+#define Z_FADE_MAX_VALUE     330.0f  // Default: 20.0f
+#define Z_FADE_DEFAULT_VALUE 330.0f  // Default: 10.0f
 
 // Probe Offset limits
 #define PROBE_Z_OFFSET_MIN_VALUE     -20.0f  // Default: -20.0f
@@ -1148,7 +1175,8 @@
  *
  *   Options: [ENGLISH,    CHINESE,  RUSSIAN,     JAPANESE,   ARMENIAN,  GERMAN,        CZECH,
  *             SPANISH,    FRENCH,   PORTUGUESE,  ITALIAN,    POLISH,    SLOVAK,        DUTCH,
- *             HUNGARIAN,  TURKISH,  GREEK,       SLOVENIAN,  CATALAN,   TRAD_CHINESE,  UKRAINIAN]
+ *             HUNGARIAN,  TURKISH,  GREEK,       SLOVENIAN,  CATALAN,   TRAD_CHINESE,  UKRAINIAN,
+ *             BRAZIL]
  */
 #define SYSTEM_LANGUAGE ENGLISH  // Default: ENGLISH
 
@@ -1268,7 +1296,7 @@
 #define KEYBOARD_COLOR_LAYOUT 0  // Default: 0
 
 /**
- * QWERTY/QWERTZ Keyboard Layout
+ * QWERTY/QWERTZ Keyboard Layout (Terminal menu)
  * Keyboard layout for Terminal Keyboard (Only for TFT70 V3.0).
  *   Options: [qwerty: 0, qwertz: 1, azerty: 2]
  *     qwerty: The typically keyboard Layout for english.

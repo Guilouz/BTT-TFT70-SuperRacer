@@ -113,43 +113,62 @@ bool syncL2CacheFromL1(uint8_t port)
 
 static bool ack_cmp(const char * str)
 {
-  if (strcmp(dmaL2Cache, str) == 0)
-    return true;
-
-  return false;
+  uint16_t i;
+  for (i = 0; i < dmaL2Cache_len && str[i] != 0; i++)
+  {
+    if (str[i] != dmaL2Cache[i])
+      return false;
+  }
+  if (str[i] != 0)
+    return false;
+  return true;
 }
 
 static bool ack_seen(const char * str)
-{ // searches an expression in the whole dmaL2Cache
-  uint16_t str_len = strlen(str);
-  char* pStr_tmp;
+{
+  int16_t str_len = strlen(str);
+  int16_t max_len = dmaL2Cache_len - str_len;
 
-  if (str_len > dmaL2Cache_len)  // if str is longer than data present in cache, no match can be found
+  if (max_len < 0)  // if str is longer than data present in cache, no match can be found
     return false;
 
-  if ((pStr_tmp = strstr(dmaL2Cache, str)) != NULL)
+  uint16_t i;
+
+  for (ack_index = 0; ack_index <= max_len; ack_index++)
   {
-    ack_index = pStr_tmp - dmaL2Cache + str_len;
-    return true;
+    for (i = 0; i < str_len && str[i] == dmaL2Cache[ack_index + i]; i++)
+    {}
+    if (i == str_len)  // if end of str is reached, a match was found
+    {
+      ack_index += i;
+      return true;
+    }
   }
-  
   return false;
 }
 
 static bool ack_continue_seen(const char * str)
-{// searches an expression in dmaL2Cache from where a previous successful search left off
-  uint16_t str_len = strlen(str);
-  char* pStr_tmp;
+{ // unlike "ack_seen()", this retains "ack_index" if the searched string is not found
+  int16_t str_len = strlen(str);
+  int16_t max_len = dmaL2Cache_len - str_len;
 
-  if (str_len > strlen(&dmaL2Cache[ack_index]))  // if str is longer than data left in cache, no match can be found
+  if (max_len < 0)  // if str is longer than data present in cache, no match can be found
     return false;
 
-  if ((pStr_tmp = strstr(&dmaL2Cache[ack_index], str)) != NULL)
+  uint16_t ack_index_orig = ack_index;
+  uint16_t i;
+
+  for (; ack_index <= max_len; ack_index++)
   {
-    ack_index = pStr_tmp - dmaL2Cache + str_len;
-    return true;
+    for (i = 0; i < str_len && str[i] == dmaL2Cache[ack_index + i]; i++)
+    {}
+    if (i == str_len)  // if end of str is reached, a match was found
+    {
+      ack_index += i;
+      return true;
+    }
   }
-  
+  ack_index = ack_index_orig;
   return false;
 }
 
@@ -1234,7 +1253,7 @@ void parseACK(void)
               #ifdef SERIAL_DEBUG_PORT
                 && serialPort[i].port != SERIAL_DEBUG_PORT  // do not forward data to serial debug port
               #endif
-              )
+             )
           {
             Serial_Puts(serialPort[i].port, dmaL2Cache);  // pass on the ACK message to the port
           }
@@ -1260,7 +1279,7 @@ void parseRcvGcode(void)
         #ifdef SERIAL_DEBUG_PORT
           && serialPort[i].port != SERIAL_DEBUG_PORT  // do not forward data to serial debug port
         #endif
-        )
+       )
     {
       while (syncL2CacheFromL1(serialPort[i].port))  // if some data are retrieved from L1 to L2 cache
       {

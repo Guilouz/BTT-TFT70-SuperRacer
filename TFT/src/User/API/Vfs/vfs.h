@@ -16,7 +16,7 @@ extern "C" {
 typedef enum
 {
   TFT_SD,
-  TFT_UDISK,
+  TFT_USB_DISK,
   BOARD_SD,
   BOARD_SD_REMOTE,
   REMOTE_HOST
@@ -52,12 +52,10 @@ bool EnterDir(char * nextdir);
 void ExitDir(void);
 bool IsRootDir(void);
 char * isSupportedFile(char * filename);
-char * hideExtension(char * filename);
-char * restoreExtension(char * filename);
 char * hideFileExtension(uint8_t index);
 char * restoreFileExtension(uint8_t index);
 
-bool isVolumeExist(uint8_t src);
+bool volumeExists(uint8_t src);
 void loopVolumeSource(void);
 
 #ifdef __cplusplus

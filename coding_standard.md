@@ -1,3 +1,5 @@
+# Pull request Standards
+* We recommend creating separate PRs for unrelated fixes, do not gather them in one single PR. By doing so it will make it easier for our team to focus on eventual issues and to review them.
 
 # Coding Standards
 

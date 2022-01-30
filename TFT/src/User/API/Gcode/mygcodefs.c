@@ -138,7 +138,6 @@ bool scanPrintFilesGcodeFs(void)
       {
         if (infoFile.Longfile[infoFile.fileCount] != 0)
           free(infoFile.Longfile[infoFile.fileCount]);
-
         continue;
       }*/
 
