@@ -6,15 +6,18 @@ Si vous aimez mon travail, n'hésitez pas à me soutenir en me payant une 🍺 o
 <br />
 
 **Firmware pour écran BigTreeTech TFT70 3.0 configuré pour FLSUN Super Racer.**<br />
-**Disponible dans la section [Releases](https://github.com/Guilouz/BTT-TFT70-SuperRacer/releases).**
-
-Le firmware Marlin pour FLSUN Super Racer configuré pour cet écran se trouve [ici](https://github.com/Guilouz/Marlin-SuperRacer-SKR2.0-LGX).
-
-<br />
 
 <img width=600 src="https://user-images.githubusercontent.com/12702322/127702284-d49a7f69-2e76-4b21-a0f3-07d5f7ec3803.jpg" />
 
 ![TFT70 Pins](https://user-images.githubusercontent.com/12702322/146797719-accf8830-ca27-4406-88a5-1fe4a39294a0.jpg)
+
+## Téléchargement
+
+**Firmware disponible [ici](https://github.com/Guilouz/BTT-TFT70-SuperRacer/releases).**
+
+Le firmware Marlin pour FLSUN Super Racer configuré pour cet écran se trouve [ici](https://github.com/Guilouz/Marlin-SuperRacer-SKR2.0-LGX).
+
+<br />
 
 ## Mise à jour du firmware
 
