@@ -273,15 +273,13 @@ void initPrintSummary(void)
   last_E_pos = ((infoFile.source >= BOARD_SD) ? coordinateGetAxisActual(E_AXIS) : coordinateGetAxisTarget(E_AXIS));
   infoPrintSummary = (PRINT_SUMMARY){.name[0] = '\0', 0, 0, 0, 0};
   hasFilamentData = false;
+
+  // save print filename (short or long filename)
+  sprintf(infoPrintSummary.name, "%." STRINGIFY(SUMMARY_NAME_LEN) "s", getPrintFilename());
 }
 
 void preparePrintSummary(void)
 {
-  if (infoMachineSettings.longFilename == ENABLED && infoFile.source == BOARD_SD)
-    sprintf(infoPrintSummary.name,"%." STRINGIFY(SUMMARY_NAME_LEN) "s", infoFile.longFile[infoFile.fileIndex]);
-  else
-    sprintf(infoPrintSummary.name,"%." STRINGIFY(SUMMARY_NAME_LEN) "s", infoFile.file[infoFile.fileIndex]);
-
   infoPrintSummary.time = infoPrinting.time;
 
   if (speedGetCurPercent(1) != 100)
@@ -347,7 +345,7 @@ void printComplete(void)
   infoPrinting.cur = infoPrinting.size;  // always update the print progress to 100% even if the print terminated
   infoPrinting.printing = infoPrinting.pause = false;
   setPrintRemainingTime(0);
-  preparePrintSummary();  // update print summary. infoPrinting are used
+  preparePrintSummary();  // update print summary. infoPrinting is used
 
   switch (infoFile.source)
   {
@@ -359,7 +357,7 @@ void printComplete(void)
     case BOARD_SD:
       infoHost.printing = false;
       request_M27(0);
-      coordinateQuery(0);  // disable auto report position
+      coordinateQueryTurnOff();  // disable position auto report, if any
       break;
 
     case TFT_USB_DISK:
@@ -377,7 +375,7 @@ void printRemoteStart(const char * filename)
 {
   infoHost.printing = true;  // always set (even if printing from onboard SD)
 
-  if (infoPrinting.printing && infoFile.source <= BOARD_SD) return;  // if printing from TFT or onboard SD
+  if (infoPrinting.printing && infoFile.source <= BOARD_SD) return;  // if printing from TFT or onboard SD (printStart was called)
 
   // always clean infoPrinting first and then set the needed attributes
   memset(&infoPrinting, 0, sizeof(PRINTING));
@@ -385,7 +383,6 @@ void printRemoteStart(const char * filename)
   // we assume infoPrinting is clean, so we need to set only the needed attributes
   infoPrinting.size = 1;  // .size must be different than .cur to avoid 100% progress on TFT
   infoPrinting.printing = true;
-  initPrintSummary();  // init print summary
 
   if (filename != NULL)
   {
@@ -399,6 +396,8 @@ void printRemoteStart(const char * filename)
     infoFile.source = REMOTE_HOST;
   }
 
+  initPrintSummary();  // init print summary as last (it requires infoFile is properly set)
+
   infoMenu.cur = 1;  // clear menu buffer when printing menu is active by remote
   REPLACE_MENU(menuPrinting);
 }
@@ -411,7 +410,6 @@ void printStart(FIL * file, uint32_t size)
   // we assume infoPrinting is clean, so we need to set only the needed attributes
   infoPrinting.size = size;
   infoPrinting.printing = true;
-  initPrintSummary();  // init print summary
 
   if (GET_BIT(infoSettings.send_gcodes, SEND_GCODES_START_PRINT))
   {
@@ -437,6 +435,8 @@ void printStart(FIL * file, uint32_t size)
       setExtrusionDuringPause(false);
       break;
   }
+
+  initPrintSummary();  // init print summary as last (it requires infoFile is properly set)
 }
 
 void printEnd(void)
@@ -445,7 +445,7 @@ void printEnd(void)
 
   switch (infoFile.source)
   {
-    case REMOTE_HOST:  // nothing to do
+    case REMOTE_HOST:      // nothing to do
     case BOARD_SD_REMOTE:
       break;
 
@@ -513,7 +513,7 @@ void printAbort(void)
 
       if (infoHost.printing)
       {
-        REDRAW_MENU();  
+        REDRAW_MENU();
         setDialogText(LABEL_SCREEN_INFO, LABEL_BUSY, LABEL_NULL, LABEL_NULL);
         showDialog(DIALOG_TYPE_INFO, NULL, NULL, NULL);
 
@@ -784,9 +784,8 @@ void loopPrintFromTFT(void)
       {
         if (comment_parsing && comment_count != 0)  // if a comment was found, finalize the comment data structure
         {
-          gCode_comment.content[comment_count++] = '\n';
-          gCode_comment.content[comment_count] = 0;  // terminate string
-          gCode_comment.handled = false;
+          gCodeCommentLine[comment_count++] = '\n';
+          gCodeCommentLine[comment_count] = '\0';  // terminate string
         }
 
         break;  // line was parsed so always exit from loop
@@ -795,14 +794,14 @@ void loopPrintFromTFT(void)
       {
         if (read_char == ';')  // ';' is command comment flag
         {
-          comment_count = 0;  // there might be a comment in a commented line. We always consider the last comment
+          comment_count = 0;  // there might be a comment in a commented line, always consider the last comment
         }
         else if (read_char == ' ' && comment_count == 0)  // ignore initial ' ' space bytes
         {}
         else if (read_char != '\r')
         {
           if (comment_count < COMMENT_MAX_CHAR - 2)
-            gCode_comment.content[comment_count++] = read_char;
+            gCodeCommentLine[comment_count++] = read_char;
           else  // if comment length is beyond the maximum, skip comment but continue to parse the line until command end flag
             comment_parsing = false;
         }

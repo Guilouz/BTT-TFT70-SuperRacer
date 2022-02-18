@@ -18,9 +18,9 @@
   #endif
 #endif
 
-// Root folder for fonts and icons
-#ifndef ROOT_DIR
-  #define ROOT_DIR "TFT24"
+// Update folder for fonts and icons
+#ifndef UPDATE_DIR
+  #define UPDATE_DIR "TFT24"
 #endif
 
 // Hardware manufacturer
@@ -90,10 +90,10 @@
 // SD Card SPI pins
 #ifndef SD_SPI_SUPPORT
   #define SD_SPI_SUPPORT
-  #define SD_LOW_SPEED  7      // 2^(SPEED+1) = 256 frequency division
-  #define SD_HIGH_SPEED 1      // 2 frequency division
-  #define SD_SPI        _SPI1
-  #define SD_CS_PIN     PA4
+  #define SD_LOW_SPEED   7      // 2^(SPEED+1) = 256 frequency division
+  #define SD_HIGH_SPEED  1      // 4 frequency division
+  #define SD_SPI         _SPI1
+  #define SD_CS_PIN      PA4
 #endif
 
 // SD Card CD Detect pin

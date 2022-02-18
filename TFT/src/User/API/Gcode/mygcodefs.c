@@ -52,6 +52,7 @@ bool scanPrintFilesGcodeFs(void)
     return true;
   }
 
+  uint8_t str_len;
   char* ret = request_M20();
   char* data = malloc(strlen(ret) + 1);
   strcpy(data, ret);
@@ -70,23 +71,24 @@ bool scanPrintFilesGcodeFs(void)
     if (line[0] == '/')  // old Marlin fw provides "/" at the beginning while latest Marlin fw doesn't, so skip it if present
       line++;            // (use a common file path) e.g. "/sub_dir/cap.gcode" -> "sub_dir/cap.gcode"
 
+    str_len = strlen(infoFile.title);
     // "line" never has "/" at the beginning of a path (e.g. "sub_dir/cap.gcode") while "infoFile.title" has it
     // (e.g. "bSD:/sub_dir"), so we skip it during the check of current folder match (index 5 used instead of 4)
-    if (strlen(infoFile.title) > 5)  // we're in a subfolder
+    if (str_len > 5)  // we're in a subfolder
     {
       Pstr_tmp = strstr(line, infoFile.title + 5);  // "+ 5" skips the 5 bytes related to prefix "bSD:/" in infoFile.title
       if (Pstr_tmp == NULL)  // if "line" doesn't include current folder
         continue;
-      else if (Pstr_tmp[strlen(infoFile.title + 5)] != '/')  // "+ 5" skips the prefix "bSD:/" in infoFile.title
+      else if (Pstr_tmp[str_len - 5] != '/')  // "- 5" skips the prefix "bSD:/" in infoFile.title
         continue;  // because it's a file, not a folder
     }
 
     Pstr_tmp = strrchr(line, ' ');  // check and remove file size at the end of line
     if (Pstr_tmp != NULL)
-      *Pstr_tmp = 0;
+      *Pstr_tmp = '\0';
 
     // e.g. "sub_dir/cap.gcode" -> "cap.gcode", "sub_dir/sub_dir_2/cap2.gcode" -> "sub_dir_2/cap.gcode"
-    char* pline = line + (strlen(infoFile.title) - 4);  // "- 4" represents the 4 bytes related to prefix "bSD:" in infoFile.title
+    char* pline = line + (str_len - 4);  // "- 4" represents the 4 bytes related to prefix "bSD:" in infoFile.title
 
     if (strchr(pline, '/') == NULL)  // if FILE
     {
@@ -108,7 +110,7 @@ bool scanPrintFilesGcodeFs(void)
  
         Pstr_tmp = strstr(longFilename, "\nok");
         if (Pstr_tmp != NULL)
-          *Pstr_tmp = 0;  // remove end of M33 command
+          *Pstr_tmp = '\0';  // remove end of M33 command
 
         Pstr_tmp = strrchr(longFilename, '/');  // remove folder information
         if (Pstr_tmp != NULL)
@@ -117,42 +119,45 @@ bool scanPrintFilesGcodeFs(void)
         if (strcmp(longFilename, "???") == 0)  // no long filename exist
           longFilename = pline;
 
-        infoFile.longFile[infoFile.fileCount] = malloc(strlen(longFilename) + 2);  // "+ 2": space for terminating null character and the flag for filename extension check
+        str_len = strlen(longFilename);
+        infoFile.longFile[infoFile.fileCount] = malloc(str_len + 2);  // "+ 2": space for terminating null character and the flag for filename extension check
         if (infoFile.longFile[infoFile.fileCount] == NULL)
         {
           clearRequestCommandInfo();
           break;
         }
         // copy file name and set the flag for filename extension check
-        strncpy(infoFile.longFile[infoFile.fileCount], longFilename, strlen(longFilename) + 2);  // "+2": space for terminating null character and the flag for filename extension check
+        strncpy(infoFile.longFile[infoFile.fileCount], longFilename, str_len + 2);  // "+ 2": space for terminating null character and the flag for filename extension check
         clearRequestCommandInfo();  // finally free the buffer allocated by M33, if any
       }
       else  // if long filename is not supported
       {
-        infoFile.longFile[infoFile.fileCount] = NULL;  // long filename is not supported, so always set it to 0
+        infoFile.longFile[infoFile.fileCount] = NULL;  // long filename is not supported, so always set it to NULL
       }
 
       // NOTE: no need to filter files based on filename extension because files are already filtered by Marlin,
       // so leave the following block commented
 /*      if (IsSupportedFile(file) == NULL)  // if filename doesn't provide a supported filename extension
       {
-        if (infoFile.Longfile[infoFile.fileCount] != 0)
+        if (infoFile.Longfile[infoFile.fileCount] != NULL)
           free(infoFile.Longfile[infoFile.fileCount]);
+
         continue;
       }*/
 
       // get short filename
 
-      infoFile.file[infoFile.fileCount] = malloc(strlen(pline) + 2);  // "+ 2": space for terminating null character and the flag for filename extension check
+      str_len = strlen(pline);
+      infoFile.file[infoFile.fileCount] = malloc(str_len + 2);  // "+ 2": space for terminating null character and the flag for filename extension check
       if (infoFile.file[infoFile.fileCount] == NULL)
       {
-        if (infoFile.longFile[infoFile.fileCount] != 0)
+        if (infoFile.longFile[infoFile.fileCount] != NULL)
           free(infoFile.longFile[infoFile.fileCount]);
 
         break;
       }
       // copy file name and set the flag for filename extension check
-      strncpy(infoFile.file[infoFile.fileCount], pline, strlen(pline) + 2);  // "+2": space for terminating null character and the flag for filename extension check
+      strncpy(infoFile.file[infoFile.fileCount], pline, str_len + 2);  // "+ 2": space for terminating null character and the flag for filename extension check
       infoFile.fileCount++;
     }
     else  // if FOLDER
@@ -165,18 +170,20 @@ bool scanPrintFilesGcodeFs(void)
       char* folder = strtok_r(rest, "/", &rest);
       char* longFolder = NULL;
 
+      str_len = strlen(folder);
+
       if (infoMachineSettings.longFilename == ENABLED)
       {
-        Pstr_tmp = malloc(pline - line + strlen(folder) + 1);
+        Pstr_tmp = malloc(pline - line + str_len + 1);
 
         Pstr_tmp[0] = '\0';
-        strncat(Pstr_tmp, line, pline - line + strlen(folder));  // construct full path to folder
+        strncat(Pstr_tmp, line, pline - line + str_len);  // construct full path to folder
         longFolder = request_M33(Pstr_tmp);  // retrieve long folder names (if exist)
         free(Pstr_tmp);
 
         Pstr_tmp = strstr(longFolder, "\nok");
         if (Pstr_tmp != NULL)
-          *Pstr_tmp = 0;  // remove end of M33 command
+          *Pstr_tmp = '\0';  // remove end of M33 command
 
         Pstr_tmp = strrchr(longFolder, '/');  // retrieve last folder from full path
         if (Pstr_tmp != NULL)
@@ -197,7 +204,7 @@ bool scanPrintFilesGcodeFs(void)
 
       if (!found)
       {
-        infoFile.folder[infoFile.folderCount] = malloc(strlen(folder) + 1);
+        infoFile.folder[infoFile.folderCount] = malloc(str_len + 1);
 
         if (infoFile.folder[infoFile.folderCount] == NULL)
           break;

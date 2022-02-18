@@ -13,17 +13,18 @@ typedef struct
 typedef struct
 {
   GCODE_INFO queue[CMD_QUEUE_SIZE];
-  uint8_t index_r;  // Ring buffer read position
-  uint8_t index_w;  // Ring buffer write position
-  uint8_t count;    // Count of commands in the queue
+  uint8_t index_r;  // ring buffer read position
+  uint8_t index_w;  // ring buffer write position
+  uint8_t count;    // count of commands in the queue
 } GCODE_QUEUE;
 
 GCODE_QUEUE infoCmd;
-GCODE_QUEUE infoCacheCmd;  // Only when heatHasWaiting() is false the cmd in this cache will move to infoCmd queue.
+GCODE_QUEUE infoCacheCmd;  // only when heatHasWaiting() is false the cmd in this cache will move to infoCmd queue
 char * cmd_ptr;
 uint8_t cmd_len;
 uint8_t cmd_index;
 SERIAL_PORT_INDEX cmd_port_index;  // index of serial port originating the gcode
+uint8_t cmd_port;                  // physical port (e.g. _USART1) related to serial port index
 bool isPolling = true;
 
 bool isFullCmdQueue(void)
@@ -61,7 +62,7 @@ void commonStoreCmd(GCODE_QUEUE * pQueue, const char * format, va_list va)
 // If the infoCmd queue is full, a reminder message is displayed and the command is discarded.
 bool storeCmd(const char * format, ...)
 {
-  if (strlen(format) == 0) return false;
+  if (format[0] == 0) return false;
 
   if (infoCmd.count >= CMD_QUEUE_SIZE)
   {
@@ -81,53 +82,32 @@ bool storeCmd(const char * format, ...)
 // This command script will be sent to the printer by sendQueueCmd().
 // If the infoCmd queue has not enough empty room, a reminder message is displayed and the script is discarded.
 // No partial/incomplete commands (not terminated with '\n') are allowed in the script, they will be ignored.
-bool storeCmdScript(const char * format, ...)
+bool storeScript(const char * format, ...)
 {
-  if (strlen(format) == 0) return false;
-
-  if (infoCmd.count >= CMD_QUEUE_SIZE)  // command queue is full
-  {
-    reminderMessage(LABEL_BUSY, STATUS_BUSY);
-    return false;
-  }
+  if (format[0] == 0) return false;
 
   char script[256];
   va_list va;
   va_start(va, format);
   vsnprintf(script, 256, format, va);
-  va_end(va);  
+  va_end(va);
 
-  // commented for speed increase, not needed for the moment
-  // if (script[strlen(script) - 1] != '\n')  // partial command detected
-  //   return false;
-
-  uint8_t index = 0;  // used as index and flag
-  uint8_t initialCmd_count = infoCmd.count;
-  char * pChr_tmp = script;
-
-  while (pChr_tmp[0] != '\0')  // try to fill the command queue with individual commands
+  char * p = script;
+  uint16_t i = 0;
+  CMD cmd;
+  for (;;)
   {
-    infoCmd.queue[infoCmd.index_w].gcode[index] = pChr_tmp[0];
+    char c = *p++;
+    if (!c) break;
+    cmd[i++] = c;
 
-    if (pChr_tmp[0] == '\n')
+    if (c == '\n')
     {
-      infoCmd.queue[infoCmd.index_w].gcode[++index] = '\0';
-      infoCmd.queue[infoCmd.index_w].port_index = PORT_1;  // port index for SERIAL_PORT
-      infoCmd.index_w = (infoCmd.index_w + 1) % CMD_QUEUE_SIZE;
-      infoCmd.count++;
-      if ((infoCmd.count == CMD_QUEUE_SIZE) && (pChr_tmp[1] != '\0'))  // command queue is full and there are commands left
-      { // roll back changes and exit with "false"
-        reminderMessage(LABEL_BUSY, STATUS_BUSY);
-        infoCmd.index_w = (CMD_QUEUE_SIZE + infoCmd.index_w + infoCmd.count - initialCmd_count) % CMD_QUEUE_SIZE;
-        infoCmd.count = initialCmd_count;
+      cmd[i] = 0;
+      if (storeCmd("%s", cmd) == false)
         return false;
-      }
-      index = 0;
+      i = 0;
     }
-    else
-      index += (index == CMD_MAX_SIZE - 2) ? 0 : 1;  // "- 2" space for "\n" and "\0"
-
-    pChr_tmp++;
   }
 
   return true;
@@ -139,7 +119,7 @@ bool storeCmdScript(const char * format, ...)
 // and it will for wait the queue to be able to store the command.
 void mustStoreCmd(const char * format, ...)
 {
-  if (strlen(format) == 0) return;
+  if (format[0] == 0) return;
 
   if (infoCmd.count >= CMD_QUEUE_SIZE)
   {
@@ -154,10 +134,10 @@ void mustStoreCmd(const char * format, ...)
 }
 
 // Store Script cmd to infoCmd queue.
-// For example: "M502\nM500\n" will be split into two commands "M502\n", "M500\n"
+// For example: "M502\nM500\n" will be split into two commands "M502\n", "M500\n".
 void mustStoreScript(const char * format, ...)
 {
-  if (strlen(format) == 0) return;
+  if (format[0] == 0) return;
 
   char script[256];
   va_list va;
@@ -188,7 +168,7 @@ void mustStoreScript(const char * format, ...)
 // If the infoCmd queue is full, a reminder message is displayed and the command is discarded.
 bool storeCmdFromUART(SERIAL_PORT_INDEX portIndex, const CMD cmd)
 {
-  if (strlen(cmd) == 0) return false;
+  if (cmd[0] == 0) return false;
 
   if (infoCmd.count >= CMD_QUEUE_SIZE)
   {
@@ -248,6 +228,7 @@ static inline bool getCmd(void)
   cmd_ptr = &infoCmd.queue[infoCmd.index_r].gcode[0];          // gcode
   cmd_len = strlen(cmd_ptr);                                   // length of gcode
   cmd_port_index = infoCmd.queue[infoCmd.index_r].port_index;  // index of serial port originating the gcode
+  cmd_port = serialPort[cmd_port_index].port;                  // physical port (e.g. _USART1) related to serial port index
 
   return (cmd_port_index == PORT_1);  // if gcode is originated by TFT (SERIAL_PORT), return true
 }
@@ -292,13 +273,13 @@ bool sendCmd(bool purge, bool avoidTerminal)
   return !purge;  // return true if command was sent. Otherwise, return false
 }
 
-// Check if 'cmd' starts with 'key'.
+// Check if "cmd" starts with "key".
 static bool cmd_start_with(const CMD cmd, const char * key)
 {
   return (strstr(cmd, key) - cmd == cmd_index) ? true : false;
 }
 
-// Check the presence of the specified 'code' character in the current gcode command.
+// Check the presence of the specified "code" character in the current gcode command.
 static bool cmd_seen(char code)
 {
   for (cmd_index = 0; cmd_index < cmd_len; cmd_index++)
@@ -312,13 +293,13 @@ static bool cmd_seen(char code)
   return false;
 }
 
-// Get the int after 'code'. Call after cmd_seen('code').
+// Get the int after "code". Call after cmd_seen(code).
 static int32_t cmd_value(void)
 {
   return (strtol(&cmd_ptr[cmd_index], NULL, 10));
 }
 
-// Get the float after 'code'. Call after cmd_seen('code').
+// Get the float after "code". Call after cmd_seen(code).
 static float cmd_float(void)
 {
   return (strtod(&cmd_ptr[cmd_index], NULL));
@@ -342,7 +323,7 @@ void sendQueueCmd(void)
     return;
   }
 
-  // Skip line number from stored gcode for internal parsing purpose
+  // skip line number from stored gcode for internal parsing purpose
   if (cmd_ptr[0] == 'N')
   {
     cmd_index = strcspn(cmd_ptr, " ") + 1;
@@ -357,9 +338,9 @@ void sendQueueCmd(void)
       {
         case 0:
         case 1:
-          if (isPrinting() && infoMachineSettings.firmwareType != FW_REPRAPFW)  // Abort printing by "M0" in RepRapFirmware
+          if (isPrinting() && infoMachineSettings.firmwareType != FW_REPRAPFW)  // abort printing by "M0" in RepRapFirmware
           {
-            // pause if printing from TFT and purge M0/M1 command.
+            // pause if printing from TFT and purge M0/M1 command
             if (infoFile.source < BOARD_SD )
             {
               sendCmd(true, avoid_terminal);
@@ -371,11 +352,12 @@ void sendQueueCmd(void)
 
         case 18:  // M18/M84 disable steppers
         case 84:
-          // Do not mark coordinate as unknown in case of a M18/M84 S<timeout> command that
-          // doesn't disable the motors right away but will set their idling timeout.
+          // do not mark coordinate as unknown in case of a M18/M84 S<timeout> command that
+          // doesn't disable the motors right away but will set their idling timeout
           if (!(cmd_seen('S') && !cmd_seen('Y') && !cmd_seen('Z') && !cmd_seen('E')))
           {
-            // This is something else than an "M18/M84 S<timeout>", this will disable at least one stepper, set coordinate as unknown
+            // this is something else than an "M18/M84 S<timeout>", this will disable at least one stepper,
+            // set coordinate as unknown
             coordinateSetKnown(false);
           }
           break;
@@ -402,22 +384,22 @@ void sendQueueCmd(void)
                     break;
                   }
                 }
-                Serial_Puts(SERIAL_PORT_2, "Begin file list\n");
+                Serial_Puts(cmd_port, "Begin file list\n");
                 if (mountFS() == true && scanPrintFiles() == true)
                 {
                   for (uint16_t i = 0; i < infoFile.fileCount; i++)
                   {
-                    Serial_Puts(SERIAL_PORT_2, infoFile.file[i]);
-                    Serial_Puts(SERIAL_PORT_2, "\n");
+                    Serial_Puts(cmd_port, infoFile.file[i]);
+                    Serial_Puts(cmd_port, "\n");
                   }
                   for (uint16_t i = 0; i < infoFile.folderCount; i++)
                   {
-                    Serial_Puts(SERIAL_PORT_2, "/");
-                    Serial_Puts(SERIAL_PORT_2, infoFile.folder[i]);
-                    Serial_Puts(SERIAL_PORT_2, "/\n");
+                    Serial_Puts(cmd_port, "/");
+                    Serial_Puts(cmd_port, infoFile.folder[i]);
+                    Serial_Puts(cmd_port, "/\n");
                   }
                 }
-                Serial_Puts(SERIAL_PORT_2, "End file list\nok\n");
+                Serial_Puts(cmd_port, "End file list\nok\n");
                 sendCmd(true, avoid_terminal);
                 return;
               }
@@ -447,29 +429,29 @@ void sendQueueCmd(void)
                   }
                 }
 
-                Serial_Puts(SERIAL_PORT_2, "echo:Now fresh file: ");
-                Serial_Puts(SERIAL_PORT_2, infoFile.title);
-                Serial_Puts(SERIAL_PORT_2, "\n");
+                Serial_Puts(cmd_port, "echo:Now fresh file: ");
+                Serial_Puts(cmd_port, infoFile.title);
+                Serial_Puts(cmd_port, "\n");
 
                 FIL tmp;
                 if (mountFS() && (f_open(&tmp, infoFile.title, FA_OPEN_EXISTING | FA_READ) == FR_OK))
                 {
                   char buf[10];
                   sprintf(buf, "%d", f_size(&tmp));
-                  Serial_Puts(SERIAL_PORT_2, "File opened: ");
-                  Serial_Puts(SERIAL_PORT_2, infoFile.title);
-                  Serial_Puts(SERIAL_PORT_2, " Size: ");
-                  Serial_Puts(SERIAL_PORT_2, buf);
-                  Serial_Puts(SERIAL_PORT_2, "\nFile selected\n");
+                  Serial_Puts(cmd_port, "File opened: ");
+                  Serial_Puts(cmd_port, infoFile.title);
+                  Serial_Puts(cmd_port, " Size: ");
+                  Serial_Puts(cmd_port, buf);
+                  Serial_Puts(cmd_port, "\nFile selected\n");
                   f_close(&tmp);
                 }
                 else
                 {
-                  Serial_Puts(SERIAL_PORT_2, "open failed, File: ");
-                  Serial_Puts(SERIAL_PORT_2, infoFile.title);
-                  Serial_Puts(SERIAL_PORT_2, "\n");
+                  Serial_Puts(cmd_port, "open failed, File: ");
+                  Serial_Puts(cmd_port, infoFile.title);
+                  Serial_Puts(cmd_port, "\n");
                 }
-                Serial_Puts(SERIAL_PORT_2, "ok\n");
+                Serial_Puts(cmd_port, "ok\n");
                 sendCmd(true, avoid_terminal);
                 return;
               }
@@ -483,7 +465,7 @@ void sendQueueCmd(void)
               {
                 // firstly purge the gcode to avoid a possible reprocessing or infinite nested loop in
                 // case the function loopProcess() is invoked by the following function printPause()
-                Serial_Puts(SERIAL_PORT_2, "ok\n");
+                Serial_Puts(cmd_port, "ok\n");
                 sendCmd(true, avoid_terminal);
 
                 if (!isPrinting())  // if not printing, start a new print
@@ -507,7 +489,7 @@ void sendQueueCmd(void)
               {
                 // firstly purge the gcode to avoid a possible reprocessing or infinite nested loop in
                 // case the function loopProcess() is invoked by the following function printPause()
-                Serial_Puts(SERIAL_PORT_2, "ok\n");
+                Serial_Puts(cmd_port, "ok\n");
                 sendCmd(true, avoid_terminal);
                 printPause(true, PAUSE_NORMAL);
                 return;
@@ -527,14 +509,14 @@ void sendQueueCmd(void)
               {
                 if (cmd_seen('C'))
                 {
-                  Serial_Puts(SERIAL_PORT_2, "Current file: ");
-                  Serial_Puts(SERIAL_PORT_2, infoFile.title);
-                  Serial_Puts(SERIAL_PORT_2, ".\n");
+                  Serial_Puts(cmd_port, "Current file: ");
+                  Serial_Puts(cmd_port, infoFile.title);
+                  Serial_Puts(cmd_port, ".\n");
                 }
                 char buf[55];
                 sprintf(buf, "%s printing byte %d/%d\n", (infoFile.source == TFT_SD) ? "TFT SD" : "TFT USB", getPrintCur(), getPrintSize());
-                Serial_Puts(SERIAL_PORT_2, buf);
-                Serial_Puts(SERIAL_PORT_2, "ok\n");
+                Serial_Puts(cmd_port, buf);
+                Serial_Puts(cmd_port, "ok\n");
                 sendCmd(true, avoid_terminal);
                 return;
               }
@@ -586,15 +568,15 @@ void sendQueueCmd(void)
                 }
                 if ((mountFS() == true) && (f_unlink (filepath) == FR_OK))
                 {
-                  Serial_Puts(SERIAL_PORT_2, "File deleted: ");
-                  Serial_Puts(SERIAL_PORT_2, filepath);
-                  Serial_Puts(SERIAL_PORT_2, ".\nok\n");
+                  Serial_Puts(cmd_port, "File deleted: ");
+                  Serial_Puts(cmd_port, filepath);
+                  Serial_Puts(cmd_port, ".\nok\n");
                 }
                 else
                 {
-                  Serial_Puts(SERIAL_PORT_2, "Deletion failed, File: ");
-                  Serial_Puts(SERIAL_PORT_2, filepath);
-                  Serial_Puts(SERIAL_PORT_2, ".\nok\n");
+                  Serial_Puts(cmd_port, "Deletion failed, File: ");
+                  Serial_Puts(cmd_port, filepath);
+                  Serial_Puts(cmd_port, ".\nok\n");
                 }
                 sendCmd(true, avoid_terminal);
                 return;
@@ -610,18 +592,18 @@ void sendQueueCmd(void)
             if (!fromTFT && cmd_start_with(cmd_ptr, "M115 TFT"))
             {
               char buf[50];
-              Serial_Puts(SERIAL_PORT_2,
+              Serial_Puts(cmd_port,
                           "FIRMWARE_NAME: " FIRMWARE_NAME
                           " SOURCE_CODE_URL:https://github.com/bigtreetech/BIGTREETECH-TouchScreenFirmware\n");
               sprintf(buf, "Cap:HOTEND_NUM:%d\n", infoSettings.hotend_count);
-              Serial_Puts(SERIAL_PORT_2, buf);
+              Serial_Puts(cmd_port, buf);
               sprintf(buf, "Cap:EXTRUDER_NUM:%d\n", infoSettings.ext_count);
-              Serial_Puts(SERIAL_PORT_2, buf);
+              Serial_Puts(cmd_port, buf);
               sprintf(buf, "Cap:FAN_NUM:%d\n", infoSettings.fan_count);
-              Serial_Puts(SERIAL_PORT_2, buf);
+              Serial_Puts(cmd_port, buf);
               sprintf(buf, "Cap:FAN_CTRL_NUM:%d\n", infoSettings.ctrl_fan_en ? MAX_CRTL_FAN_COUNT : 0);
-              Serial_Puts(SERIAL_PORT_2, buf);
-              Serial_Puts(SERIAL_PORT_2, "ok\n");
+              Serial_Puts(cmd_port, buf);
+              Serial_Puts(cmd_port, "ok\n");
               sendCmd(true, avoid_terminal);
               return;
             }
@@ -634,7 +616,7 @@ void sendQueueCmd(void)
               {
                 // firstly purge the gcode to avoid a possible reprocessing or infinite nested loop in
                 // case the function loopProcess() is invoked by the following function printPause()
-                Serial_Puts(SERIAL_PORT_2, "ok\n");
+                Serial_Puts(cmd_port, "ok\n");
                 sendCmd(true, avoid_terminal);
                 printPause(true, PAUSE_NORMAL);
                 return;
@@ -649,7 +631,7 @@ void sendQueueCmd(void)
               {
                 // firstly purge the gcode to avoid a possible reprocessing or infinite nested loop in
                 // case the function loopProcess() is invoked by the following function printAbort()
-                Serial_Puts(SERIAL_PORT_2, "ok\n");
+                Serial_Puts(cmd_port, "ok\n");
                 sendCmd(true, avoid_terminal);
                 printAbort();
                 return;
@@ -702,7 +684,7 @@ void sendQueueCmd(void)
           eSetRelative(true);
           break;
 
-        case 92:  // M92 Steps per unit
+        case 92:  // M92 axis steps-per-unit (steps/mm)
         {
           if (cmd_seen('X')) setParameter(P_STEPS_PER_MM, AXIS_INDEX_X, cmd_float());
           if (cmd_seen('Y')) setParameter(P_STEPS_PER_MM, AXIS_INDEX_Y, cmd_float());
@@ -762,7 +744,7 @@ void sendQueueCmd(void)
             if (GET_BIT(infoSettings.general_settings, INDEX_EMULATED_M109_M190) == 0)  // if emulated M109 / M190 is disabled
               break;
 
-            cmd_ptr[cmd_index + 3] = '4';  // Avoid send M109 to Marlin
+            cmd_ptr[cmd_index + 3] = '4';  // avoid to send M109 to Marlin
             uint8_t i = cmd_seen('T') ? cmd_value() : heatGetCurrentHotend();
             if (cmd_seen('R'))
             {
@@ -774,7 +756,7 @@ void sendQueueCmd(void)
               heatSetIsWaiting(i, WAIT_HEATING);
             }
           }
-        // No break here, The data processing of M109 is the same as that of M104 below
+        // no break here. The data processing of M109 is the same as that of M104 below
         case 104: // M104
           if (fromTFT)
           {
@@ -829,7 +811,7 @@ void sendQueueCmd(void)
             if (GET_BIT(infoSettings.general_settings, INDEX_EMULATED_M109_M190) == 0)  // if emulated M109 / M190 is disabled
               break;
 
-            cmd_ptr[cmd_index + 2] = '4';  // Avoid send M190 to Marlin
+            cmd_ptr[cmd_index + 2] = '4';  // avoid to send M190 to Marlin
             if (cmd_seen('R'))
             {
               cmd_ptr[cmd_index - 1] = 'S';
@@ -840,7 +822,7 @@ void sendQueueCmd(void)
               heatSetIsWaiting(BED, WAIT_HEATING);
             }
           }
-        // No break here, The data processing of M190 is the same as that of M140 below
+        // no break here. The data processing of M190 is the same as that of M140 below
         case 140:  // M140
           if (fromTFT)
           {
@@ -855,7 +837,7 @@ void sendQueueCmd(void)
         case 191:  // M191
           if (fromTFT)
           {
-            cmd_ptr[cmd_index + 2] = '4';  // Avoid send M191 to Marlin
+            cmd_ptr[cmd_index + 2] = '4';  // avoid to send M191 to Marlin
             if (cmd_seen('R'))
             {
               cmd_ptr[cmd_index - 1] = 'S';
@@ -866,7 +848,7 @@ void sendQueueCmd(void)
               heatSetIsWaiting(CHAMBER, WAIT_HEATING);
             }
           }
-        // No break here, The data processing of M191 is the same as that of M141 below
+        // no break here. The data processing of M191 is the same as that of M141 below
         case 141:  // M141
           if (fromTFT)
           {
@@ -878,7 +860,7 @@ void sendQueueCmd(void)
           }
           break;
 
-        case 200:  // M200 Set Filament Diameter
+        case 200:  // M200 filament diameter
         {
           if (cmd_seen('S')) setParameter(P_FILAMENT_DIAMETER, 0, cmd_float());
 
@@ -887,14 +869,14 @@ void sendQueueCmd(void)
           if (infoMachineSettings.firmwareType == FW_SMOOTHIEWARE)
           {
             if (getParameter(P_FILAMENT_DIAMETER, 1) > 0.01F)  // common extruder param
-              setParameter(P_FILAMENT_DIAMETER, 0, 1);  // filament_diameter>0.01 to enable  volumetric extrusion
+              setParameter(P_FILAMENT_DIAMETER, 0, 1);  // filament_diameter > 0.01 to enable  volumetric extrusion
             else
-              setParameter(P_FILAMENT_DIAMETER, 0, 0);  // filament_diameter<=0.01 to disable volumetric extrusion
+              setParameter(P_FILAMENT_DIAMETER, 0, 0);  // filament_diameter <= 0.01 to disable volumetric extrusion
           }
           break;
         }
 
-        case 201:  // M201 Maximum Acceleration (units/s2)
+        case 201:  // M201 max acceleration (units/s2)
         {
           if (cmd_seen('X')) setParameter(P_MAX_ACCELERATION, AXIS_INDEX_X, cmd_float());
           if (cmd_seen('Y')) setParameter(P_MAX_ACCELERATION, AXIS_INDEX_Y, cmd_float());
@@ -905,7 +887,7 @@ void sendQueueCmd(void)
           break;
         }
 
-        case 203:  // M203 Maximum feedrates (units/s)
+        case 203:  // M203 max feedrate (units/s)
         {
           if (cmd_seen('X')) setParameter(P_MAX_FEED_RATE, AXIS_INDEX_X, cmd_float());
           if (cmd_seen('Y')) setParameter(P_MAX_FEED_RATE, AXIS_INDEX_Y, cmd_float());
@@ -916,13 +898,13 @@ void sendQueueCmd(void)
           break;
         }
 
-        case 204:  // M204 Acceleration (units/s2)
+        case 204:  // M204 acceleration (units/s2)
           if (cmd_seen('P')) setParameter(P_ACCELERATION, 0, cmd_float());
           if (cmd_seen('R')) setParameter(P_ACCELERATION, 1, cmd_float());
           if (cmd_seen('T')) setParameter(P_ACCELERATION, 2, cmd_float());
           break;
 
-        case 205:  // M205 - Set Advanced Settings
+        case 205:  // M205 advanced settings
           if (cmd_seen('X')) setParameter(P_JERK, AXIS_INDEX_X, cmd_float());
           if (cmd_seen('Y')) setParameter(P_JERK, AXIS_INDEX_Y, cmd_float());
           if (cmd_seen('Z')) setParameter(P_JERK, AXIS_INDEX_Z, cmd_float());
@@ -930,31 +912,31 @@ void sendQueueCmd(void)
           if (cmd_seen('J')) setParameter(P_JUNCTION_DEVIATION, 0, cmd_float());
           break;
 
-        case 206:  // M206 Home offset
+        case 206:  // M206 home offset
           if (cmd_seen('X')) setParameter(P_HOME_OFFSET, AXIS_INDEX_X, cmd_float());
           if (cmd_seen('Y')) setParameter(P_HOME_OFFSET, AXIS_INDEX_Y, cmd_float());
           if (cmd_seen('Z')) setParameter(P_HOME_OFFSET, AXIS_INDEX_Z, cmd_float());
           break;
 
-        case 207:  // M207 FW Retract
+        case 207:  // M207 FW retraction
           if (cmd_seen('S')) setParameter(P_FWRETRACT, 0, cmd_float());
           if (cmd_seen('W')) setParameter(P_FWRETRACT, 1, cmd_float());
           if (cmd_seen('F')) setParameter(P_FWRETRACT, 2, cmd_float());
           if (cmd_seen('Z')) setParameter(P_FWRETRACT, 3, cmd_float());
           break;
 
-        case 208:  // M208 FW Retract recover
+        case 208:  // M208 FW recover
           if (cmd_seen('S')) setParameter(P_FWRECOVER, 0, cmd_float());
           if (cmd_seen('W')) setParameter(P_FWRECOVER, 1, cmd_float());
           if (cmd_seen('F')) setParameter(P_FWRECOVER, 2, cmd_float());
           if (cmd_seen('R')) setParameter(P_FWRECOVER, 3, cmd_float());
           break;
 
-        case 209:  // M209 Auto Retract recover
+        case 209:  // M209 auto retract
           if (cmd_seen('S')) setParameter(P_AUTO_RETRACT, 0, cmd_float());
           break;
 
-        case 218:  // M218 Hotend Offset
+        case 218:  // M218 hotend offset
           if (cmd_seen('X')) setParameter(P_HOTEND_OFFSET, AXIS_INDEX_X, cmd_float());
           if (cmd_seen('Y')) setParameter(P_HOTEND_OFFSET, AXIS_INDEX_Y, cmd_float());
           if (cmd_seen('Z')) setParameter(P_HOTEND_OFFSET, AXIS_INDEX_Z, cmd_float());
@@ -1003,9 +985,14 @@ void sendQueueCmd(void)
           break;
         }
 
+        case 376:  // M376 (Reprap FW)
+          if (infoMachineSettings.firmwareType == FW_REPRAPFW && cmd_seen('H'))
+            setParameter(P_ABL_STATE, 1, cmd_float());
+          break;
+
         case 292:
         case 408:
-          // RRF does not send 'ok' while executing M98
+          // RRF does not send "ok" while executing M98
           if (rrfStatusIsMacroBusy())
           {
             sendCmd(false, avoid_terminal);
@@ -1013,13 +1000,12 @@ void sendQueueCmd(void)
           }
           break;
 
-        case 420:  // M420
-          // ABL state will be set through parsACK.c after receiving confirmation message from the printer
-          // to prevent wrong state in case of error.
-          if (cmd_seen('Z')) setParameter(P_ABL_STATE, 1, cmd_float());
-          break;
+        //case 420:  // M420
+        //  // ABL state and Z fade height will be set through parsACK.c after receiving confirmation
+        //  // message from the printer to prevent wrong state and/or value in case of error
+        //  break;
 
-        case 569:  // M569 TMC StealthChop
+        case 569:  // M569 TMC stepping mode
         {
           uint8_t k = (cmd_seen('S')) ? cmd_value() : 0;
           uint8_t i = (cmd_seen('I')) ? cmd_value() : 0;
@@ -1062,7 +1048,7 @@ void sendQueueCmd(void)
             break;
         #endif
 
-        case 665:  // Delta Configuration / Delta Tower Angle
+        case 665:  // Delta configuration / Delta tower angle
         {
           if (cmd_seen('H')) setParameter(P_DELTA_CONFIGURATION, 0, cmd_float());
           if (cmd_seen('S')) setParameter(P_DELTA_CONFIGURATION, 1, cmd_float());
@@ -1074,7 +1060,7 @@ void sendQueueCmd(void)
           break;
         }
 
-        case 666:  // Delta Endstop Adjustments
+        case 666:  // Delta endstop adjustments
         {
           if (cmd_seen('X')) setParameter(P_DELTA_ENDSTOP, 0, cmd_float());
           if (cmd_seen('Y')) setParameter(P_DELTA_ENDSTOP, 1, cmd_float());
@@ -1082,14 +1068,14 @@ void sendQueueCmd(void)
           break;
         }
 
-        case 710:  // M710 Controller Fan
+        case 710:  // M710 controller fan
         {
           if (cmd_seen('S')) fanSetCurSpeed(MAX_COOLING_FAN_COUNT, cmd_value());
           if (cmd_seen('I')) fanSetCurSpeed(MAX_COOLING_FAN_COUNT + 1, cmd_value());
           break;
         }
 
-        case 851:  // M851 Z probe offset
+        case 851:  // M851 probe offset
         {
           if (cmd_seen('X')) setParameter(P_PROBE_OFFSET, X_AXIS, cmd_float());
           if (cmd_seen('Y')) setParameter(P_PROBE_OFFSET, Y_AXIS, cmd_float());
@@ -1097,7 +1083,7 @@ void sendQueueCmd(void)
           break;
         }
 
-        case 900:  // M900 Linear advance
+        case 900:  // M900 linear advance factor
         {
           uint8_t i = 0;
           if (cmd_seen('T')) i = cmd_value();
@@ -1105,7 +1091,7 @@ void sendQueueCmd(void)
           break;
         }
 
-        case 906:  // M906 Stepper driver current
+        case 906:  // M906 stepper motor current
         {
           uint8_t i = (cmd_seen('I')) ? cmd_value() : 0;
           if (cmd_seen('X')) setParameter(P_CURRENT, STEPPER_INDEX_X + i, cmd_value());
@@ -1117,7 +1103,7 @@ void sendQueueCmd(void)
           break;
         }
 
-        case 913:  // M913 Hybrid Threshold Speed
+        case 913:  // M913 TMC hybrid threshold speed
         {
           uint8_t i = (cmd_seen('I')) ? cmd_value() : 0;
           if (cmd_seen('X')) setParameter(P_HYBRID_THRESHOLD, STEPPER_INDEX_X + i, cmd_value());
@@ -1129,7 +1115,7 @@ void sendQueueCmd(void)
           break;
         }
 
-        case 914:  // parse and store TMC Bump sensitivity values
+        case 914:  // parse and store TMC bump sensitivity
         {
           uint8_t i = (cmd_seen('I')) ? cmd_value() : 0;
           if (cmd_seen('X')) setParameter(P_BUMPSENSITIVITY, STEPPER_INDEX_X + i, cmd_value());
@@ -1191,13 +1177,9 @@ void sendQueueCmd(void)
               if (cmd_seen('S'))
               {
                 uint8_t v = cmd_value();
-                if (v == 1)
+                if (v == 1 || v == 2)
                 {
-                  setParameter(P_ABL_STATE, 0, 1);
-                }
-                else if (v == 2)
-                {
-                  setParameter(P_ABL_STATE, 0, 0);
+                  setParameter(P_ABL_STATE, 0, v % 2);  // value will be 1 if v == 1, 0 if v == 2
                 }
               }
             }
@@ -1217,7 +1199,7 @@ void sendQueueCmd(void)
         {
           bool coorRelative = coorGetRelative();
           bool eRelative = eGetRelative();
-          // Set to absolute mode
+          // set to absolute mode
           coorSetRelative(false);
           eSetRelative(false);
           for (AXIS i = X_AXIS; i < TOTAL_AXIS; i++)
@@ -1228,13 +1210,13 @@ void sendQueueCmd(void)
               #ifdef FIL_RUNOUT_PIN
                 if (i == E_AXIS)
                 {
-                  // Reset SFS status, Avoid false Filament runout caused by G92 resetting E-axis position
+                  // reset SFS status. Avoid false Filament runout caused by G92 resetting E-axis position
                   FIL_SFS_SetAlive(true);
                 }
               #endif
             }
           }
-          // Restore mode
+          // restore mode
           coorSetRelative(coorRelative);
           eSetRelative(eRelative);
           break;

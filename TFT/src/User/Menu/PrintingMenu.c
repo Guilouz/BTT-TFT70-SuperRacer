@@ -133,7 +133,11 @@ static void setLayerNumberTxt(char * layer_number_txt)
   uint16_t layerCount = getPrintLayerCount();
   if (layerNumber > 0)
   {
-    if (layerCount > 0 && layerCount < 1000)
+    if (layerCount > 0
+      #ifndef TFT70_V3_0
+        && layerCount < 1000
+     #endif
+     )
     { // there's no space to display layer number & count if the layer count is above 999
       sprintf(layer_number_txt, " %u/%u ", layerNumber, layerCount);
     }
@@ -198,6 +202,7 @@ void menuBeforePrinting(void)
   }
 
   // initialize things before the print starts
+  hideFilenameExtension(infoFile.fileIndex);  // hide filename extension if filename extension feature is disabled
   progDisplayType = infoSettings.prog_disp_type;
   layerDisplayType = infoSettings.layer_disp_type * 2;
   coordinateSetAxisActual(Z_AXIS, 0);
@@ -600,10 +605,7 @@ void menuPrinting(void)
     printingItems.items[KEY_ICON_7] = itemIsPrinting[2];  // Back
   }
 
-    if (infoMachineSettings.longFilename == ENABLED && infoFile.source == BOARD_SD)
-    printingItems.title.address = (uint8_t *) infoFile.longFile[infoFile.fileIndex];
-  else
-    printingItems.title.address = (uint8_t *) infoFile.file[infoFile.fileIndex];
+  printingItems.title.address = getPrintFilename();  // get print filename (short or long filename with or without extension)
 
   menuDrawPage(&printingItems);
   printingDrawPage();
@@ -751,12 +753,12 @@ void menuPrinting(void)
     switch (key_num)
     {
       case PS_KEY_0:
-        heatSetCurrentIndex(currentTool);
+        heatSetCurrentIndex(-1);  // set last used hotend index
         OPEN_MENU(menuHeat);
         break;
 
       case PS_KEY_1:
-        heatSetCurrentIndex(BED + currentBCIndex);
+        heatSetCurrentIndex(-2);  // set last used bed index
         OPEN_MENU(menuHeat);
         break;
 

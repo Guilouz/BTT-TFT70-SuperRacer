@@ -22,7 +22,7 @@ bool mountFS(void)
       return mountSDCard();
 
     case TFT_USB_DISK:
-      return mountUDisk();
+      return mountUSBDisk();
 
     case BOARD_SD:
       if (infoHost.printing)
@@ -62,10 +62,10 @@ TCHAR * getCurFileSource(void)
   switch (infoFile.source)
   {
     case TFT_SD:
-      return "SD:";
+      return SD_ROOT_DIR;
 
     case TFT_USB_DISK:
-      return "U:";
+      return USBDISK_ROOT_DIR;
 
     case BOARD_SD:
     case BOARD_SD_REMOTE:
@@ -137,21 +137,24 @@ char * isSupportedFile(char * filename)
   char * extPos = strrchr(filename, '.');  // check last "." in the name where extension is supposed to start
 
   if (extPos != NULL && extPos[1] != 'g' && extPos[1] != 'G')
-  {
     extPos = NULL;
-  }
 
   return extPos;
 }
 
-char * hideFileExtension(uint8_t index)
+char * getFoldername(uint8_t index)
 {
-  char * filename = infoFile.file[index];
-  char * extPos;
+  if (infoFile.longFolder[index] != NULL)
+    return infoFile.longFolder[index];
+  else
+    return infoFile.folder[index];
+}
 
+char * hideExtension(char * filename)
+{
   if (infoSettings.filename_extension == 0)  // if filename extension is disabled
   {
-    extPos = isSupportedFile(filename);
+    char * extPos = isSupportedFile(filename);
 
     // if filename provides a supported filename extension then
     // check extra byte for filename extension check. If 0, no filename extension was previously hidden
@@ -159,46 +162,54 @@ char * hideFileExtension(uint8_t index)
       filename[extPos - filename] = 0;  // temporary hide filename extension
   }
 
-  if (infoMachineSettings.longFilename == ENABLED && infoFile.source == BOARD_SD)
+  return filename;
+}
+
+char * restoreExtension(char * filename)
+{
+  if (infoSettings.filename_extension == 0)  // if filename extension is disabled
   {
-    filename = infoFile.longFile[index];
-
-    if (infoSettings.filename_extension == 0)  // if filename extension is disabled
-    {
-      extPos = isSupportedFile(filename);
-
-      // if filename provides a supported filename extension then
-      // check extra byte for filename extension check. If 0, no filename extension was previously hidden
-      if (extPos != NULL && filename[strlen(filename) + 1] == 0)
-        filename[extPos - filename] = 0;  // temporary hide filename extension
-    }
+    // check extra byte for filename extension check. If 0, no filename extension was previously hidden
+    if (filename[strlen(filename) + 1] != 0)
+      filename[strlen(filename)] = '.';  // restore filename extension
   }
 
   return filename;
 }
 
-char * restoreFileExtension(uint8_t index)
+char * hideFilenameExtension(uint8_t index)
 {
-  char * filename = infoFile.file[index];
+  char * filename = hideExtension(infoFile.file[index]);
 
-  if (infoSettings.filename_extension == 0)  // if filename extension is disabled
-  {
-    if (filename[strlen(filename) + 1] != 0)  // check extra byte for filename extension check. If 0, no filename extension was previously hidden
-      filename[strlen(filename)] = '.';       // restore filename extension
-  }
-
-  if (infoMachineSettings.longFilename == ENABLED && infoFile.source == BOARD_SD)
-  {
-    filename = infoFile.longFile[index];
-
-    if (infoSettings.filename_extension == 0)  // if filename extension is disabled
-    {
-      if (filename[strlen(filename) + 1] != 0)  // check extra byte for filename extension check. If 0, no filename extension was previously hidden
-        filename[strlen(filename)] = '.';       // restore filename extension
-    }
-  }
+  if (infoFile.longFile[index] != NULL)
+    filename = hideExtension(infoFile.longFile[index]);
 
   return filename;
+}
+
+char * restoreFilenameExtension(uint8_t index)
+{
+  char * filename = restoreExtension(infoFile.file[index]);
+
+  if (infoFile.longFile[index] != NULL)
+    filename = restoreExtension(infoFile.longFile[index]);
+
+  return filename;
+}
+
+char * getPrintFilename(void)
+{
+  if (infoFile.source <= BOARD_SD)  // if printing from TFT or onboard SD
+  {
+    if (infoFile.longFile[infoFile.fileIndex] != NULL)
+      return infoFile.longFile[infoFile.fileIndex];
+    else
+      return infoFile.file[infoFile.fileIndex];
+  }
+  else  // if printing from remote onboard SD or remote host
+  {
+    return infoFile.title;
+  }
 }
 
 // Volume exist detect

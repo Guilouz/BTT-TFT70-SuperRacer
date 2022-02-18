@@ -9,9 +9,12 @@ extern "C" {
 #include <stdint.h>
 #include "ff.h"
 
-#define FOLDER_NUM   255
-#define FILE_NUM     255
+#define FOLDER_NUM    255
+#define FILE_NUM      255
 #define MAX_PATH_LEN 1024
+
+#define SD_ROOT_DIR      "SD:"
+#define USBDISK_ROOT_DIR "U:"
 
 typedef enum
 {
@@ -52,8 +55,10 @@ bool EnterDir(char * nextdir);
 void ExitDir(void);
 bool IsRootDir(void);
 char * isSupportedFile(char * filename);
-char * hideFileExtension(uint8_t index);
-char * restoreFileExtension(uint8_t index);
+char * getFoldername(uint8_t index);
+char * hideFilenameExtension(uint8_t index);
+char * restoreFilenameExtension(uint8_t index);
+char * getPrintFilename(void);
 
 bool volumeExists(uint8_t src);
 void loopVolumeSource(void);
