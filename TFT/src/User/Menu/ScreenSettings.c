@@ -240,6 +240,7 @@ void menuLanguage(void)
 
   // fill language items
   uint8_t tmp_language = infoSettings.language;
+
   for (uint8_t i = 0; i < COUNT(totalItems); i++)
   {
     if (i == tmp_language)
@@ -247,11 +248,9 @@ void menuLanguage(void)
     else
       totalItems[i].icon = CHARICON_UNCHECKED;
 
-    infoSettings.language = i;
     totalItems[i].itemType = LIST_LABEL;
     totalItems[i].titlelabel.address = textSelect(LABEL_LANGUAGE);
   }
-  infoSettings.language = tmp_language;
 
   listViewCreate(title, totalItems, COUNT(totalItems), &curPage, true, NULL, NULL);
 
@@ -266,11 +265,11 @@ void menuLanguage(void)
         totalItems[curItem].icon = CHARICON_UNCHECKED;
         listViewRefreshItem(curItem);  // refresh unchecked status
         curItem = curIndex;
-        totalItems[curItem].icon = CHARICON_CHECKED;
-        listViewRefreshItem(curItem);  // refresh checked status
+        totalItems[curIndex].icon = CHARICON_CHECKED;
+        listViewRefreshItem(curIndex);  // refresh checked status
 
+        curItem = curIndex;  // update selected index
         infoSettings.language = curItem;
-        menuDrawTitle(textSelect(LABEL_LANGUAGE));
       }
     }
 

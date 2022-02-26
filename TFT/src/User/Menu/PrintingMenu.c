@@ -116,7 +116,7 @@ const ITEM itemIsPrinting[3] = {
 static void setLayerHeightText(char * layer_height_txt)
 {
   float layer_height;
-  layer_height = (infoFile.source >= BOARD_SD) ? coordinateGetAxisActual(Z_AXIS) : coordinateGetAxisTarget(Z_AXIS);
+  layer_height = (infoFile.source >= BOARD_MEDIA) ? coordinateGetAxisActual(Z_AXIS) : coordinateGetAxisTarget(Z_AXIS);
   if (layer_height > 0)
   {
     sprintf(layer_height_txt, "%6.2fmm", layer_height);
@@ -154,55 +154,15 @@ static void setLayerNumberTxt(char * layer_number_txt)
 
 void menuBeforePrinting(void)
 {
-  // load stat/end/cancel gcodes from spi flash
-
-  switch (infoFile.source)
+  if (!printStart())
   {
-    case BOARD_SD:  // GCode from file on ONBOARD SD
-      {
-        uint32_t size;
-
-        size = request_M23_M36(infoFile.title + (infoMachineSettings.firmwareType == FW_REPRAPFW ? 0 : 5));
-
-        if (size == 0)
-        {
-          ExitDir();
-          CLOSE_MENU();
-          return;
-        }
-
-        printStart(NULL, size);
-        break;
-      }
-
-    case TFT_USB_DISK:
-    case TFT_SD:  // GCode from file on TFT SD
-      {
-        FIL file;
-
-        if (f_open(&file, infoFile.title, FA_OPEN_EXISTING | FA_READ) != FR_OK)
-        {
-          ExitDir();
-          CLOSE_MENU();
-          return;
-        }
-
-        if (powerFailedCreate(infoFile.title) == false)  // open Power-loss Recovery file
-        {}
-        powerFailedlSeek(&file);  // seek on Power-loss Recovery file
-
-        printStart(&file, f_size(&file));
-        break;
-      }
-
-    default:
-      ExitDir();
-      CLOSE_MENU();
-      return;
+    ExitDir();
+    CLOSE_MENU();
+    return;
   }
 
   // initialize things before the print starts
-  hideFilenameExtension(infoFile.fileIndex);  // hide filename extension if filename extension feature is disabled
+  hidePrintFilename();  // if printing from TFT or onboard media, hide filename extension if filename extension feature is disabled
   progDisplayType = infoSettings.prog_disp_type;
   layerDisplayType = infoSettings.layer_disp_type * 2;
   coordinateSetAxisActual(Z_AXIS, 0);
@@ -427,7 +387,7 @@ static inline void toggleInfo(void)
 
     speedQuery();
 
-    if (infoFile.source >= BOARD_SD)
+    if (infoFile.source >= BOARD_MEDIA)
       coordinateQuery(TOGGLE_TIME / 1000);
 
     if (!hasFilamentData && isPrinting())
@@ -595,7 +555,7 @@ void menuPrinting(void)
   if (lastPrinting == true)
   {
     printingItems.items[KEY_ICON_4] = itemIsPause[lastPause];
-    printingItems.items[KEY_ICON_5].icon = (infoFile.source < BOARD_SD && isPrintModelIcon()) ? ICON_PREVIEW : ICON_BABYSTEP;
+    printingItems.items[KEY_ICON_5].icon = (infoFile.source < BOARD_MEDIA && isPrintModelIcon()) ? ICON_PREVIEW : ICON_BABYSTEP;
   }
   else  // returned to this menu after a print was done (ex: after a popup)
   {
@@ -686,7 +646,7 @@ void menuPrinting(void)
     // Z_AXIS coordinate
     if (layerDisplayType == SHOW_LAYER_BOTH || layerDisplayType == SHOW_LAYER_HEIGHT)
     {
-      curLayerHeight = ((infoFile.source >= BOARD_SD) ? coordinateGetAxisActual(Z_AXIS) : coordinateGetAxisTarget(Z_AXIS));
+      curLayerHeight = ((infoFile.source >= BOARD_MEDIA) ? coordinateGetAxisActual(Z_AXIS) : coordinateGetAxisTarget(Z_AXIS));
       if (prevLayerHeight != curLayerHeight)
       {
         if (ABS(curLayerHeight - usedLayerHeight) >= LAYER_DELTA)

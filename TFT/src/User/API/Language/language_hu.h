@@ -59,6 +59,7 @@
     #define STRING_STEALTH_CHOP           "TMC StealthChop"
     #define STRING_DELTA_CONFIGURATION    "Delta konfiguráció"
     #define STRING_DELTA_TOWER_ANGLE      "Torony szögvágás"
+    #define STRING_DELTA_DIAGONAL_ROD     "Diagonal Rod Trim"
     #define STRING_DELTA_ENDSTOP          "Végállás beállítások"
     #define STRING_PROBE_OFFSET           "Szonda eltolás"
     #define STRING_LIN_ADVANCE            "Lineáris haladás"
@@ -173,6 +174,7 @@
     #define STRING_USB_DISK_REMOVED       "USB eltávolítva!"
     #define STRING_USB_DISK_NOT_DETECTED  "Nem észlelhető USB-lemez."
     #define STRING_ONBOARDSD              "Lap-SD"
+    #define STRING_ONBOARDUSB             "OnboardUSB"
     #define STRING_READ_ONBOARDSD_ERROR   "Alaplap-SD olvasási hiba!"
     #define STRING_FILAMENT_RUNOUT        "Szál kifutás!"
 

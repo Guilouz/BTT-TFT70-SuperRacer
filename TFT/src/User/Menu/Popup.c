@@ -1,9 +1,9 @@
 #include "Popup.h"
 #include "includes.h"
 
-#define X_MAX_CHAR     (LCD_WIDTH / BYTE_WIDTH)
-#define MAX_MSG_LINES  4
-#define POPUP_MAX_CHAR (X_MAX_CHAR * MAX_MSG_LINES)
+#define TITLE_MAX_CHAR (LCD_WIDTH / BYTE_WIDTH)
+#define MSG_MAX_LINES  4
+#define MSG_MAX_CHAR   (TITLE_MAX_CHAR * MSG_MAX_LINES)
 
 static BUTTON bottomSingleBtn = {
   // button location                      color before pressed   color after pressed
@@ -39,8 +39,8 @@ static void (*action_cancel)() = NULL;
 static void (*action_loop)() = NULL;
 
 static bool popup_redraw = false;
-static uint8_t popup_title[X_MAX_CHAR];
-static uint8_t popup_msg[POPUP_MAX_CHAR];
+static uint8_t popup_title[TITLE_MAX_CHAR];
+static uint8_t popup_msg[MSG_MAX_CHAR];
 static uint8_t popup_ok[24];
 static uint8_t popup_cancel[24];
 static DIALOG_TYPE popup_type;
@@ -208,6 +208,8 @@ void showDialog(DIALOG_TYPE type, void (*ok_action)(), void (*cancel_action)(), 
 
 void loopPopup(void)
 {
+  // display the latest received popup message, overriding previous popup messages, if any
+
   if (popup_redraw == false)
     return;
 
@@ -215,8 +217,7 @@ void loopPopup(void)
 
   LCD_WAKE();
 
-  // display the last received popup message, overriding previous popup messages, if any
-  if (popup_cancel[0])
+  if (popup_cancel[0])  // show both ok and cancel buttons
   {
     popupDrawPage(popup_type, bottomDoubleBtn, popup_title, popup_msg, popup_ok, popup_cancel);
     cur_btn_rect = doubleBtnRect;
@@ -228,8 +229,7 @@ void loopPopup(void)
   }
   else  // if no button is requested
   {
-    // display only a splash screen, avoiding to register the menuDialog handler
-    // (the handler needs at least one button to allow to close the dialog box)
+    // show a non-interactive message to prevent user from exiting before completing a task)
     popupDrawPage(popup_type, NULL, popup_title, popup_msg, NULL, NULL);
     return;
   }

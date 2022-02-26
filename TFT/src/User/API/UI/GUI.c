@@ -1204,10 +1204,10 @@ void GUI_DrawWindow(const WINDOW *window, const uint8_t *title, const uint8_t *i
 
   uint16_t title_height = window->titleHeight;
   // uint16_t action_height = window->actionBarHeight;
-  uint16_t title_txt_y0 = w_rect.y0 + (title_height - BYTE_HEIGHT) / 2;
-  uint16_t title_y1 = window->rect.y0 + window->titleHeight;
-  uint16_t action_y0 = window->rect.y1 - window->actionBarHeight;
-  uint8_t margin = BYTE_WIDTH/2;
+  uint16_t title_txt_y0 = w_rect.y0 + (title_height - BYTE_HEIGHT) / 2;                      // top y point fot title text display
+  uint16_t title_y1 = window->rect.y0 + window->titleHeight;                                 // bottom y point of title bar
+  uint16_t action_y0 = (actionBar) ? window->rect.y1 - window->actionBarHeight : w_rect.y1;  // set action bar height to 0 to maximize text area;
+  uint8_t margin = BYTE_WIDTH / 2;
 
   // draw title background
   GUI_SetColor(window->title.backColor);

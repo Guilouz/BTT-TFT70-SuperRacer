@@ -20,10 +20,16 @@ typedef enum
 {
   TFT_SD,
   TFT_USB_DISK,
-  BOARD_SD,
-  BOARD_SD_REMOTE,
+  BOARD_MEDIA,
+  BOARD_MEDIA_REMOTE,
   REMOTE_HOST
 } FS_SOURCE;
+
+typedef enum
+{
+  BOARD_SD,
+  BOARD_USB
+} ONBOARD_SOURCE;
 
 typedef struct
 {
@@ -34,9 +40,10 @@ typedef struct
   uint16_t fileCount;              // current gcode file count
   uint16_t curPage;                // current display page index (5 files per page)
   uint16_t fileIndex;              // selected file index
-  FS_SOURCE source;                // source of the file. TFT SD or ONBOARD SD.
-  TCHAR * longFile[FILE_NUM];      // long file name buffer from ONBOARD SD only
-  TCHAR * longFolder[FOLDER_NUM];  // long folder name buffer from ONBOARD SD only
+  FS_SOURCE source;                // source of the file. TFT media or onboard media.
+  ONBOARD_SOURCE boardSource;      // SD or USB for onboard media only
+  TCHAR * longFile[FILE_NUM];      // long file name buffer from onboard media only
+  TCHAR * longFolder[FOLDER_NUM];  // long folder name buffer from onboard media only
   bool modelIcon;                  // 1: model preview icon exist, 0: not exist
 } MYFILE;
 
@@ -45,21 +52,27 @@ extern MYFILE infoFile;
 void setPrintModelIcon(bool exist);
 bool isPrintModelIcon(void);
 
+TCHAR * getCurFileSource(void);
 bool mountFS(void);
 bool scanPrintFiles(void);
 
-TCHAR * getCurFileSource(void);
 void clearInfoFile(void);
 void resetInfoFile(void);
-bool EnterDir(char * nextdir);
+bool EnterDir(const char * nextdir);
 void ExitDir(void);
 bool IsRootDir(void);
-char * isSupportedFile(char * filename);
+char * isSupportedFile(const char * filename);
+
+// called in Print.c
 char * getFoldername(uint8_t index);
 char * hideFilenameExtension(uint8_t index);
 char * restoreFilenameExtension(uint8_t index);
+
+// called in PrintingMenu.c
+void hidePrintFilename(void);
 char * getPrintFilename(void);
 
+// called in menu.c
 bool volumeExists(uint8_t src);
 void loopVolumeSource(void);
 

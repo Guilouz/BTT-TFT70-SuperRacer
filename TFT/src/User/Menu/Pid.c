@@ -293,7 +293,7 @@ void menuPid(void)
           }
           else
           {
-            setDialogText(pidItems.title.index, LABEL_PID_START_INFO, LABEL_CONFIRM, LABEL_CANCEL);
+            setDialogText(pidItems.title.index, LABEL_PID_START_INFO, LABEL_CONTINUE, LABEL_CANCEL);
             showDialog(DIALOG_TYPE_QUESTION, pidStart, NULL, NULL);
           }
         }

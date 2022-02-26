@@ -59,6 +59,7 @@
     #define STRING_STEALTH_CHOP           "TMC StealthChop"
     #define STRING_DELTA_CONFIGURATION    "Konfiguracja delta"
     #define STRING_DELTA_TOWER_ANGLE      "Trymowanie kąta wieży"
+    #define STRING_DELTA_DIAGONAL_ROD     "Diagonal Rod Trim"
     #define STRING_DELTA_ENDSTOP          "Regulacje krańców"
     #define STRING_PROBE_OFFSET           "Przesunięcie sondy"
     #define STRING_LIN_ADVANCE            "Linear Advance"
@@ -173,6 +174,7 @@
     #define STRING_USB_DISK_REMOVED       "Dysk USB wyjęty!"
     #define STRING_USB_DISK_NOT_DETECTED  "No USB Disk detected."
     #define STRING_ONBOARDSD              "SD"
+    #define STRING_ONBOARDUSB             "OnboardUSB"
     #define STRING_READ_ONBOARDSD_ERROR   "Błąd odczytu karty SD!"
     #define STRING_FILAMENT_RUNOUT        "Skończył się filament!"
 

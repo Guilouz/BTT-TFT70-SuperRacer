@@ -59,6 +59,7 @@
     #define STRING_STEALTH_CHOP           "TMC StealthChop"
     #define STRING_DELTA_CONFIGURATION    "Delta Configuration"
     #define STRING_DELTA_TOWER_ANGLE      "Tower Angle Trim"
+    #define STRING_DELTA_DIAGONAL_ROD     "Diagonal Rod Trim"
     #define STRING_DELTA_ENDSTOP          "Endstop Adjustments"
     #define STRING_PROBE_OFFSET           "探针偏移量"
     #define STRING_LIN_ADVANCE            "Linear Advance"
@@ -173,6 +174,7 @@
     #define STRING_USB_DISK_REMOVED       "U盘已拔出!"
     #define STRING_USB_DISK_NOT_DETECTED  "No USB Disk detected."
     #define STRING_ONBOARDSD              "板载SD"
+    #define STRING_ONBOARDUSB             "OnboardUSB"
     #define STRING_READ_ONBOARDSD_ERROR   "读板载SD卡出错!"
     #define STRING_FILAMENT_RUNOUT        "耗材已用尽,请更换耗材!"
 

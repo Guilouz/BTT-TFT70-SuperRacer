@@ -341,7 +341,7 @@ void sendQueueCmd(void)
           if (isPrinting() && infoMachineSettings.firmwareType != FW_REPRAPFW)  // abort printing by "M0" in RepRapFirmware
           {
             // pause if printing from TFT and purge M0/M1 command
-            if (infoFile.source < BOARD_SD )
+            if (infoFile.source < BOARD_MEDIA )
             {
               sendCmd(true, avoid_terminal);
               printPause(true, PAUSE_M0);
@@ -366,26 +366,31 @@ void sendQueueCmd(void)
           case 20:  // M20
             if (!fromTFT)
             {
+              // example: "M20 SD:/test"
+
               if (cmd_start_with(cmd_ptr, "M20 SD:") ||
                   cmd_start_with(cmd_ptr, "M20 U:"))
               {
                 if (cmd_start_with(cmd_ptr, "M20 SD:"))
-                  infoFile.source = TFT_SD;
+                  infoFile.source = TFT_SD;        // set source first
                 else
-                  infoFile.source = TFT_USB_DISK;
+                  infoFile.source = TFT_USB_DISK;  // set source first
 
-                strncpy(infoFile.title, &cmd_ptr[cmd_index + 4], MAX_PATH_LEN);
-                // strip out any checksum that might be in the string
-                for (int i = 0; i < MAX_PATH_LEN && infoFile.title[i] != 0; i++)
+                // example: "SD:/test"
+                strncpy(infoFile.title, &cmd_ptr[4], MAX_PATH_LEN);  // then set title (used as base path by scanPrintFiles)
+
+                // strip out any trailing checksum that might be in the string
+                for (int i = 0; i < MAX_PATH_LEN && infoFile.title[i] != '\0' ; i++)
                 {
                   if ((infoFile.title[i] == '*') || (infoFile.title[i] == '\n') || (infoFile.title[i] == '\r'))
                   {
-                    infoFile.title[i] = 0;
+                    infoFile.title[i] = '\0';
                     break;
                   }
                 }
+
                 Serial_Puts(cmd_port, "Begin file list\n");
-                if (mountFS() == true && scanPrintFiles() == true)
+                if (mountFS() == true && scanPrintFiles() == true)  // then mount FS and scan for files (source and title are used)
                 {
                   for (uint16_t i = 0; i < infoFile.fileCount; i++)
                   {
@@ -412,19 +417,23 @@ void sendQueueCmd(void)
               if (cmd_start_with(cmd_ptr, "M23 SD:") ||
                   cmd_start_with(cmd_ptr, "M23 U:"))
               {
-                if (cmd_start_with(cmd_ptr, "M23 SD:"))
-                  infoFile.source = TFT_SD;
-                else
-                  infoFile.source = TFT_USB_DISK;
+                // example: "M23 SD:/test/cap.gcode"
 
-                resetInfoFile();
-                strncpy(infoFile.title, &cmd_ptr[cmd_index + 4], MAX_PATH_LEN);
-                // strip out any checksum that might be in the string
-                for (int i = 0; i < MAX_PATH_LEN && infoFile.title[i] != 0 ; i++)
+                if (cmd_start_with(cmd_ptr, "M23 SD:"))
+                  infoFile.source = TFT_SD;        // set source first
+                else
+                  infoFile.source = TFT_USB_DISK;  // set source first
+
+                // example: "SD:/test/cap.gcode"
+                resetInfoFile();                                     // then reset infoFile (source is restored)
+                strncpy(infoFile.title, &cmd_ptr[4], MAX_PATH_LEN);  // set title as last
+
+                // strip out any trailing checksum that might be in the string
+                for (int i = 0; i < MAX_PATH_LEN && infoFile.title[i] != '\0' ; i++)
                 {
-                  if ((infoFile.title[i] == '*') || (infoFile.title[i] == '\n') ||(infoFile.title[i] == '\r'))
+                  if ((infoFile.title[i] == '*') || (infoFile.title[i] == '\n') || (infoFile.title[i] == '\r'))
                   {
-                    infoFile.title[i] = 0;
+                    infoFile.title[i] = '\0';
                     break;
                   }
                 }
@@ -461,6 +470,9 @@ void sendQueueCmd(void)
           case 24:  // M24
             if (!fromTFT)
             {
+              // NOTE: If the file was selected (with M23) from onboard SD, infoFile.source will be set to BOARD_SD_REMOTE
+              //       by the printRemoteStart function called in parseAck.c during M23 ACK parsing
+
               if ((infoFile.source == TFT_USB_DISK) || (infoFile.source == TFT_SD))  // if a file was selected from TFT with M23
               {
                 // firstly purge the gcode to avoid a possible reprocessing or infinite nested loop in
@@ -485,7 +497,7 @@ void sendQueueCmd(void)
           case 25:  // M25
             if (!fromTFT)
             {
-              if (isPrinting() && infoFile.source < BOARD_SD)  // if printing from TFT
+              if (isPrinting() && infoFile.source < BOARD_MEDIA)  // if printing from TFT
               {
                 // firstly purge the gcode to avoid a possible reprocessing or infinite nested loop in
                 // case the function loopProcess() is invoked by the following function printPause()
@@ -505,7 +517,7 @@ void sendQueueCmd(void)
             }
             if (!fromTFT)
             {
-              if (isPrinting() && infoFile.source < BOARD_SD)  // if printing from TFT
+              if (isPrinting() && infoFile.source < BOARD_MEDIA)  // if printing from TFT
               {
                 if (cmd_seen('C'))
                 {
@@ -612,7 +624,7 @@ void sendQueueCmd(void)
           case 125:  // M125
             if (!fromTFT)
             {
-              if (isPrinting() && infoFile.source < BOARD_SD)  // if printing from TFT
+              if (isPrinting() && infoFile.source < BOARD_MEDIA)  // if printing from TFT
               {
                 // firstly purge the gcode to avoid a possible reprocessing or infinite nested loop in
                 // case the function loopProcess() is invoked by the following function printPause()
@@ -627,7 +639,7 @@ void sendQueueCmd(void)
           case 524:  // M524
             if (!fromTFT)
             {
-              if (isPrinting() && infoFile.source < BOARD_SD)  // if printing from TFT
+              if (isPrinting() && infoFile.source < BOARD_MEDIA)  // if printing from TFT
               {
                 // firstly purge the gcode to avoid a possible reprocessing or infinite nested loop in
                 // case the function loopProcess() is invoked by the following function printAbort()
@@ -868,10 +880,8 @@ void sendQueueCmd(void)
           if (cmd_seen('D')) setParameter(P_FILAMENT_DIAMETER, 1 + i, cmd_float());
           if (infoMachineSettings.firmwareType == FW_SMOOTHIEWARE)
           {
-            if (getParameter(P_FILAMENT_DIAMETER, 1) > 0.01F)  // common extruder param
-              setParameter(P_FILAMENT_DIAMETER, 0, 1);  // filament_diameter > 0.01 to enable  volumetric extrusion
-            else
-              setParameter(P_FILAMENT_DIAMETER, 0, 0);  // filament_diameter <= 0.01 to disable volumetric extrusion
+            // filament_diameter > 0.01 to enable volumetric extrusion. Otherwise (<= 0.01), disable volumetric extrusion
+            setParameter(P_FILAMENT_DIAMETER, 0, getParameter(P_FILAMENT_DIAMETER, 1) > 0.01f ? 1 : 0);
           }
           break;
         }
@@ -981,7 +991,6 @@ void sendQueueCmd(void)
           {
             caseLightSetBrightness(cmd_value());
           }
-          caseLightApplied(true);
           break;
         }
 
@@ -1054,6 +1063,9 @@ void sendQueueCmd(void)
           if (cmd_seen('S')) setParameter(P_DELTA_CONFIGURATION, 1, cmd_float());
           if (cmd_seen('R')) setParameter(P_DELTA_CONFIGURATION, 2, cmd_float());
           if (cmd_seen('L')) setParameter(P_DELTA_CONFIGURATION, 3, cmd_float());
+          if (cmd_seen('A')) setParameter(P_DELTA_DIAGONAL_ROD, AXIS_INDEX_X, cmd_float());
+          if (cmd_seen('B')) setParameter(P_DELTA_DIAGONAL_ROD, AXIS_INDEX_Y, cmd_float());
+          if (cmd_seen('C')) setParameter(P_DELTA_DIAGONAL_ROD, AXIS_INDEX_Z, cmd_float());
           if (cmd_seen('X')) setParameter(P_DELTA_TOWER_ANGLE, AXIS_INDEX_X, cmd_float());
           if (cmd_seen('Y')) setParameter(P_DELTA_TOWER_ANGLE, AXIS_INDEX_Y, cmd_float());
           if (cmd_seen('Z')) setParameter(P_DELTA_TOWER_ANGLE, AXIS_INDEX_Z, cmd_float());

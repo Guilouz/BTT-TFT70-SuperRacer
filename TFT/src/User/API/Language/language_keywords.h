@@ -66,6 +66,7 @@ extern "C" {
 #define LANG_KEY_STEALTH_CHOP                 "label_stealth_chop:"
 #define LANG_KEY_DELTA_CONFIGURATION          "label_delta_configuration:"
 #define LANG_KEY_DELTA_TOWER_ANGLE            "label_delta_tower_angle:"
+#define LANG_KEY_DELTA_DIAGONAL_ROD           "label_delta_diagonal_rod:"
 #define LANG_KEY_DELTA_ENDSTOP                "label_delta_endstop:"
 #define LANG_KEY_PROBE_OFFSET                 "label_probe_offset:"
 #define LANG_KEY_LIN_ADVANCE                  "label_lin_advance:"
@@ -180,6 +181,7 @@ extern "C" {
 #define LANG_KEY_USB_DISK_REMOVED             "label_usb_disk_removed:"
 #define LANG_KEY_USB_DISK_NOT_DETECTED        "label_usb_disk_not_detected:"
 #define LANG_KEY_ONBOARDSD                    "label_onboardsd:"
+#define LANG_KEY_ONBOARDUSB                   "label_onboardusb"
 #define LANG_KEY_READ_ONBOARDSD_ERROR         "label_read_onboardsd_error:"
 #define LANG_KEY_FILAMENT_RUNOUT              "label_filament_runout:"
 

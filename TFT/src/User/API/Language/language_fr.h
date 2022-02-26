@@ -59,6 +59,7 @@
     #define STRING_STEALTH_CHOP           "StealthChop TMC"
     #define STRING_DELTA_CONFIGURATION    "Réglages Delta"
     #define STRING_DELTA_TOWER_ANGLE      "Corrections d'angle des tours"
+    #define STRING_DELTA_DIAGONAL_ROD     "Ajustements Diagonal Rod"
     #define STRING_DELTA_ENDSTOP          "Ajustements de fin de course"
     #define STRING_PROBE_OFFSET           "Décalage du palpeur"
     #define STRING_LIN_ADVANCE            "Linear Advance"
@@ -172,7 +173,8 @@
     #define STRING_USB_DISK_INSERTED      "Clé USB insérée !"
     #define STRING_USB_DISK_REMOVED       "Clé USB retirée !"
     #define STRING_USB_DISK_NOT_DETECTED  "Aucune clé USB détectée."
-    #define STRING_ONBOARDSD              "Port CM"
+    #define STRING_ONBOARDSD              "microSD CM"
+    #define STRING_ONBOARDUSB             "USB CM"
     #define STRING_READ_ONBOARDSD_ERROR   "Erreur de lecture du port de la carte mère !"
     #define STRING_FILAMENT_RUNOUT        "Fin de Filament !"
 

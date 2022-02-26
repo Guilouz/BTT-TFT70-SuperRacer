@@ -550,7 +550,7 @@ static const LISTITEMS *curListItems = NULL;  // current listmenu
 static const void (* curMenuRedrawHandle)(void) = NULL;  // current custom menu
 
 static MENU_TYPE menuType = MENU_TYPE_ICON;
-static LABEL * curTitle = NULL;
+static const LABEL * curTitle = NULL;
 static const GUI_RECT *curRect = NULL;  // current menu layout grid
 static uint16_t curRectCount = 0;       // current menu layout rect count
 
@@ -737,7 +737,7 @@ void loopReminderClear(void)
   }
 
   reminder.status = STATUS_IDLE;  // Clear status message
-  menuReDrawCurTitle();
+  menuDrawTitle();
 }
 
 void loopVolumeReminderClear(void)
@@ -752,7 +752,7 @@ void loopVolumeReminderClear(void)
   }
 
   volumeReminder.status = STATUS_IDLE;  // Clear status message
-  menuReDrawCurTitle();
+  menuDrawTitle();
 }
 
 void loopBusySignClear(void)
@@ -771,7 +771,9 @@ void loopBusySignClear(void)
   busySign.status = STATUS_IDLE;  // clear busy signal status
 
   if (menuType == MENU_TYPE_FULLSCREEN)
+  {
     curMenuRedrawHandle();
+  }
   else
   {
     GUI_SetColor(infoSettings.title_bg_color);
@@ -783,68 +785,66 @@ void loopBusySignClear(void)
 void notificationDot(void)
 {
   if (hasNotification())
-  {
     GUI_SetColor(infoSettings.font_color);
-  }
   else
-  {
     GUI_SetColor(infoSettings.title_bg_color);
-  }
+
   GUI_FillCircle(3, 3, 3);
   GUI_RestoreColorDefault();
 }
 
-void menuDrawTitle(const uint8_t *content)
+void menuSetTitle(const LABEL *title)
 {
-  if (menuType == MENU_TYPE_FULLSCREEN) return;
+  curTitle = title;
+  menuDrawTitle();
+}
+
+void menuDrawTitle(void)
+{
+  if ((menuType == MENU_TYPE_LISTVIEW && curListItems == NULL) ||
+      (menuType == MENU_TYPE_ICON && curMenuItems == NULL))
+  {
+    return;
+  }
+  else if (menuType == MENU_TYPE_FULLSCREEN && curMenuRedrawHandle == NULL)
+  {
+    curMenuRedrawHandle();
+    return;
+  }
+
   if (toastRunning())
   {
     drawToast(true);
     return;
   }
+
+  uint8_t *titleString = labelGetAddress(curTitle);
   uint16_t start_y = (TITLE_END_Y - BYTE_HEIGHT) / 2;
   uint16_t start_x = 10;
   uint16_t end_x = drawTemperatureStatus();
+
   GUI_SetBkColor(infoSettings.title_bg_color);
-  if (content)
+
+  if (titleString)
   {
-    GUI_DispLenString(10, start_y, content, LCD_WIDTH - 20, true);
-    start_x += GUI_StrPixelWidth(content);
+    GUI_DispLenString(10, start_y, titleString, LCD_WIDTH - 20, true);
+    start_x += GUI_StrPixelWidth(titleString);
     if (start_x > LCD_WIDTH-20) start_x = LCD_WIDTH - 20;
   }
-  GUI_ClearRect(start_x, start_y, end_x, start_y+BYTE_HEIGHT);
 
+  GUI_ClearRect(start_x, start_y, end_x, start_y + BYTE_HEIGHT);
+
+  // show notification dot
   notificationDot();
   GUI_SetBkColor(infoSettings.bg_color);
-  if (reminder.status == STATUS_IDLE) return;
-  GUI_SetColor(infoSettings.reminder_color);
-  GUI_SetBkColor(infoSettings.title_bg_color);
-  GUI_DispStringInPrect(&reminder.rect, reminder.inf);
-  GUI_RestoreColorDefault();
-}
 
-void menuReDrawCurTitle(void)
-{
-  if (menuType == MENU_TYPE_LISTVIEW)
+  // draw reminder/storage status
+  if (reminder.status != STATUS_IDLE)
   {
-    if (curListItems == NULL)
-      return;
-    menuDrawTitle(labelGetAddress(&curListItems->title));
-  }
-  else if (menuType == MENU_TYPE_ICON)
-  {
-    if (curMenuItems == NULL)
-      return;
-    menuDrawTitle(labelGetAddress(&curMenuItems->title));
-  }
-  else if (menuType == MENU_TYPE_FULLSCREEN)
-  {
-    if (curMenuRedrawHandle != NULL)
-      curMenuRedrawHandle();
-  }
-  else if (menuType == MENU_TYPE_OTHER)
-  {
-    menuDrawTitle(labelGetAddress(curTitle));
+    GUI_SetColor(infoSettings.reminder_color);
+    GUI_SetBkColor(infoSettings.title_bg_color);
+    GUI_DispStringInPrect(&reminder.rect, reminder.inf);
+    GUI_RestoreColorDefault();
   }
 }
 
@@ -881,7 +881,7 @@ void menuDrawPage(const MENUITEMS *menuItems)
   #endif
 
   menuClearGaps();  // Use this function instead of GUI_Clear to eliminate the splash screen when clearing the screen.
-  menuDrawTitle(labelGetAddress(&curMenuItems->title));
+  menuSetTitle(&curMenuItems->title);
 
   for (i = 0; i < ITEM_PER_PAGE; i++)
   {
@@ -909,7 +909,7 @@ void menuDrawListPage(const LISTITEMS *listItems)
   GUI_ClearRect(0, TITLE_END_Y, LCD_WIDTH, LCD_HEIGHT);
 
   //menuClearGaps();  // Use this function instead of GUI_Clear to eliminate the splash screen when clearing the screen.
-  menuDrawTitle(labelGetAddress(&listItems->title));
+  menuSetTitle(&listItems->title);
 
   for (i = 0; i < ITEM_PER_PAGE; i++)
   {
@@ -1264,7 +1264,7 @@ void loopBackEnd(void)
 
   if (infoMachineSettings.onboardSD == ENABLED)
   {
-    loopPrintFromOnboardSD();  // handle a print from (remote) onboard SD, if any
+    loopPrintFromOnboardSD();  // handle a print from (remote) onboard media, if any
   }
 
   #ifdef USB_FLASH_DRIVE_SUPPORT
@@ -1304,14 +1304,9 @@ void loopBackEnd(void)
   if (GET_BIT(infoSettings.general_settings, INDEX_EVENT_LED) == 1)
     LED_CheckEvent();
 
-  if (infoMachineSettings.caseLightsBrightness == ENABLED)
-  {
-    loopCaseLight();
-  }
-
   // Query RRF status
   rrfStatusQuery();
-}  // loopBackEnd
+} 
 
 // UI-related background loop tasks
 void loopFrontEnd(void)

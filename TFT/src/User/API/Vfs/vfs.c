@@ -1,7 +1,7 @@
 #include "vfs.h"
 #include "includes.h"
 
-MYFILE infoFile = {"?:", {0}, {0}, 0, 0, 0, 0, TFT_SD, {0}};
+MYFILE infoFile = {"?:", {0}, {0}, 0, 0, 0, 0, TFT_SD, BOARD_SD, {0}, {0}, false};
 
 void setPrintModelIcon(bool exist)
 {
@@ -11,50 +11,6 @@ void setPrintModelIcon(bool exist)
 bool isPrintModelIcon(void)
 {
   return infoFile.modelIcon;
-}
-
-bool mountFS(void)
-{
-  //resetInfoFile();  // needn't this
-  switch (infoFile.source)
-  {
-    case TFT_SD:
-      return mountSDCard();
-
-    case TFT_USB_DISK:
-      return mountUSBDisk();
-
-    case BOARD_SD:
-      if (infoHost.printing)
-        return true;  // no mount while printing
-      else
-        return mountGcodeSDCard();
-
-    default:
-      return false;
-  }
-}
-
-// clear and free memory from file list
-void clearInfoFile(void)
-{
-  uint8_t i = 0;
-  for (i = 0; i < infoFile.folderCount; i++)
-  {
-    free(infoFile.folder[i]);
-    infoFile.folder[i] = 0;
-  }
-  for (i = 0; i < infoFile.fileCount; i++)
-  {
-    free(infoFile.file[i]);
-    infoFile.file[i] = 0;
-
-    if (infoFile.longFile[i] != 0)  // long filename is optional so we need to check its presence
-      free(infoFile.longFile[i]);
-    infoFile.longFile[i] = 0;
-  }
-  infoFile.folderCount = 0;
-  infoFile.fileCount = 0;
 }
 
 TCHAR * getCurFileSource(void)
@@ -67,37 +23,46 @@ TCHAR * getCurFileSource(void)
     case TFT_USB_DISK:
       return USBDISK_ROOT_DIR;
 
-    case BOARD_SD:
-    case BOARD_SD_REMOTE:
-      return infoMachineSettings.firmwareType == FW_REPRAPFW ? "gcodes" : "bSD:";
+    case BOARD_MEDIA:
+    case BOARD_MEDIA_REMOTE:
+      return infoMachineSettings.firmwareType == FW_REPRAPFW ? "gcodes" : "bMD:";
 
-    default:
-      break;
+    default:  // also for REMOTE_HOST
+      return "";
   }
-  return NULL;
 }
 
-// reset file list
-void resetInfoFile(void)
+bool mountFS(void)
 {
-  FS_SOURCE source = infoFile.source;
-  clearInfoFile();
-  memset(&infoFile, 0, sizeof(infoFile));
-  infoFile.source = source;
-  strcpy(infoFile.title, getCurFileSource());
+  switch (infoFile.source)
+  {
+    case TFT_SD:
+      return mountSDCard();
+
+    case TFT_USB_DISK:
+      return mountUSBDisk();
+
+    case BOARD_MEDIA:
+      if (infoHost.printing)
+        return true;  // no mount while printing
+      else
+        return mountGcodeSDCard();
+
+    default:
+      return false;
+  }
 }
 
 // scan files in source
 bool scanPrintFiles(void)
 {
-  clearInfoFile();
   switch (infoFile.source)
   {
     case TFT_SD:
     case TFT_USB_DISK:
       return scanPrintFilesFatFs();
 
-    case BOARD_SD:
+    case BOARD_MEDIA:
       return scanPrintFilesGcodeFs();
 
     default:
@@ -105,24 +70,72 @@ bool scanPrintFiles(void)
   }
 }
 
+// clear and free memory from file list
+void clearInfoFile(void)
+{
+  uint8_t i = 0;
+
+  for (i = 0; i < infoFile.folderCount; i++)
+  {
+    free(infoFile.folder[i]);
+    infoFile.folder[i] = NULL;
+
+    if (infoFile.longFolder[i] != NULL)  // long folder name is optional so we need to check its presence
+      free(infoFile.longFolder[i]);
+
+    infoFile.longFolder[i] = NULL;
+  }
+
+  for (i = 0; i < infoFile.fileCount; i++)
+  {
+    free(infoFile.file[i]);
+    infoFile.file[i] = NULL;
+
+    if (infoFile.longFile[i] != NULL)  // long filename is optional so we need to check its presence
+      free(infoFile.longFile[i]);
+
+    infoFile.longFile[i] = NULL;
+  }
+
+  infoFile.folderCount = 0;
+  infoFile.fileCount = 0;
+}
+
+// reset file list
+void resetInfoFile(void)
+{
+  FS_SOURCE source = infoFile.source;
+
+  ONBOARD_SOURCE onboardSource = infoFile.boardSource;
+  clearInfoFile();
+  memset(&infoFile, 0, sizeof(infoFile));
+  infoFile.source = source;
+  infoFile.boardSource =  onboardSource;
+  strcpy(infoFile.title, getCurFileSource());
+}
+
 // check and open folder
-bool EnterDir(char * nextdir)
+bool EnterDir(const char * nextdir)
 {
   if (strlen(infoFile.title) + strlen(nextdir) + 2 >= MAX_PATH_LEN)
-    return 0;
+    return false;
+
   strcat(infoFile.title, "/");
   strcat(infoFile.title, nextdir);
-  return 1;
+
+  return true;
 }
 
 // close folder
 void ExitDir(void)
 {
   int i = strlen(infoFile.title);
+
   for (; i > 0 && infoFile.title[i] != '/'; i--)
   {
   }
-  infoFile.title[i] = 0;
+
+  infoFile.title[i] = '\0';
 }
 
 // check if current folder is root
@@ -132,7 +145,7 @@ bool IsRootDir(void)
 }
 
 // check if filename provides a supported filename extension
-char * isSupportedFile(char * filename)
+char * isSupportedFile(const char * filename)
 {
   char * extPos = strrchr(filename, '.');  // check last "." in the name where extension is supposed to start
 
@@ -197,22 +210,30 @@ char * restoreFilenameExtension(uint8_t index)
   return filename;
 }
 
-char * getPrintFilename(void)
+void hidePrintFilename(void)
 {
-  if (infoFile.source <= BOARD_SD)  // if printing from TFT or onboard SD
-  {
-    if (infoFile.longFile[infoFile.fileIndex] != NULL)
-      return infoFile.longFile[infoFile.fileIndex];
-    else
-      return infoFile.file[infoFile.fileIndex];
-  }
-  else  // if printing from remote onboard SD or remote host
-  {
-    return infoFile.title;
-  }
+  // if printing from remote onboard media, remote host or also remote TFT (with M23 - M24),
+  // no file is available in infoFile. Only infoFile.title was set by M23 in interfaceCmd.c
+  if (infoFile.fileCount == 0)
+    return;
+
+  hideFilenameExtension(infoFile.fileIndex);  // hide filename extension if filename extension feature is disabled
 }
 
-// Volume exist detect
+char * getPrintFilename(void)
+{
+  // if printing from remote onboard media, remote host or also remote TFT (with M23 - M24),
+  // no file is available in infoFile. Only infoFile.title was set by M23 in interfaceCmd.c
+  if (infoFile.fileCount == 0)
+    return infoFile.title;
+
+  if (infoFile.longFile[infoFile.fileIndex] != NULL)
+    return infoFile.longFile[infoFile.fileIndex];
+  else
+    return infoFile.file[infoFile.fileIndex];
+}
+
+// volume exist detect
 static bool volumeSrcStatus[FF_VOLUMES] = {false, false};
 
 bool volumeExists(uint8_t src)
@@ -233,6 +254,7 @@ void loopVolumeSource(void)
     {
       const int16_t labelSDStates[FF_VOLUMES][2] = {{LABEL_TFTSD_REMOVED, LABEL_TFTSD_INSERTED},
                                                     {LABEL_USB_DISK_REMOVED, LABEL_USB_DISK_INSERTED}};
+
       volumeSrcStatus[i] = (*volumeInserted[i])();
       volumeReminderMessage(labelSDStates[i][volumeSrcStatus[i]], STATUS_NORMAL);
     }

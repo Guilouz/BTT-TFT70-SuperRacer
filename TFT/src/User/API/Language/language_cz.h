@@ -59,6 +59,7 @@
     #define STRING_STEALTH_CHOP           "TMC Tichý režim"
     #define STRING_DELTA_CONFIGURATION    "Delta konfigurace"
     #define STRING_DELTA_TOWER_ANGLE      "Úhel věže"
+    #define STRING_DELTA_DIAGONAL_ROD     "Diagonal Rod Trim"
     #define STRING_DELTA_ENDSTOP          "Nastavení dorazu"
     #define STRING_PROBE_OFFSET           "Offset sondy"
     #define STRING_LIN_ADVANCE            "Linear Advance"
@@ -173,6 +174,7 @@
     #define STRING_USB_DISK_REMOVED       "USB disk vyjmut!"
     #define STRING_USB_DISK_NOT_DETECTED  "USB není detekován."
     #define STRING_ONBOARDSD              "Onboard SD"
+    #define STRING_ONBOARDUSB             "OnboardUSB"
     #define STRING_READ_ONBOARDSD_ERROR   "Chyba při čtení Onboard SD!"
     #define STRING_FILAMENT_RUNOUT        "Došel filament!"
 
