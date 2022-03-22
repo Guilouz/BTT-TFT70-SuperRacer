@@ -162,20 +162,20 @@
     #define STRING_PROCESS_COMPLETED      "Process voltooid!"
     #define STRING_PROCESS_ABORTED        "Process geannuleerd!"
 
-    // TFT SD, USB Disk, Onboard SD, Filament Runout Process Commands / Status / Info
-    #define STRING_TFTSD                  "TFT SD"
-    #define STRING_READ_TFTSD_ERROR       "TFT SD leesfout!"
-    #define STRING_TFTSD_INSERTED         "Kaart geplaatst!"
-    #define STRING_TFTSD_REMOVED          "Kaart verwijdert!"
-    #define STRING_TFTSD_NOT_DETECTED     "No SD Card detected."
-    #define STRING_USB_DISK               "U Disk"
-    #define STRING_READ_USB_DISK_ERROR    "U Disk Leesfout!"
-    #define STRING_USB_DISK_INSERTED      "U Disk geplaatst!"
-    #define STRING_USB_DISK_REMOVED       "U Disk verwijdert!"
-    #define STRING_USB_DISK_NOT_DETECTED  "No USB Disk detected."
-    #define STRING_ONBOARDSD              "OnboardSD"
-    #define STRING_ONBOARDUSB             "OnboardUSB"
-    #define STRING_READ_ONBOARDSD_ERROR   "Onboard SD-kaart leesfout!"
+    // TFT Media, Onboard Media, Filament Runout Process Commands / Status / Info
+    #define STRING_TFT_SD                 "TFT SD"
+    #define STRING_TFT_SD_READ_ERROR      "TFT SD leesfout!"
+    #define STRING_TFT_SD_INSERTED        "Kaart geplaatst!"
+    #define STRING_TFT_SD_REMOVED         "Kaart verwijdert!"
+    #define STRING_TFT_SD_NOT_DETECTED    "No SD Card detected."
+    #define STRING_TFT_USB                "U Disk"
+    #define STRING_TFT_USB_READ_ERROR     "U Disk Leesfout!"
+    #define STRING_TFT_USB_INSERTED       "U Disk geplaatst!"
+    #define STRING_TFT_USB_REMOVED        "U Disk verwijdert!"
+    #define STRING_TFT_USB_NOT_DETECTED   "No USB Disk detected."
+    #define STRING_ONBOARD_SD             "OnboardSD"
+    #define STRING_ONBOARD_USB            "OnboardUSB"
+    #define STRING_ONBOARD_SD_READ_ERROR  "Onboard media leesfout!"
     #define STRING_FILAMENT_RUNOUT        "filament op!"
 
     // Steppers, Print, Probe Process Commands / Status / Info
@@ -191,6 +191,8 @@
     #define STRING_DEPLOY                 "Gebruiken"
     #define STRING_STOW                   "Inzetten"
     #define STRING_REPEAT                 "Herhaal"
+    #define STRING_HS_ON                  "HS: On"
+    #define STRING_HS_OFF                 "HS: Off"
 
     // Printer Tools
     #define STRING_NOZZLE                 "Spuitneus"

@@ -162,20 +162,20 @@
     #define STRING_PROCESS_COMPLETED      "Process completed!"
     #define STRING_PROCESS_ABORTED        "Process aborted!"
 
-    // TFT SD, USB Disk, Onboard SD, Filament Runout Process Commands / Status / Info
-    #define STRING_TFTSD                  "TFT SD"
-    #define STRING_READ_TFTSD_ERROR       "Chyba pri načítaní SD karty!"
-    #define STRING_TFTSD_INSERTED         "SD karta vložená!"
-    #define STRING_TFTSD_REMOVED          "SD karta odstránená!"
-    #define STRING_TFTSD_NOT_DETECTED     "No SD Card detected."
-    #define STRING_USB_DISK               "USB kľúč"
-    #define STRING_READ_USB_DISK_ERROR    "Chyba pri načítaní USB kľúča!"
-    #define STRING_USB_DISK_INSERTED      "USB kľúč vložený!"
-    #define STRING_USB_DISK_REMOVED       "USB disk odstránený!"
-    #define STRING_USB_DISK_NOT_DETECTED  "No USB Disk detected."
-    #define STRING_ONBOARDSD              "SD karta na doske"
-    #define STRING_ONBOARDUSB             "OnboardUSB"
-    #define STRING_READ_ONBOARDSD_ERROR   "Chyba pri načítaní SD karty na doske!"
+    // TFT Media, Onboard Media, Filament Runout Process Commands / Status / Info
+    #define STRING_TFT_SD                 "TFT SD"
+    #define STRING_TFT_SD_READ_ERROR      "Chyba pri načítaní SD karty!"
+    #define STRING_TFT_SD_INSERTED        "SD karta vložená!"
+    #define STRING_TFT_SD_REMOVED         "SD karta odstránená!"
+    #define STRING_TFT_SD_NOT_DETECTED    "No SD Card detected."
+    #define STRING_TFT_USB                "USB kľúč"
+    #define STRING_TFT_USB_READ_ERROR     "Chyba pri načítaní USB kľúča!"
+    #define STRING_TFT_USB_INSERTED       "USB kľúč vložený!"
+    #define STRING_TFT_USB_REMOVED        "USB disk odstránený!"
+    #define STRING_TFT_USB_NOT_DETECTED   "No USB Disk detected."
+    #define STRING_ONBOARD_SD             "SD karta na doske"
+    #define STRING_ONBOARD_USB            "USB na doske"
+    #define STRING_ONBOARD_SD_READ_ERROR  "Chyba pri načítaní media na doske!"
     #define STRING_FILAMENT_RUNOUT        "Chýba filament!"
 
     // Steppers, Print, Probe Process Commands / Status / Info
@@ -191,6 +191,8 @@
     #define STRING_DEPLOY                 "Vystrčiť"
     #define STRING_STOW                   "Stiahnuť"
     #define STRING_REPEAT                 "Opakovať"
+    #define STRING_HS_ON                  "HS: On"
+    #define STRING_HS_OFF                 "HS: Off"
 
     // Printer Tools
     #define STRING_NOZZLE                 "Tryska"

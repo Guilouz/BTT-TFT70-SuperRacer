@@ -13,14 +13,14 @@ bool mountGcodeSDCard(void)
 {
   if (infoMachineSettings.firmwareType == FW_REPRAPFW)
     return true;
-    
+
   return request_M21();
 }
 
 static inline void rrfScanPrintFilesGcodeFs(void)
 {
   // TODO detect files_sort_by and set with_ts appropriately once M20 S3 works
-  request_M20_rrf(infoFile.title, false, parseJobListResponse);
+  request_M20_rrf(infoFile.path, false, parseJobListResponse);
 }
 
 /**
@@ -162,6 +162,7 @@ bool scanPrintFilesGcodeFs(void)
   char * relativePath;
   char * strPtr;
   uint8_t strLen;
+  uint8_t sourceLenExtra = strlen(getSourceFS()) + 1;  // "+ 1" for "/" character (e.g. "oMD:/sub_dir" -> "oMD:/")
 
   for (; line != NULL; line = strtok(NULL, s))
   {
@@ -169,14 +170,17 @@ bool scanPrintFilesGcodeFs(void)
         strcmp(line, "Begin file list") == 0 || strcmp(line, "End file list") == 0 )  // start and stop tag
       continue;
 
+    longPath = NULL;  // initialize to NULL in case long path is not available (e.g. "M20 L" not supported by Marlin)
+
     strPtr = strchr(line, ' ');  // get short path removing the file size, if any
     if (strPtr != NULL)
+    {
       *strPtr = '\0';
 
-    longPath = NULL;                   // initialize to NULL in case long path is not available (e.g. "M20 L" not supported by Marlin)
-    strPtr = strchr(strPtr + 1, ' ');  // get long path jumping after the file size, if any (e.g. "M20 L" supported by Marlin)
-    if (strPtr != NULL)
-      longPath = strPtr + 1;
+      strPtr = strchr(strPtr + 1, ' ');  // get long path jumping after the file size, if any (e.g. "M20 L" supported by Marlin)
+      if (strPtr != NULL)
+        longPath = strPtr + 1;
+    }
 
     // old Marlin fw provides "/" at the beginning while latest Marlin fw doesn't, so skip it if present (use a common file path)
     // (e.g. "/sub_dir/cap.gcode" -> "sub_dir/cap.gcode")
@@ -184,22 +188,38 @@ bool scanPrintFilesGcodeFs(void)
     if (line[0] == '/')
       line++;
 
-    // "line" never has "/" at the beginning of a path (e.g. "sub_dir/cap.gcode") while "infoFile.title" has it
-    // (e.g. "bMD:/sub_dir"), so we skip it during the check of current folder match (index 5 used instead of 4)
+    relativePath = line;  // initialize relative path to "line"
+
+    // "line" never has "/" at the beginning of a path (e.g. "sub_dir/cap.gcode") while "infoFile.path" has it
+    // (e.g. "oMD:/sub_dir"), so we skip it during the check of current folder match
     //
-    strLen = strlen(infoFile.title);
-    if (strLen > 5)                               // we're in a subfolder
+    strLen = strlen(infoFile.path);
+    if (strLen > sourceLenExtra)                              // we're in a sub folder (e.g. "infoFile.path" = "oMD:/sub_dir")
     {
-      strPtr = strstr(line, infoFile.title + 5);  // "+ 5" skips the 5 bytes related to prefix "bSD:/" in "infoFile.title"
-      if (strPtr == NULL)                         // if "line" doesn't include current folder
-        continue;
-      else if (strPtr[strLen - 5] != '/')         // "- 5" skips the prefix "bSD:/" in "infoFile.title"
-        continue;                                 // because it's a file, not a folder
+      strPtr = strstr(line, infoFile.path + sourceLenExtra);  // (e.g. "infoFile.path" = "oMD:/sub_dir" -> "sub_dir")
+
+      if (strPtr == NULL || strPtr != line)             // if "line" doesn't include current folder or doesn't fully match from beginning
+        continue;                                       // (e.g. "line" = "before_sub_dir/cap.gcode" -> "sub_dir/cap.gcode")
+      else if (strPtr[strLen - sourceLenExtra] != '/')  // if "line" is a file or doesn't fully match to end
+        continue;                                       // (e.g. "line" = "sub_dir_after/cap.gcode" -> "_after/cap.gcode")
+
+      // update relative path skipping current folder and next "/" character
+      // (e.g. "relativePath" = "sub_dir/cap.gcode" -> "cap.gcode")
+      relativePath += (strLen - sourceLenExtra) + 1;
     }
 
     // examples:
     //
-    // "infoFile.title" = "bSD:/sub_dir"
+    // "infoFile.path" = "oMD:"
+    // "line" = "arm.gcode"
+    // "line" = "sub_dir/cap.gcode"
+    //
+    // "relativePath" = "arm.gcode"
+    // "relativePath" = "sub_dir/cap.gcode"
+    //
+    // examples:
+    //
+    // "infoFile.path" = "oMD:/sub_dir"
     // "line" = "sub_dir/cap.gcode"
     // "line" = "sub_dir/sub_dir_2/cap2.gcode"
     // "line" = "sub_dir/sub_dir_2/sub_dir_3/cap3.gcode"
@@ -207,36 +227,46 @@ bool scanPrintFilesGcodeFs(void)
     // "relativePath" = "cap.gcode"
     // "relativePath" = "sub_dir_2/cap2.gcode"
     // "relativePath" = "sub_dir_2/sub_dir_3/cap3.gcode"
-    //
-    relativePath = line + (strLen - 4);  // "- 4" represents the 4 bytes related to prefix "bSD:" in "infoFile.title"
 
     if (strchr(relativePath, '/') == NULL)  // if FILE
     {
       // examples:
       //
-      // "infoFile.title" = "bSD:/sub_dir"
+      // "infoFile.path" = "oMD:"
+      // "relativePath" = "arm.gcode"
+      //
+      // examples:
+      //
+      // "infoFile.path" = "oMD:/sub_dir"
       // "relativePath" = "cap.gcode"
 
-      if (infoFile.fileCount >= FILE_NUM)  // Gcode max number is FILE_NUM
-
+      if (infoFile.fileCount >= FILE_NUM)  // gcode file max number is FILE_NUM
         continue;
+
       getName(true, longPath, line, relativePath);
     }
     else  // if FOLDER
     {
       // examples:
       //
-      // "infoFile.title" = "bSD:/sub_dir"
+      // "infoFile.path" = "oMD:"
+      // "relativePath" = "sub_dir/cap.gcode"
+      //
+      // examples:
+      //
+      // "infoFile.path" = "oMD:/sub_dir"
       // "relativePath" = "sub_dir_2/cap2.gcode"
       // "relativePath" = "sub_dir_2/sub_dir_3/cap3.gcode"
 
       if (infoFile.folderCount >= FOLDER_NUM)  // folder max number is FOLDER_NUM
         continue;
 
+      // "sub_dir/cap.gcode" -> "sub_dir"
+      //
       // "sub_dir_2/cap2.gcode" -> "sub_dir_2"
       // "sub_dir_2/sub_dir_3/cap3.gcode" -> "sub_dir_2"
       //
-      strPtr = strstr(relativePath, "/");  // remove file and sub folders path (retrieve only root folder), if any
+      strPtr = strchr(relativePath, '/');  // remove file and sub folders path (retrieve only root folder), if any
       if (strPtr != NULL)
         *strPtr = '\0';
 

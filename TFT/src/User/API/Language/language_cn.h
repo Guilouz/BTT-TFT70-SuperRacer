@@ -162,20 +162,20 @@
     #define STRING_PROCESS_COMPLETED      "处理已完成!"
     #define STRING_PROCESS_ABORTED        "处理已被中断!"
 
-    // TFT SD, USB Disk, Onboard SD, Filament Runout Process Commands / Status / Info
-    #define STRING_TFTSD                  "TFT SD"
-    #define STRING_READ_TFTSD_ERROR       "读TFT SD卡出错!"
-    #define STRING_TFTSD_INSERTED         "SD卡已插入!"
-    #define STRING_TFTSD_REMOVED          "SD卡已拔出!"
-    #define STRING_TFTSD_NOT_DETECTED     "No SD Card detected."
-    #define STRING_USB_DISK               "U盘"
-    #define STRING_READ_USB_DISK_ERROR    "读U盘出错!"
-    #define STRING_USB_DISK_INSERTED      "U盘已插入!"
-    #define STRING_USB_DISK_REMOVED       "U盘已拔出!"
-    #define STRING_USB_DISK_NOT_DETECTED  "No USB Disk detected."
-    #define STRING_ONBOARDSD              "板载SD"
-    #define STRING_ONBOARDUSB             "OnboardUSB"
-    #define STRING_READ_ONBOARDSD_ERROR   "读板载SD卡出错!"
+    // TFT Media, Onboard Media, Filament Runout Process Commands / Status / Info
+    #define STRING_TFT_SD                 "TFT SD"
+    #define STRING_TFT_SD_READ_ERROR      "读TFT SD卡出错!"
+    #define STRING_TFT_SD_INSERTED        "SD卡已插入!"
+    #define STRING_TFT_SD_REMOVED         "SD卡已拔出!"
+    #define STRING_TFT_SD_NOT_DETECTED    "No SD Card detected."
+    #define STRING_TFT_USB                "U盘"
+    #define STRING_TFT_USB_READ_ERROR     "读U盘出错!"
+    #define STRING_TFT_USB_INSERTED       "U盘已插入!"
+    #define STRING_TFT_USB_REMOVED        "U盘已拔出!"
+    #define STRING_TFT_USB_NOT_DETECTED   "No USB Disk detected."
+    #define STRING_ONBOARD_SD             "板载SD"
+    #define STRING_ONBOARD_USB            "板载USB"
+    #define STRING_ONBOARD_SD_READ_ERROR  "主機板的存儲介質讀取失敗!"
     #define STRING_FILAMENT_RUNOUT        "耗材已用尽,请更换耗材!"
 
     // Steppers, Print, Probe Process Commands / Status / Info
@@ -191,6 +191,8 @@
     #define STRING_DEPLOY                 "探针弹出"
     #define STRING_STOW                   "探针收回"
     #define STRING_REPEAT                 "精度测试"
+    #define STRING_HS_ON                  "HS: On"
+    #define STRING_HS_OFF                 "HS: Off"
 
     // Printer Tools
     #define STRING_NOZZLE                 "喷头"

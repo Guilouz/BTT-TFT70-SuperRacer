@@ -162,20 +162,20 @@
     #define STRING_PROCESS_COMPLETED      "Processus terminé !"
     #define STRING_PROCESS_ABORTED        "Processus annulé !"
 
-    // TFT SD, USB Disk, Onboard SD, Filament Runout Process Commands / Status / Info
-    #define STRING_TFTSD                  "SD TFT"
-    #define STRING_READ_TFTSD_ERROR       "Erreur de lecture de la carte SD !"
-    #define STRING_TFTSD_INSERTED         "Carte insérée !"
-    #define STRING_TFTSD_REMOVED          "Carte retirée !"
-    #define STRING_TFTSD_NOT_DETECTED     "Aucune carte SD détectée."
-    #define STRING_USB_DISK               "USB TFT"
-    #define STRING_READ_USB_DISK_ERROR    "Erreur de lecture de la clé USB !"
-    #define STRING_USB_DISK_INSERTED      "Clé USB insérée !"
-    #define STRING_USB_DISK_REMOVED       "Clé USB retirée !"
-    #define STRING_USB_DISK_NOT_DETECTED  "Aucune clé USB détectée."
-    #define STRING_ONBOARDSD              "microSD CM"
-    #define STRING_ONBOARDUSB             "USB CM"
-    #define STRING_READ_ONBOARDSD_ERROR   "Erreur de lecture du port de la carte mère !"
+    // TFT Media, Onboard Media, Filament Runout Process Commands / Status / Info
+    #define STRING_TFT_SD                 "SD TFT"
+    #define STRING_TFT_SD_READ_ERROR      "Erreur de lecture de la carte SD !"
+    #define STRING_TFT_SD_INSERTED        "Carte insérée !"
+    #define STRING_TFT_SD_REMOVED         "Carte retirée !"
+    #define STRING_TFT_SD_NOT_DETECTED    "Aucune carte SD détectée."
+    #define STRING_TFT_USB                "USB TFT"
+    #define STRING_TFT_USB_READ_ERROR     "Erreur de lecture de la clé USB !"
+    #define STRING_TFT_USB_INSERTED       "Clé USB insérée !"
+    #define STRING_TFT_USB_REMOVED        "Clé USB retirée !"
+    #define STRING_TFT_USB_NOT_DETECTED   "Aucune clé USB détectée."
+    #define STRING_ONBOARD_SD             "microSD CM"
+    #define STRING_ONBOARD_USB            "USB CM"
+    #define STRING_ONBOARD_SD_READ_ERROR  "Erreur de lecture du média interne !"
     #define STRING_FILAMENT_RUNOUT        "Fin de Filament !"
 
     // Steppers, Print, Probe Process Commands / Status / Info
@@ -191,6 +191,8 @@
     #define STRING_DEPLOY                 "Déployer"
     #define STRING_STOW                   "Rentrer"
     #define STRING_REPEAT                 "Répéter"
+    #define STRING_HS_ON                  "HS: On"
+    #define STRING_HS_OFF                 "HS: Off"
 
     // Printer Tools
     #define STRING_NOZZLE                 "Buse"

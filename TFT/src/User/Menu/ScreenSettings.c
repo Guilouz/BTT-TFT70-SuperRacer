@@ -239,11 +239,9 @@ void menuLanguage(void)
   uint16_t curPage = curItem / LISTITEM_PER_PAGE;
 
   // fill language items
-  uint8_t tmp_language = infoSettings.language;
-
   for (uint8_t i = 0; i < COUNT(totalItems); i++)
   {
-    if (i == tmp_language)
+    if (i == infoSettings.language)
       totalItems[i].icon = CHARICON_CHECKED;
     else
       totalItems[i].icon = CHARICON_UNCHECKED;
@@ -264,11 +262,10 @@ void menuLanguage(void)
       {
         totalItems[curItem].icon = CHARICON_UNCHECKED;
         listViewRefreshItem(curItem);  // refresh unchecked status
-        curItem = curIndex;
-        totalItems[curIndex].icon = CHARICON_CHECKED;
-        listViewRefreshItem(curIndex);  // refresh checked status
+        curItem = curIndex; // update selected index
+        totalItems[curItem].icon = CHARICON_CHECKED;
+        listViewRefreshItem(curItem);  // refresh checked status
 
-        curItem = curIndex;  // update selected index
         infoSettings.language = curItem;
       }
     }

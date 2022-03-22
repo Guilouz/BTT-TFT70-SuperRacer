@@ -1,7 +1,7 @@
 #ifndef _CONFIGURATION_H_
 #define _CONFIGURATION_H_
 
-#define CONFIG_VERSION 20220223
+#define CONFIG_VERSION 20220321
 
 //====================================================================================================
 //=============================== Settings Configurable On config.ini ================================
@@ -312,7 +312,7 @@
  *             ORANGE: 8, PURPLE: 9, LIME: 10, BROWN: 11, DARKBLUE: 12, DARKGREEN: 13,    GRAY: 14, DARKGRAY: 15]
  */
 #define MARLIN_BACKGROUND_COLOR 1  // Marlin Mode background color (Default: 1)
-#define MARLIN_FONT_COLOR       3  // Marlin Mode font color (Default: 0)
+#define MARLIN_FONT_COLOR       0  // Marlin Mode font color (Default: 0)
 
 /**
  * Fullscreen Marlin Mode
@@ -373,8 +373,9 @@
  *   Value range: [min: 0, max: 6]
  */
 #define EXTRUDER_COUNT  1  // Default: 1
-#define MIXING_EXTRUDER 0  // Default: 0. For mixing_extruder set to 1 (This option turns off autodetection
-                           // of the number of extruders)
+
+// For mixing extruder set to 1 (this option turns off auto detection of the number of extruders)
+#define MIXING_EXTRUDER 0  // Default: 0
 
 /**
  * Fan Count
@@ -479,9 +480,9 @@
 #define AUTO_LOAD_LEVELING 1  // Default: 1
 
 /**
- * Onboard / Printer SD
+ * Onboard / Printer Media
  * Starting from Marlin Bugfix 2.0.x Distribution Date: 2020-04-27 & above, the TFT will auto detect
- * On-Board SD Card and auto-configure M27 AutoReport with M115 command.
+ * onboard media and auto-configure M27 AutoReport with M115 command.
  * Set the time interval to poll SD Printing status if Marlin reports M27 AutoReport as disabled.
  */
 
@@ -546,11 +547,11 @@
  *   Unit: [feedrate in mm/min]
  *   Value range: [min: 10, max: 12000]
  */
-#define NOZZLE_PAUSE_RETRACT_LENGTH               15.0f  // (mm) Default: 15.0f
-#define NOZZLE_RESUME_PURGE_LENGTH                16.0f  // (mm) Default: 16.0f
-#define NOZZLE_PAUSE_X_POSITION     0.0f  // (mm) Default: 10.0f
+#define NOZZLE_PAUSE_RETRACT_LENGTH               15.0f  // (mm) (Default: 15.0f)
+#define NOZZLE_RESUME_PURGE_LENGTH                16.0f  // (mm) (Default: 16.0f)
+#define NOZZLE_PAUSE_X_POSITION     0.0f  // (mm) (Default: 10.0f)
 #define NOZZLE_PAUSE_Y_POSITION     -122.0f  // (mm) Default: 10.0f
-#define NOZZLE_PAUSE_Z_RAISE                      10.0f  // (mm) Default: 10.0f)
+#define NOZZLE_PAUSE_Z_RAISE                      10.0f  // (mm) (Default: 10.0f)
 #define NOZZLE_PAUSE_XY_FEEDRATE                   3000  // (mm/min) X and Y axes feedrate (Default: 6000)
 #define NOZZLE_PAUSE_Z_FEEDRATE                    3000  // (mm/min) Z axis feedrate (Default: 6000)
 #define NOZZLE_PAUSE_E_FEEDRATE                     600  // (mm/min) retract & purge feedrate (Default: 600)
@@ -1096,8 +1097,8 @@
 #define Z_FADE_DEFAULT_VALUE 330.0f  // Default: 10.0f
 
 // Probe Offset limits
-#define PROBE_Z_OFFSET_MIN_VALUE     -20.0f  // Default: -20.0f
-#define PROBE_Z_OFFSET_MAX_VALUE      20.0f  // Default: 20.0f
+#define PROBE_Z_OFFSET_MIN_VALUE     -30.0f  // Default: -20.0f
+#define PROBE_Z_OFFSET_MAX_VALUE      30.0f  // Default: 20.0f
 #define PROBE_Z_OFFSET_DEFAULT_VALUE   0.0f  // Default: 0.0f
 
 // Home Offset limits
@@ -1149,7 +1150,7 @@
 #define NOZZLE_PAUSE_M601  // Default: uncommented (enabled)
 
 /**
- * M701, M702: Marlin Filament Load / Unload Gcodes Support
+ * M701, M702: Marlin Filament Load / Unload G-codes Support
  * FILAMENT_LOAD_UNLOAD_GCODES option on Marlin configuration_adv.h need to be uncommented.
  * Adds a submenu to the movement menu for selecting load and unload actions.
  */
@@ -1213,7 +1214,7 @@
  * Set these to 0 to disable audio feedback in the LCD menus.
  * Only valid for Touch Mode and if BUZZER_PIN is set or available.
  *
- * NOTE: Test audio output with the G-Code:
+ * NOTE: Test audio output with the G-code:
  *       M300 S<frequency Hz> P<duration MilliSeconds>
  */
 #define BUZZER_FREQUENCY_DURATION_MS    20  // in ms. Default: 20
@@ -1233,10 +1234,16 @@
 #define BTT_BOOTSCREEN_TIME 3000  // Default: 3000
 
 /**
+ * Safety Alert
+ * If enabled, safety alert popup messages are shown by some menus (e.g. heaters still on when leaving some menus).
+ */
+//#define SAFETY_ALERT  // Default: uncommented (enabled)
+
+/**
  * Smart Home
- * If enabled, long press "Back" button triggers Home screen
+ * If enabled, long press "Back" button triggers Home screen.
  * It doesn't interfere with the "Screenshot" and "Marlin/Touch Mode" other than if
- * enabled, long press "Back" will not trigger "Screenshot" or "Marlin/Touch Mode"
+ * enabled, long press "Back" will not trigger "Screenshot" or "Marlin/Touch Mode".
  */
 #define SMART_HOME  // Default: uncommented (enabled)
 
@@ -1329,48 +1336,6 @@
  * Comment to use standard colors.
  */
 //#define LIVE_TEXT_COMMON_COLOR  // Default: commented (disabled)
-
-/**
- * Live Text Background Color Rendering Technique (Printing menu and Status Screen menu)
- * When enabled, it allows to eliminate the flickering on alternating icons avoiding to
- * draw the icon background under the live text area.
- * Furthermore, it allows to use the icon background colors or a sampled icon background
- * uniform color for each live text.
- * When disabled (set to 0), alternating icons are always fully drawn causing some
- * flickering when live text is drawn on top of them.
- * Furthermore, a standard rendering based on the sampling and use, in a pixel by pixel
- * basis, of the underlying icon background colors is used.
- *
- * NOTES:
- *   - Enable it only in case the icons maintain always the same background colors under
- *     the live text areas (e.g. applicable to Unified, Round Miracle etc... menu themes).
- *   - If enabled, it speeds up the rendering of the live text and the responsiveness of
- *     the TFT, so it can improve the print quality.
- *     Suitable in particular for the TFTs with a not fast HW (e.g. 24, 48 MHz).
- *   - If enabled, it allows to eliminate the flickering on alternating icons.
- */
-
-/**
- * Live Text Background Color Rendering Technique (Printing menu)
- *   Value range: [min: 0, max: 2]
- *     0: disabled
- *     1: apply icon background colors to live text
- *     2: apply sampled icon background uniform color to live text
- */
-#define LIVE_TEXT_BG_COLOR_PRINTING 0  // Default: 0 (disabled)
-
-/**
- * Live Text Background Color Rendering Technique (Status Screen menu)
- *   Value range: [min: 0, max: 6]
- *     0: disabled
- *     1: apply icon background colors to live text 1 (name)
- *     2: apply sampled icon background uniform color to live text 1 (name)
- *     3: apply icon background colors to live text 2 (value)
- *     4: apply sampled icon background uniform color to live text 2 (value)
- *     5: apply icon background colors to both live text 1 and live text 2
- *     6: apply sampled icon background uniform color to both live text 1 and live text 2
- */
-#define LIVE_TEXT_BG_COLOR_STATUS 0  // Default: 0 (disabled)
 
 /**
  * Show Embedded Thumbnails Of Gcode Files

@@ -160,6 +160,7 @@ typedef struct
 
 typedef struct
 {
+  uint8_t   iconIndex;
   uint8_t   enabled[LIVEICON_LINES];
   LIVE_DATA lines[LIVEICON_LINES];
 } LIVE_INFO;
@@ -191,7 +192,7 @@ GUI_POINT getIconStartPoint(int index);
 void GUI_RestoreColorDefault(void);
 uint8_t *labelGetAddress(const LABEL * label);
 void setMenu(MENU_TYPE menu_type, LABEL * title, uint16_t rectCount, const GUI_RECT * menuRect,
-             void(*action_redraw)(uint8_t position, uint8_t is_press),
+             void (*action_redraw)(uint8_t position, uint8_t is_press),
              void (*menu_redraw)(void));
 void menuDrawItem (const ITEM * menuItem, uint8_t position);
 void menuDrawIconOnly(const ITEM *item, uint8_t position);
@@ -203,7 +204,7 @@ void menuDrawTitle(void);
 void menuDrawPage(const MENUITEMS * menuItems);
 void menuDrawListPage(const LISTITEMS *listItems);
 
-void showLiveInfo(uint8_t index, const LIVE_INFO * liveicon, const ITEM * item);
+void showLiveInfo(uint8_t index, const LIVE_INFO * liveicon, bool redrawIcon);
 void displayExhibitHeader(const char * titleStr, const char * unitStr);
 void displayExhibitValue(const char * valueStr);
 

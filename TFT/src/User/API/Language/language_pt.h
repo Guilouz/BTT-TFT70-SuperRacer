@@ -162,20 +162,20 @@
     #define STRING_PROCESS_COMPLETED      "Process completed!"
     #define STRING_PROCESS_ABORTED        "Process aborted!"
 
-    // TFT SD, USB Disk, Onboard SD, Filament Runout Process Commands / Status / Info
-    #define STRING_TFTSD                  "TFT SD"
-    #define STRING_READ_TFTSD_ERROR       "Erro a ler TFT SD!"
-    #define STRING_TFTSD_INSERTED         "Cartao inserido!"
-    #define STRING_TFTSD_REMOVED          "Cartao removido!"
-    #define STRING_TFTSD_NOT_DETECTED     "No SD Card detected."
-    #define STRING_USB_DISK               "U Disk"
-    #define STRING_READ_USB_DISK_ERROR    "Erro a ler U Disk!"
-    #define STRING_USB_DISK_INSERTED      "U Disk inserido!"
-    #define STRING_USB_DISK_REMOVED       "U Disk removido!"
-    #define STRING_USB_DISK_NOT_DETECTED  "No USB Disk detected."
-    #define STRING_ONBOARDSD              "OnboardSD"
-    #define STRING_ONBOARDUSB             "OnboardUSB"
-    #define STRING_READ_ONBOARDSD_ERROR   "Erro a ler Onboard SD card!"
+    // TFT Media, Onboard Media, Filament Runout Process Commands / Status / Info
+    #define STRING_TFT_SD                 "TFT SD"
+    #define STRING_TFT_SD_READ_ERROR      "Erro a ler TFT SD!"
+    #define STRING_TFT_SD_INSERTED        "Cartao inserido!"
+    #define STRING_TFT_SD_REMOVED         "Cartao removido!"
+    #define STRING_TFT_SD_NOT_DETECTED    "No SD Card detected."
+    #define STRING_TFT_USB                "U Disk"
+    #define STRING_TFT_USB_READ_ERROR     "Erro a ler U Disk!"
+    #define STRING_TFT_USB_INSERTED       "U Disk inserido!"
+    #define STRING_TFT_USB_REMOVED        "U Disk removido!"
+    #define STRING_TFT_USB_NOT_DETECTED   "No USB Disk detected."
+    #define STRING_ONBOARD_SD             "OnboardSD"
+    #define STRING_ONBOARD_USB            "OnboardUSB"
+    #define STRING_ONBOARD_SD_READ_ERROR  "Erro a ler Onboard media!"
     #define STRING_FILAMENT_RUNOUT        "Filamento runout!"
 
     // Steppers, Print, Probe Process Commands / Status / Info
@@ -191,6 +191,8 @@
     #define STRING_DEPLOY                 "Abrir"
     #define STRING_STOW                   "Encolher"
     #define STRING_REPEAT                 "Repetir"
+    #define STRING_HS_ON                  "HS: On"
+    #define STRING_HS_OFF                 "HS: Off"
 
     // Printer Tools
     #define STRING_NOZZLE                 "Nozzle"

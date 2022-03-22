@@ -33,14 +33,17 @@ static void resetRequestCommandInfo(
   clearRequestCommandInfo();  // release requestCommandInfo.cmd_rev_buf before allocating a new one
 
   requestCommandInfo.cmd_rev_buf = malloc(CMD_MAX_REV);
+
   while (!requestCommandInfo.cmd_rev_buf)
     ;  // malloc failed
+
   memset(requestCommandInfo.cmd_rev_buf, 0, CMD_MAX_REV);
   requestCommandInfo.startMagic = string_start;
   requestCommandInfo.stopMagic = string_stop;
   requestCommandInfo.errorMagic[0] = string_error0;
   requestCommandInfo.errorMagic[1] = string_error1;
   requestCommandInfo.errorMagic[2] = string_error2;
+
   if (string_error0)
     requestCommandInfo.error_num = 1;
   if (string_error1)
@@ -72,12 +75,13 @@ bool request_M21(void)
                           "SD init fail",         // The second error magic
                           "volume.init failed");  // The third error magic
 
-  mustStoreCmd((infoMachineSettings.multiVolume == ENABLED) ? ((infoFile.boardSource == BOARD_SD) ? "M21 S\n" : "M21 U\n") : "M21\n");
+  mustStoreCmd((infoMachineSettings.multiVolume == ENABLED) ? ((infoFile.onboardSource == BOARD_SD) ? "M21 S\n" : "M21 U\n") : "M21\n");
 
   // Wait for response
   loopProcessToCondition(&isWaitingResponse);
 
   clearRequestCommandInfo();
+
   // Check reponse
   return !requestCommandInfo.inError;
 }
@@ -124,7 +128,7 @@ char * request_M33(const char * filename)
   // Wait for response
   loopProcessToCondition(&isWaitingResponse);
 
-  //clearRequestCommandInfo();  // shall be call after copying the buffer ...
+  //clearRequestCommandInfo();  // shall be call after copying the buffer
   return requestCommandInfo.cmd_rev_buf;
 }
 
@@ -143,8 +147,10 @@ char * request_M33(const char * filename)
  */
 long request_M23_M36(const char * filename)
 {
-  uint8_t offset = 5;
+  long size = 0;  // initialize to 0 in case of error
   const char * sizeTag;
+  char * strPtr;
+
   if (infoMachineSettings.firmwareType != FW_REPRAPFW)  // all other firmwares except reprap firmware
   {
     resetRequestCommandInfo("File opened",    // The magic to identify the start
@@ -153,10 +159,12 @@ long request_M23_M36(const char * filename)
                             NULL,             // The second error magic
                             NULL);            // The third error magic
 
-    mustStoreCmd("M23 %s\n", filename);
+    // skip source and first "/" character (e.g. "oMD:/sub_dir/cap2.gcode" -> "sub_dir/cap2.gcode")
+    mustStoreCmd("M23 %s\n", filename + strlen(getSourceFS()) + 1);
+
     sizeTag = "Size:";
   }
-  else // reprap firmware
+  else  // reprap firmware
   {
     resetRequestCommandInfo("{\"err\"",  // The magic to identify the start
                             "}",         // The magic to identify the stop
@@ -165,7 +173,7 @@ long request_M23_M36(const char * filename)
                             NULL);       // The third error magic
 
     mustStoreCmd("M36 /%s\n", filename);
-    offset = 6;
+
     sizeTag = "size\":";  // reprap firmware reports size JSON
   }
 
@@ -175,14 +183,21 @@ long request_M23_M36(const char * filename)
   if (requestCommandInfo.inError)
   {
     clearRequestCommandInfo();
-    return 0;
+
+    return size;
   }
+
   if (infoMachineSettings.firmwareType == FW_REPRAPFW)
     mustStoreCmd("M23 /%s\n", filename);  // send M23 for reprap firmware
-  // Find file size and report its.
-  char * ptr;
-  long size = strtol(strstr(requestCommandInfo.cmd_rev_buf, sizeTag) + offset, &ptr, 10);
+
+  // Find file size and report it
+  strPtr = strstr(requestCommandInfo.cmd_rev_buf, sizeTag);
+
+  if (strPtr != NULL)
+    size = strtol(strPtr + strlen(sizeTag), NULL, 10);
+
   clearRequestCommandInfo();
+
   return size;
 }
 
@@ -246,18 +261,23 @@ void request_M0(void)
 void request_M98(const char * filename)
 {
   CMD command;
+
   snprintf(command, CMD_MAX_SIZE, "M98 P/%s\n", filename);
   rrfStatusSetMacroBusy();
+
   mustStoreCmd(command);
+
   // prevent a race condition when rrfStatusQuery returns !busy before executing the macro
   while (isEnqueued(command))
   {
     loopProcess();
   }
+
   rrfStatusQueryFast();
 
   // Wait for macro to complete
   loopProcessToCondition(&rrfStatusIsBusy);
+
   rrfStatusQueryNormal();
 }
 

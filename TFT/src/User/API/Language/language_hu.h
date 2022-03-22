@@ -162,20 +162,20 @@
     #define STRING_PROCESS_COMPLETED      "Folyamat befejezve!"
     #define STRING_PROCESS_ABORTED        "Folyamat megszakítva!"
 
-    // TFT SD, USB Disk, Onboard SD, Filament Runout Process Commands / Status / Info
-    #define STRING_TFTSD                  "TFT-SD"
-    #define STRING_READ_TFTSD_ERROR       "TFT-SD olvasási hiba!"
-    #define STRING_TFTSD_INSERTED         "SD-Kártya behelyezve!"
-    #define STRING_TFTSD_REMOVED          "SD-Kártya eltávolítva!"
-    #define STRING_TFTSD_NOT_DETECTED     "Nem észlelhető SD-Kártya."
-    #define STRING_USB_DISK               "USB Tár"
-    #define STRING_READ_USB_DISK_ERROR    "USB olvasási hiba!"
-    #define STRING_USB_DISK_INSERTED      "USB behelyezve!"
-    #define STRING_USB_DISK_REMOVED       "USB eltávolítva!"
-    #define STRING_USB_DISK_NOT_DETECTED  "Nem észlelhető USB-lemez."
-    #define STRING_ONBOARDSD              "Lap-SD"
-    #define STRING_ONBOARDUSB             "OnboardUSB"
-    #define STRING_READ_ONBOARDSD_ERROR   "Alaplap-SD olvasási hiba!"
+    // TFT Media, Onboard Media, Filament Runout Process Commands / Status / Info
+    #define STRING_TFT_SD                 "TFT-SD"
+    #define STRING_TFT_SD_READ_ERROR      "TFT-SD olvasási hiba!"
+    #define STRING_TFT_SD_INSERTED        "SD-Kártya behelyezve!"
+    #define STRING_TFT_SD_REMOVED         "SD-Kártya eltávolítva!"
+    #define STRING_TFT_SD_NOT_DETECTED    "Nem észlelhető SD-Kártya."
+    #define STRING_TFT_USB                "USB Tár"
+    #define STRING_TFT_USB_READ_ERROR     "USB olvasási hiba!"
+    #define STRING_TFT_USB_INSERTED       "USB behelyezve!"
+    #define STRING_TFT_USB_REMOVED        "USB eltávolítva!"
+    #define STRING_TFT_USB_NOT_DETECTED   "Nem észlelhető USB-lemez."
+    #define STRING_ONBOARD_SD             "Lap-SD"
+    #define STRING_ONBOARD_USB            "Lap-USB"
+    #define STRING_ONBOARD_SD_READ_ERROR  "Alaplap média olvasási hiba!"
     #define STRING_FILAMENT_RUNOUT        "Szál kifutás!"
 
     // Steppers, Print, Probe Process Commands / Status / Info
@@ -191,6 +191,8 @@
     #define STRING_DEPLOY                 "Bevetés"
     #define STRING_STOW                   "Elhelyezés"
     #define STRING_REPEAT                 "Ismétlés"
+    #define STRING_HS_ON                  "HS: Be"
+    #define STRING_HS_OFF                 "HS: Ki"
 
     // Printer Tools
     #define STRING_NOZZLE                 "Fej"

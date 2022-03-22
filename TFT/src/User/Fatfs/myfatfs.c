@@ -41,7 +41,7 @@ bool compareFile(char * name1, uint32_t date1, char * name2, uint32_t date2)
 }
 
 /**
- * mount SD Card from Fatfs
+ * mount SD card from Fatfs
  * true: mount ok
  * false: mount failed
  */
@@ -57,7 +57,7 @@ bool mountSDCard(void)
  */
 bool mountUSBDisk(void)
 {
-  return (f_mount(&fatfs[VOLUMES_USB_DISK], USBDISK_ROOT_DIR, 1) == FR_OK);
+  return (f_mount(&fatfs[VOLUMES_USB_DISK], USB_ROOT_DIR, 1) == FR_OK);
 }
 
 /**
@@ -75,7 +75,7 @@ bool scanPrintFilesFatFs(void)
 
   clearInfoFile();
 
-  if (f_opendir(&dir, infoFile.title) != FR_OK)
+  if (f_opendir(&dir, infoFile.path) != FR_OK)
     return false;
 
   for (;;)
@@ -220,14 +220,15 @@ bool Get_NewestGcode(const TCHAR* path)
         continue;
 
       date = (finfo.fdate << 16) | finfo.ftime;
+
       resetInfoFile();
 
       if (len + strlen(finfo.fname) + 2 > MAX_PATH_LEN)
         break;
 
-      strcpy(infoFile.title, path);
-      strcat(infoFile.title, "/");
-      strcat(infoFile.title, finfo.fname);
+      strcpy(infoFile.path, path);
+      strcat(infoFile.path, "/");
+      strcat(infoFile.path, finfo.fname);
       status = 1;
     }
   }

@@ -162,20 +162,20 @@
     #define STRING_PROCESS_COMPLETED      "Zakończono przetwarzanie!"
     #define STRING_PROCESS_ABORTED        "Przerwano przetwarzanie!"
 
-    // TFT SD, USB Disk, Onboard SD, Filament Runout Process Commands / Status / Info
-    #define STRING_TFTSD                  "SD TFT"
-    #define STRING_READ_TFTSD_ERROR       "Błąd odczytu karty SD wyświetlacza!"
-    #define STRING_TFTSD_INSERTED         "Karta włożona!"
-    #define STRING_TFTSD_REMOVED          "Karta wyjęta!"
-    #define STRING_TFTSD_NOT_DETECTED     "No SD Card detected."
-    #define STRING_USB_DISK               "USB TFT"
-    #define STRING_READ_USB_DISK_ERROR    "Błąd odczytu dysku USB!"
-    #define STRING_USB_DISK_INSERTED      "Dysk USB włożony!"
-    #define STRING_USB_DISK_REMOVED       "Dysk USB wyjęty!"
-    #define STRING_USB_DISK_NOT_DETECTED  "No USB Disk detected."
-    #define STRING_ONBOARDSD              "SD"
-    #define STRING_ONBOARDUSB             "OnboardUSB"
-    #define STRING_READ_ONBOARDSD_ERROR   "Błąd odczytu karty SD!"
+    // TFT Media, Onboard Media, Filament Runout Process Commands / Status / Info
+    #define STRING_TFT_SD                 "SD TFT"
+    #define STRING_TFT_SD_READ_ERROR      "Błąd odczytu karty SD wyświetlacza!"
+    #define STRING_TFT_SD_INSERTED        "Karta włożona!"
+    #define STRING_TFT_SD_REMOVED         "Karta wyjęta!"
+    #define STRING_TFT_SD_NOT_DETECTED    "No SD Card detected."
+    #define STRING_TFT_USB                "USB TFT"
+    #define STRING_TFT_USB_READ_ERROR     "Błąd odczytu dysku USB!"
+    #define STRING_TFT_USB_INSERTED       "Dysk USB włożony!"
+    #define STRING_TFT_USB_REMOVED        "Dysk USB wyjęty!"
+    #define STRING_TFT_USB_NOT_DETECTED   "No USB Disk detected."
+    #define STRING_ONBOARD_SD             "OnboardSD"
+    #define STRING_ONBOARD_USB            "OnboardUSB"
+    #define STRING_ONBOARD_SD_READ_ERROR  "Błąd odczytu karta!"
     #define STRING_FILAMENT_RUNOUT        "Skończył się filament!"
 
     // Steppers, Print, Probe Process Commands / Status / Info
@@ -191,6 +191,8 @@
     #define STRING_DEPLOY                 "Rozlokuj"
     #define STRING_STOW                   "Schowaj"
     #define STRING_REPEAT                 "Powtórz"
+    #define STRING_HS_ON                  "HS: On"
+    #define STRING_HS_OFF                 "HS: Off"
 
     // Printer Tools
     #define STRING_NOZZLE                 "Dysza"

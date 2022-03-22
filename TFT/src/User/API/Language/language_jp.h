@@ -162,20 +162,20 @@
     #define STRING_PROCESS_COMPLETED      "Process completed!"
     #define STRING_PROCESS_ABORTED        "Process aborted!"
 
-    // TFT SD, USB Disk, Onboard SD, Filament Runout Process Commands / Status / Info
-    #define STRING_TFTSD                  "TFT SD"
-    #define STRING_READ_TFTSD_ERROR       "TFT SDカードの読み取りがエラー発生しました!"
-    #define STRING_TFTSD_INSERTED         "SDカード入りました!"
-    #define STRING_TFTSD_REMOVED          "SDカード出しました!"
-    #define STRING_TFTSD_NOT_DETECTED     "No SD Card detected."
-    #define STRING_USB_DISK               "USBメモリー"
-    #define STRING_READ_USB_DISK_ERROR    "USBメモリー読み込みエラー!"
-    #define STRING_USB_DISK_INSERTED      "U Diskカード入りました!"
-    #define STRING_USB_DISK_REMOVED       "U Diskカード出しました!"
-    #define STRING_USB_DISK_NOT_DETECTED  "No USB Disk detected."
-    #define STRING_ONBOARDSD              "内部 mSDカード"
-    #define STRING_ONBOARDUSB             "OnboardUSB"
-    #define STRING_READ_ONBOARDSD_ERROR   "内部 mSDカードの読み取りがエラー発生しました!"
+    // TFT Media, Onboard Media, Filament Runout Process Commands / Status / Info
+    #define STRING_TFT_SD                 "TFT SD"
+    #define STRING_TFT_SD_READ_ERROR      "TFT SDカードの読み取りがエラー発生しました!"
+    #define STRING_TFT_SD_INSERTED        "SDカード入りました!"
+    #define STRING_TFT_SD_REMOVED         "SDカード出しました!"
+    #define STRING_TFT_SD_NOT_DETECTED    "No SD Card detected."
+    #define STRING_TFT_USB                "USBメモリー"
+    #define STRING_TFT_USB_READ_ERROR     "USBメモリー読み込みエラー!"
+    #define STRING_TFT_USB_INSERTED       "U Diskカード入りました!"
+    #define STRING_TFT_USB_REMOVED        "U Diskカード出しました!"
+    #define STRING_TFT_USB_NOT_DETECTED   "No USB Disk detected."
+    #define STRING_ONBOARD_SD             "内部 mSDカード"
+    #define STRING_ONBOARD_USB            "OnboardUSB"
+    #define STRING_ONBOARD_SD_READ_ERROR  "内部 mSDカードの読み取りがエラー発生しました!"
     #define STRING_FILAMENT_RUNOUT        "フィラメントランアウト!"
 
     // Steppers, Print, Probe Process Commands / Status / Info
@@ -191,6 +191,8 @@
     #define STRING_DEPLOY                 "展開"
     #define STRING_STOW                   "収納"
     #define STRING_REPEAT                 "繰り返す"
+    #define STRING_HS_ON                  "HS: On"
+    #define STRING_HS_OFF                 "HS: Off"
 
     // Printer Tools
     #define STRING_NOZZLE                 "ノズル"

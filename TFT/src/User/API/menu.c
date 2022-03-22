@@ -127,11 +127,11 @@ const GUI_RECT rect_of_key[MENU_RECT_COUNT] = {
 const GUI_RECT rect_of_keySS[SS_RECT_COUNT] = {
 #ifdef TFT70_V3_0
   // 5 status icons area
-  {0*SSICON_WIDTH+0*SS_SPACE_X+START_X,  0*SSICON_HEIGHT+0*SPACE_Y+ICON_START_Y,  1*SSICON_WIDTH+0*SS_SPACE_X+START_X,  1*SSICON_HEIGHT+0*SPACE_Y+ICON_START_Y},
-  {1*SSICON_WIDTH+1*SS_SPACE_X+START_X,  0*SSICON_HEIGHT+0*SPACE_Y+ICON_START_Y,  2*SSICON_WIDTH+1*SS_SPACE_X+START_X,  1*SSICON_HEIGHT+0*SPACE_Y+ICON_START_Y},
-  {2*SSICON_WIDTH+2*SS_SPACE_X+START_X,  0*SSICON_HEIGHT+0*SPACE_Y+ICON_START_Y,  3*SSICON_WIDTH+2*SS_SPACE_X+START_X,  1*SSICON_HEIGHT+0*SPACE_Y+ICON_START_Y},
-  {3*SSICON_WIDTH+3*SS_SPACE_X+START_X,  0*SSICON_HEIGHT+0*SPACE_Y+ICON_START_Y,  4*SSICON_WIDTH+3*SS_SPACE_X+START_X,  1*SSICON_HEIGHT+0*SPACE_Y+ICON_START_Y},
-  {4*SSICON_WIDTH+4*SS_SPACE_X+START_X,  0*SSICON_HEIGHT+0*SPACE_Y+ICON_START_Y,  5*SSICON_WIDTH+4*SS_SPACE_X+START_X,  1*SSICON_HEIGHT+0*SPACE_Y+ICON_START_Y},
+  {0*SS_ICON_WIDTH+0*SS_SPACE_X+START_X,  0*SS_ICON_HEIGHT+0*SPACE_Y+ICON_START_Y,  1*SS_ICON_WIDTH+0*SS_SPACE_X+START_X,  1*SS_ICON_HEIGHT+0*SPACE_Y+ICON_START_Y},
+  {1*SS_ICON_WIDTH+1*SS_SPACE_X+START_X,  0*SS_ICON_HEIGHT+0*SPACE_Y+ICON_START_Y,  2*SS_ICON_WIDTH+1*SS_SPACE_X+START_X,  1*SS_ICON_HEIGHT+0*SPACE_Y+ICON_START_Y},
+  {2*SS_ICON_WIDTH+2*SS_SPACE_X+START_X,  0*SS_ICON_HEIGHT+0*SPACE_Y+ICON_START_Y,  3*SS_ICON_WIDTH+2*SS_SPACE_X+START_X,  1*SS_ICON_HEIGHT+0*SPACE_Y+ICON_START_Y},
+  {3*SS_ICON_WIDTH+3*SS_SPACE_X+START_X,  0*SS_ICON_HEIGHT+0*SPACE_Y+ICON_START_Y,  4*SS_ICON_WIDTH+3*SS_SPACE_X+START_X,  1*SS_ICON_HEIGHT+0*SPACE_Y+ICON_START_Y},
+  {4*SS_ICON_WIDTH+4*SS_SPACE_X+START_X,  0*SS_ICON_HEIGHT+0*SPACE_Y+ICON_START_Y,  5*SS_ICON_WIDTH+4*SS_SPACE_X+START_X,  1*SS_ICON_HEIGHT+0*SPACE_Y+ICON_START_Y},
   // 2nd icon row area
   {0*ICON_WIDTH+0*SPACE_X+START_X,  1*ICON_HEIGHT+1*SPACE_Y+ICON_START_Y,  1*ICON_WIDTH+0*SPACE_X+START_X,  2*ICON_HEIGHT+1*SPACE_Y+ICON_START_Y},
   {0, 0, 0, 0},
@@ -212,23 +212,23 @@ const GUI_RECT rect_of_keySS[SS_RECT_COUNT] = {
 const GUI_RECT rect_of_keyPS[] = { // PS = PRINT SCREEN, This template is used to locate the live icons on the Printing Screen.
 #ifdef PORTRAIT_MODE
   // hotend area VERTICAL GUI
-  {START_X+PICON_LG_WIDTH*0+PICON_SPACE_X*0,                  PICON_START_Y+PICON_HEIGHT*0+PICON_SPACE_Y*0,
-   START_X+PICON_LG_WIDTH*1+PICON_SPACE_X*0+PICON_SM_WIDTH*0, PICON_START_Y+PICON_HEIGHT*1+PICON_SPACE_Y*0},
+  {START_X+PS_ICON_LG_WIDTH*0+PS_ICON_SPACE_X*0,                    PS_ICON_START_Y+PS_ICON_HEIGHT*0+PS_ICON_SPACE_Y*0,
+   START_X+PS_ICON_LG_WIDTH*1+PS_ICON_SPACE_X*0+PS_ICON_SM_WIDTH*0, PS_ICON_START_Y+PS_ICON_HEIGHT*1+PS_ICON_SPACE_Y*0},
   // bed area
-  {START_X+PICON_LG_WIDTH*1+PICON_SPACE_X*1,                  PICON_START_Y+PICON_HEIGHT*0+PICON_SPACE_Y*0,
-   START_X+PICON_LG_WIDTH*2+PICON_SPACE_X*1+PICON_SM_WIDTH*0, PICON_START_Y+PICON_HEIGHT*1+PICON_SPACE_Y*0},
+  {START_X+PS_ICON_LG_WIDTH*1+PS_ICON_SPACE_X*1,                    PS_ICON_START_Y+PS_ICON_HEIGHT*0+PS_ICON_SPACE_Y*0,
+   START_X+PS_ICON_LG_WIDTH*2+PS_ICON_SPACE_X*1+PS_ICON_SM_WIDTH*0, PS_ICON_START_Y+PS_ICON_HEIGHT*1+PS_ICON_SPACE_Y*0},
   // fan area
-  {START_X+PICON_LG_WIDTH*0+PICON_SPACE_X*0,                  1*ICON_HEIGHT+1*SPACE_Y+ICON_START_Y,
-   START_X+PICON_LG_WIDTH*0+PICON_SPACE_X*0+PICON_SM_WIDTH*1, 1*ICON_HEIGHT+1*SPACE_Y+ICON_START_Y+PICON_HEIGHT*1},
+  {START_X+PS_ICON_LG_WIDTH*0+PS_ICON_SPACE_X*0,                    1*ICON_HEIGHT+1*SPACE_Y+ICON_START_Y,
+   START_X+PS_ICON_LG_WIDTH*0+PS_ICON_SPACE_X*0+PS_ICON_SM_WIDTH*1, 1*ICON_HEIGHT+1*SPACE_Y+ICON_START_Y+PS_ICON_HEIGHT*1},
   // timer area
-  {START_X+PICON_LG_WIDTH*0+PICON_SPACE_X*0,                  PICON_START_Y+PICON_HEIGHT*1+PICON_SPACE_Y*1,
-   START_X+PICON_LG_WIDTH*1+PICON_SPACE_X*0+PICON_SM_WIDTH*0, PICON_START_Y+PICON_HEIGHT*2+PICON_SPACE_Y*1},
+  {START_X+PS_ICON_LG_WIDTH*0+PS_ICON_SPACE_X*0,                    PS_ICON_START_Y+PS_ICON_HEIGHT*1+PS_ICON_SPACE_Y*1,
+   START_X+PS_ICON_LG_WIDTH*1+PS_ICON_SPACE_X*0+PS_ICON_SM_WIDTH*0, PS_ICON_START_Y+PS_ICON_HEIGHT*2+PS_ICON_SPACE_Y*1},
   // layer area
-  {START_X+PICON_LG_WIDTH*1+PICON_SPACE_X*1,                  PICON_START_Y+PICON_HEIGHT*1+PICON_SPACE_Y*1,
-   START_X+PICON_LG_WIDTH*2+PICON_SPACE_X*1+PICON_SM_WIDTH*0, PICON_START_Y+PICON_HEIGHT*2+PICON_SPACE_Y*1},
+ {START_X+PS_ICON_LG_WIDTH*1+PS_ICON_SPACE_X*1,                    PS_ICON_START_Y+PS_ICON_HEIGHT*1+PS_ICON_SPACE_Y*1,
+   START_X+PS_ICON_LG_WIDTH*2+PS_ICON_SPACE_X*1+PS_ICON_SM_WIDTH*0, PS_ICON_START_Y+PS_ICON_HEIGHT*2+PS_ICON_SPACE_Y*1},
   // speed area
-  {START_X+PICON_LG_WIDTH*0+PICON_SPACE_X*0,                  1*ICON_HEIGHT+1*SPACE_Y+ICON_START_Y+PICON_HEIGHT*1+PICON_SPACE_Y*1,
-   START_X+PICON_LG_WIDTH*0+PICON_SPACE_X*0+PICON_SM_WIDTH*1, 1*ICON_HEIGHT+1*SPACE_Y+ICON_START_Y+PICON_HEIGHT*2+PICON_SPACE_Y*1},
+  {START_X+PS_ICON_LG_WIDTH*0+PS_ICON_SPACE_X*0,                    1*ICON_HEIGHT+1*SPACE_Y+ICON_START_Y+PS_ICON_HEIGHT*1+PS_ICON_SPACE_Y*1,
+   START_X+PS_ICON_LG_WIDTH*0+PS_ICON_SPACE_X*0+PS_ICON_SM_WIDTH*1, 1*ICON_HEIGHT+1*SPACE_Y+ICON_START_Y+PS_ICON_HEIGHT*2+PS_ICON_SPACE_Y*1},
 
   // 1st bottom icon area.
   {0*ICON_WIDTH+0*SPACE_X+START_X,  2*ICON_HEIGHT+2*SPACE_Y+ICON_START_Y,  1*ICON_WIDTH+0*SPACE_X+START_X,  3*ICON_HEIGHT+2*SPACE_Y+ICON_START_Y},
@@ -239,25 +239,25 @@ const GUI_RECT rect_of_keyPS[] = { // PS = PRINT SCREEN, This template is used t
   {2*ICON_WIDTH+2*SPACE_X+START_X,  2*ICON_HEIGHT+2*SPACE_Y+ICON_START_Y,  3*ICON_WIDTH+2*SPACE_X+START_X,  3*ICON_HEIGHT+2*SPACE_Y+ICON_START_Y},
 #else  // Landscape Mode
   // hotend area DEFAULT LANDSCAPE GUI
-  {START_X+PICON_LG_WIDTH*0+PICON_SPACE_X*0,                  PICON_START_Y+PICON_HEIGHT*0+PICON_SPACE_Y*0,
-   START_X+PICON_LG_WIDTH*1+PICON_SPACE_X*0+PICON_SM_WIDTH*0, PICON_START_Y+PICON_HEIGHT*1+PICON_SPACE_Y*0},
+  {START_X+PS_ICON_LG_WIDTH*0+PS_ICON_SPACE_X*0,                    PS_ICON_START_Y+PS_ICON_HEIGHT*0+PS_ICON_SPACE_Y*0,
+   START_X+PS_ICON_LG_WIDTH*1+PS_ICON_SPACE_X*0+PS_ICON_SM_WIDTH*0, PS_ICON_START_Y+PS_ICON_HEIGHT*1+PS_ICON_SPACE_Y*0},
   // bed area
-  {START_X+PICON_LG_WIDTH*1+PICON_SPACE_X*1,                  PICON_START_Y+PICON_HEIGHT*0+PICON_SPACE_Y*0,
-   START_X+PICON_LG_WIDTH*2+PICON_SPACE_X*1+PICON_SM_WIDTH*0, PICON_START_Y+PICON_HEIGHT*1+PICON_SPACE_Y*0},
+  {START_X+PS_ICON_LG_WIDTH*1+PS_ICON_SPACE_X*1,                    PS_ICON_START_Y+PS_ICON_HEIGHT*0+PS_ICON_SPACE_Y*0,
+   START_X+PS_ICON_LG_WIDTH*2+PS_ICON_SPACE_X*1+PS_ICON_SM_WIDTH*0, PS_ICON_START_Y+PS_ICON_HEIGHT*1+PS_ICON_SPACE_Y*0},
   // fan area
-  {START_X+PICON_LG_WIDTH*2+PICON_SPACE_X*2,                  PICON_START_Y+PICON_HEIGHT*0+PICON_SPACE_Y*0,
-   START_X+PICON_LG_WIDTH*2+PICON_SPACE_X*2+PICON_SM_WIDTH*1, PICON_START_Y+PICON_HEIGHT*1+PICON_SPACE_Y*0},
+  {START_X+PS_ICON_LG_WIDTH*2+PS_ICON_SPACE_X*2,                    PS_ICON_START_Y+PS_ICON_HEIGHT*0+PS_ICON_SPACE_Y*0,
+   START_X+PS_ICON_LG_WIDTH*2+PS_ICON_SPACE_X*2+PS_ICON_SM_WIDTH*1, PS_ICON_START_Y+PS_ICON_HEIGHT*1+PS_ICON_SPACE_Y*0},
   // timer area
-  {START_X+PICON_LG_WIDTH*0+PICON_SPACE_X*0,                  PICON_START_Y+PICON_HEIGHT*1+PICON_SPACE_Y*1,
-   START_X+PICON_LG_WIDTH*1+PICON_SPACE_X*0+PICON_SM_WIDTH*0, PICON_START_Y+PICON_HEIGHT*2+PICON_SPACE_Y*1},
+  {START_X+PS_ICON_LG_WIDTH*0+PS_ICON_SPACE_X*0,                    PS_ICON_START_Y+PS_ICON_HEIGHT*1+PS_ICON_SPACE_Y*1,
+   START_X+PS_ICON_LG_WIDTH*1+PS_ICON_SPACE_X*0+PS_ICON_SM_WIDTH*0, PS_ICON_START_Y+PS_ICON_HEIGHT*2+PS_ICON_SPACE_Y*1},
   // layer area
-  {START_X+PICON_LG_WIDTH*1+PICON_SPACE_X*1,                  PICON_START_Y+PICON_HEIGHT*1+PICON_SPACE_Y*1,
-   START_X+PICON_LG_WIDTH*2+PICON_SPACE_X*1+PICON_SM_WIDTH*0, PICON_START_Y+PICON_HEIGHT*2+PICON_SPACE_Y*1},
+  {START_X+PS_ICON_LG_WIDTH*1+PS_ICON_SPACE_X*1,                    PS_ICON_START_Y+PS_ICON_HEIGHT*1+PS_ICON_SPACE_Y*1,
+   START_X+PS_ICON_LG_WIDTH*2+PS_ICON_SPACE_X*1+PS_ICON_SM_WIDTH*0, PS_ICON_START_Y+PS_ICON_HEIGHT*2+PS_ICON_SPACE_Y*1},
   // speed area
-  {START_X+PICON_LG_WIDTH*2+PICON_SPACE_X*2,                  PICON_START_Y+PICON_HEIGHT*1+PICON_SPACE_Y*1,
-   START_X+PICON_LG_WIDTH*2+PICON_SPACE_X*2+PICON_SM_WIDTH*1, PICON_START_Y+PICON_HEIGHT*2+PICON_SPACE_Y*1},
+  {START_X+PS_ICON_LG_WIDTH*2+PS_ICON_SPACE_X*2,                    PS_ICON_START_Y+PS_ICON_HEIGHT*1+PS_ICON_SPACE_Y*1,
+   START_X+PS_ICON_LG_WIDTH*2+PS_ICON_SPACE_X*2+PS_ICON_SM_WIDTH*1, PS_ICON_START_Y+PS_ICON_HEIGHT*2+PS_ICON_SPACE_Y*1},
 
-  // 4 bottom icons area. it's not used, instead rect_of_keySS is used
+  // 4 bottom icons area.
   {0*ICON_WIDTH+0*SPACE_X+START_X,  1*ICON_HEIGHT+1*SPACE_Y+ICON_START_Y,  1*ICON_WIDTH+0*SPACE_X+START_X,  2*ICON_HEIGHT+1*SPACE_Y+ICON_START_Y},
   {1*ICON_WIDTH+1*SPACE_X+START_X,  1*ICON_HEIGHT+1*SPACE_Y+ICON_START_Y,  2*ICON_WIDTH+1*SPACE_X+START_X,  2*ICON_HEIGHT+1*SPACE_Y+ICON_START_Y},
   {2*ICON_WIDTH+2*SPACE_X+START_X,  1*ICON_HEIGHT+1*SPACE_Y+ICON_START_Y,  3*ICON_WIDTH+2*SPACE_X+START_X,  2*ICON_HEIGHT+1*SPACE_Y+ICON_START_Y},
@@ -302,23 +302,23 @@ const GUI_RECT rect_of_keyPS_draw[] = { // VERTICAL GUI Printing menu for drawin
 const GUI_RECT rect_of_keyPS_end[] = {
 #ifdef PORTRAIT_MODE
   // hotend area VERTICAL GUI
-  {START_X+PICON_LG_WIDTH*0+PICON_SPACE_X*0,                  PICON_START_Y+PICON_HEIGHT*0+PICON_SPACE_Y*0,
-   START_X+PICON_LG_WIDTH*1+PICON_SPACE_X*0+PICON_SM_WIDTH*0, PICON_START_Y+PICON_HEIGHT*1+PICON_SPACE_Y*0},
+  {START_X+PS_ICON_LG_WIDTH*0+PS_ICON_SPACE_X*0,                  PS_ICON_START_Y+PS_ICON_HEIGHT*0+PS_ICON_SPACE_Y*0,
+   START_X+PS_ICON_LG_WIDTH*1+PS_ICON_SPACE_X*0+PS_ICON_SM_WIDTH*0, PS_ICON_START_Y+PS_ICON_HEIGHT*1+PS_ICON_SPACE_Y*0},
   // bed area
-  {START_X+PICON_LG_WIDTH*1+PICON_SPACE_X*1,                  PICON_START_Y+PICON_HEIGHT*0+PICON_SPACE_Y*0,
-   START_X+PICON_LG_WIDTH*2+PICON_SPACE_X*1+PICON_SM_WIDTH*0, PICON_START_Y+PICON_HEIGHT*1+PICON_SPACE_Y*0},
+  {START_X+PS_ICON_LG_WIDTH*1+PS_ICON_SPACE_X*1,                  PS_ICON_START_Y+PS_ICON_HEIGHT*0+PS_ICON_SPACE_Y*0,
+   START_X+PS_ICON_LG_WIDTH*2+PS_ICON_SPACE_X*1+PS_ICON_SM_WIDTH*0, PS_ICON_START_Y+PS_ICON_HEIGHT*1+PS_ICON_SPACE_Y*0},
   // fan area
-  {START_X+PICON_LG_WIDTH*0+PICON_SPACE_X*0,                  1*ICON_HEIGHT+1*SPACE_Y+ICON_START_Y,
-   START_X+PICON_LG_WIDTH*0+PICON_SPACE_X*0+PICON_SM_WIDTH*1, 1*ICON_HEIGHT+1*SPACE_Y+ICON_START_Y+PICON_HEIGHT*1},
+  {START_X+PS_ICON_LG_WIDTH*0+PS_ICON_SPACE_X*0,                  1*ICON_HEIGHT+1*SPACE_Y+ICON_START_Y,
+   START_X+PS_ICON_LG_WIDTH*0+PS_ICON_SPACE_X*0+PS_ICON_SM_WIDTH*1, 1*ICON_HEIGHT+1*SPACE_Y+ICON_START_Y+PS_ICON_HEIGHT*1},
   // timer area
-  {START_X+PICON_LG_WIDTH*0+PICON_SPACE_X*0,                  PICON_START_Y+PICON_HEIGHT*1+PICON_SPACE_Y*1,
-   START_X+PICON_LG_WIDTH*1+PICON_SPACE_X*0+PICON_SM_WIDTH*0, PICON_START_Y+PICON_HEIGHT*2+PICON_SPACE_Y*1},
+  {START_X+PS_ICON_LG_WIDTH*0+PS_ICON_SPACE_X*0,                  PS_ICON_START_Y+PS_ICON_HEIGHT*1+PS_ICON_SPACE_Y*1,
+   START_X+PS_ICON_LG_WIDTH*1+PS_ICON_SPACE_X*0+PS_ICON_SM_WIDTH*0, PS_ICON_START_Y+PS_ICON_HEIGHT*2+PS_ICON_SPACE_Y*1},
   // layer area
-  {START_X+PICON_LG_WIDTH*1+PICON_SPACE_X*1,                  PICON_START_Y+PICON_HEIGHT*1+PICON_SPACE_Y*1,
-   START_X+PICON_LG_WIDTH*2+PICON_SPACE_X*1+PICON_SM_WIDTH*0, PICON_START_Y+PICON_HEIGHT*2+PICON_SPACE_Y*1},
+  {START_X+PS_ICON_LG_WIDTH*1+PS_ICON_SPACE_X*1,                  PS_ICON_START_Y+PS_ICON_HEIGHT*1+PS_ICON_SPACE_Y*1,
+   START_X+PS_ICON_LG_WIDTH*2+PS_ICON_SPACE_X*1+PS_ICON_SM_WIDTH*0, PS_ICON_START_Y+PS_ICON_HEIGHT*2+PS_ICON_SPACE_Y*1},
   // speed area
-  {START_X+PICON_LG_WIDTH*0+PICON_SPACE_X*0,                  1*ICON_HEIGHT+1*SPACE_Y+ICON_START_Y+PICON_HEIGHT*1+PICON_SPACE_Y*1,
-   START_X+PICON_LG_WIDTH*0+PICON_SPACE_X*0+PICON_SM_WIDTH*1, 1*ICON_HEIGHT+1*SPACE_Y+ICON_START_Y+PICON_HEIGHT*2+PICON_SPACE_Y*1},
+  {START_X+PS_ICON_LG_WIDTH*0+PS_ICON_SPACE_X*0,                  1*ICON_HEIGHT+1*SPACE_Y+ICON_START_Y+PS_ICON_HEIGHT*1+PS_ICON_SPACE_Y*1,
+   START_X+PS_ICON_LG_WIDTH*0+PS_ICON_SPACE_X*0+PS_ICON_SM_WIDTH*1, 1*ICON_HEIGHT+1*SPACE_Y+ICON_START_Y+PS_ICON_HEIGHT*2+PS_ICON_SPACE_Y*1},
 
   // 1st bottom icon
   {0*ICON_WIDTH+0*SPACE_X+START_X,  2*ICON_HEIGHT+2*SPACE_Y+ICON_START_Y,  1*ICON_WIDTH+0*SPACE_X+START_X,  3*ICON_HEIGHT+2*SPACE_Y+ICON_START_Y},
@@ -335,23 +335,23 @@ const GUI_RECT rect_of_keyPS_end[] = {
   {0, 0, 0, 0}
 #else  // Landscape Mode
   // hotend area DEFAULT LANDSCAPE GUI
-  {START_X+PICON_LG_WIDTH*0+PICON_SPACE_X*0,                  PICON_START_Y+PICON_HEIGHT*0+PICON_SPACE_Y*0,
-   START_X+PICON_LG_WIDTH*1+PICON_SPACE_X*0+PICON_SM_WIDTH*0, PICON_START_Y+PICON_HEIGHT*1+PICON_SPACE_Y*0},
+  {START_X+PS_ICON_LG_WIDTH*0+PS_ICON_SPACE_X*0,                  PS_ICON_START_Y+PS_ICON_HEIGHT*0+PS_ICON_SPACE_Y*0,
+   START_X+PS_ICON_LG_WIDTH*1+PS_ICON_SPACE_X*0+PS_ICON_SM_WIDTH*0, PS_ICON_START_Y+PS_ICON_HEIGHT*1+PS_ICON_SPACE_Y*0},
   // bed area
-  {START_X+PICON_LG_WIDTH*1+PICON_SPACE_X*1,                  PICON_START_Y+PICON_HEIGHT*0+PICON_SPACE_Y*0,
-   START_X+PICON_LG_WIDTH*2+PICON_SPACE_X*1+PICON_SM_WIDTH*0, PICON_START_Y+PICON_HEIGHT*1+PICON_SPACE_Y*0},
+  {START_X+PS_ICON_LG_WIDTH*1+PS_ICON_SPACE_X*1,                  PS_ICON_START_Y+PS_ICON_HEIGHT*0+PS_ICON_SPACE_Y*0,
+   START_X+PS_ICON_LG_WIDTH*2+PS_ICON_SPACE_X*1+PS_ICON_SM_WIDTH*0, PS_ICON_START_Y+PS_ICON_HEIGHT*1+PS_ICON_SPACE_Y*0},
   // fan area
-  {START_X+PICON_LG_WIDTH*2+PICON_SPACE_X*2,                  PICON_START_Y+PICON_HEIGHT*0+PICON_SPACE_Y*0,
-   START_X+PICON_LG_WIDTH*2+PICON_SPACE_X*2+PICON_SM_WIDTH*1, PICON_START_Y+PICON_HEIGHT*1+PICON_SPACE_Y*0},
+  {START_X+PS_ICON_LG_WIDTH*2+PS_ICON_SPACE_X*2,                  PS_ICON_START_Y+PS_ICON_HEIGHT*0+PS_ICON_SPACE_Y*0,
+   START_X+PS_ICON_LG_WIDTH*2+PS_ICON_SPACE_X*2+PS_ICON_SM_WIDTH*1, PS_ICON_START_Y+PS_ICON_HEIGHT*1+PS_ICON_SPACE_Y*0},
   // timer area
-  {START_X+PICON_LG_WIDTH*0+PICON_SPACE_X*0,                  PICON_START_Y+PICON_HEIGHT*1+PICON_SPACE_Y*1,
-   START_X+PICON_LG_WIDTH*1+PICON_SPACE_X*0+PICON_SM_WIDTH*0, PICON_START_Y+PICON_HEIGHT*2+PICON_SPACE_Y*1},
+  {START_X+PS_ICON_LG_WIDTH*0+PS_ICON_SPACE_X*0,                  PS_ICON_START_Y+PS_ICON_HEIGHT*1+PS_ICON_SPACE_Y*1,
+   START_X+PS_ICON_LG_WIDTH*1+PS_ICON_SPACE_X*0+PS_ICON_SM_WIDTH*0, PS_ICON_START_Y+PS_ICON_HEIGHT*2+PS_ICON_SPACE_Y*1},
   // layer area
-  {START_X+PICON_LG_WIDTH*0+PICON_SPACE_X*0,                  PICON_START_Y+PICON_HEIGHT*1+PICON_SPACE_Y*1,
-   START_X+PICON_LG_WIDTH*2+PICON_SPACE_X*1+PICON_SM_WIDTH*0, PICON_START_Y+PICON_HEIGHT*2+PICON_SPACE_Y*1},
+  {START_X+PS_ICON_LG_WIDTH*0+PS_ICON_SPACE_X*0,                  PS_ICON_START_Y+PS_ICON_HEIGHT*1+PS_ICON_SPACE_Y*1,
+   START_X+PS_ICON_LG_WIDTH*2+PS_ICON_SPACE_X*1+PS_ICON_SM_WIDTH*0, PS_ICON_START_Y+PS_ICON_HEIGHT*2+PS_ICON_SPACE_Y*1},
   // speed area
-  {START_X+PICON_LG_WIDTH*2+PICON_SPACE_X*2,                  PICON_START_Y+PICON_HEIGHT*1+PICON_SPACE_Y*1,
-   START_X+PICON_LG_WIDTH*2+PICON_SPACE_X*2+PICON_SM_WIDTH*1, PICON_START_Y+PICON_HEIGHT*2+PICON_SPACE_Y*1},
+  {START_X+PS_ICON_LG_WIDTH*2+PS_ICON_SPACE_X*2,                  PS_ICON_START_Y+PS_ICON_HEIGHT*1+PS_ICON_SPACE_Y*1,
+   START_X+PS_ICON_LG_WIDTH*2+PS_ICON_SPACE_X*2+PS_ICON_SM_WIDTH*1, PS_ICON_START_Y+PS_ICON_HEIGHT*2+PS_ICON_SPACE_Y*1},
 
   // 4 bottom icons area
   {0*ICON_WIDTH+0*SPACE_X+START_X,  1*ICON_HEIGHT+1*SPACE_Y+ICON_START_Y,  1*ICON_WIDTH+0*SPACE_X+START_X,  2*ICON_HEIGHT+1*SPACE_Y+ICON_START_Y},
@@ -550,7 +550,7 @@ static const LISTITEMS *curListItems = NULL;  // current listmenu
 static const void (* curMenuRedrawHandle)(void) = NULL;  // current custom menu
 
 static MENU_TYPE menuType = MENU_TYPE_ICON;
-static const LABEL * curTitle = NULL;
+static const LABEL *curTitle = NULL;
 static const GUI_RECT *curRect = NULL;  // current menu layout grid
 static uint16_t curRectCount = 0;       // current menu layout rect count
 
@@ -642,7 +642,7 @@ MENU_TYPE getMenuType(void)
 }
 
 void setMenu(MENU_TYPE menu_type, LABEL * title, uint16_t rectCount, const GUI_RECT * menuRect,
-             void(*action_redraw)(uint8_t position, uint8_t is_press),
+             void (*action_redraw)(uint8_t position, uint8_t is_press),
              void (*menu_redraw)(void))
 {
   menuType = menu_type;
@@ -723,7 +723,7 @@ void loopReminderClear(void)
       break;
 
     case STATUS_LISTENING:
-      if (GET_BIT(infoSettings.general_settings, INDEX_LISTENING_MODE) == 1)
+      if (GET_BIT(infoSettings.general_settings, INDEX_LISTENING_MODE) == 1 || isWritingMode() == true)
         return;
       break;
 
@@ -771,9 +771,7 @@ void loopBusySignClear(void)
   busySign.status = STATUS_IDLE;  // clear busy signal status
 
   if (menuType == MENU_TYPE_FULLSCREEN)
-  {
     curMenuRedrawHandle();
-  }
   else
   {
     GUI_SetColor(infoSettings.title_bg_color);
@@ -785,10 +783,13 @@ void loopBusySignClear(void)
 void notificationDot(void)
 {
   if (hasNotification())
+  {
     GUI_SetColor(infoSettings.font_color);
+  }
   else
+  {
     GUI_SetColor(infoSettings.title_bg_color);
-
+  }
   GUI_FillCircle(3, 3, 3);
   GUI_RestoreColorDefault();
 }
@@ -801,14 +802,10 @@ void menuSetTitle(const LABEL *title)
 
 void menuDrawTitle(void)
 {
-  if ((menuType == MENU_TYPE_LISTVIEW && curListItems == NULL) ||
-      (menuType == MENU_TYPE_ICON && curMenuItems == NULL))
+  if (menuType == MENU_TYPE_FULLSCREEN)
   {
-    return;
-  }
-  else if (menuType == MENU_TYPE_FULLSCREEN && curMenuRedrawHandle == NULL)
-  {
-    curMenuRedrawHandle();
+    if (curMenuRedrawHandle != NULL)
+      curMenuRedrawHandle();
     return;
   }
 
@@ -817,7 +814,8 @@ void menuDrawTitle(void)
     drawToast(true);
     return;
   }
-
+  
+  // draw title
   uint8_t *titleString = labelGetAddress(curTitle);
   uint16_t start_y = (TITLE_END_Y - BYTE_HEIGHT) / 2;
   uint16_t start_x = 10;
@@ -827,9 +825,12 @@ void menuDrawTitle(void)
 
   if (titleString)
   {
+    GUI_SetTextMode(GUI_TEXTMODE_NORMAL);
     GUI_DispLenString(10, start_y, titleString, LCD_WIDTH - 20, true);
     start_x += GUI_StrPixelWidth(titleString);
-    if (start_x > LCD_WIDTH-20) start_x = LCD_WIDTH - 20;
+
+    if (start_x > LCD_WIDTH - 20)
+      start_x = LCD_WIDTH - 20;
   }
 
   GUI_ClearRect(start_x, start_y, end_x, start_y + BYTE_HEIGHT);
@@ -925,64 +926,68 @@ void menuDrawListPage(const LISTITEMS *listItems)
 }
 
 // Show live info text on icons
-void showLiveInfo(uint8_t index, const LIVE_INFO * liveicon, const ITEM * item)
+void showLiveInfo(uint8_t index, const LIVE_INFO * liveicon, bool redrawIcon)
 {
-  if (item != NULL)
-    ICON_PrepareRead(curRect[index].x0, curRect[index].y0, item->icon);
+  GUI_RECT *iconRect = MENU_IS(menuPrinting) ? rect_of_keyPS : curRect;
+  GUI_POINT iconPt = {iconRect[index].x0, iconRect[index].y0};
+
+  if (redrawIcon)
+    ICON_ReadDisplay(iconPt.x, iconPt.y, liveicon->iconIndex);
 
   for (uint8_t i = 0; i < LIVEICON_LINES; i++)
   {
     if (liveicon->enabled[i] == true)
     {
       GUI_POINT loc;
-      loc.x = liveicon->lines[i].pos.x + curRect[index].x0;
+      switch (liveicon->lines[i].h_align)
+      {
+        case CENTER:
+          loc.x = liveicon->lines[i].pos.x - GUI_StrPixelWidth(liveicon->lines[i].text) / 2;
+          break;
 
-      if (liveicon->lines[i].v_align == BOTTOM)
-      {
-        loc.y = liveicon->lines[i].pos.y + curRect[index].y0 - BYTE_HEIGHT;
-      }
-      else if (liveicon->lines[i].v_align == CENTER)
-      {
-        loc.y = liveicon->lines[i].pos.y + curRect[index].y0 - BYTE_HEIGHT / 2;
-      }
-      else
-      {
-        loc.y = liveicon->lines[i].pos.y + curRect[index].y0;
+        case RIGHT:
+          loc.x = liveicon->lines[i].pos.x - GUI_StrPixelWidth(liveicon->lines[i].text);
+          break;
+
+        default:
+          loc.x = liveicon->lines[i].pos.x;
+          break;
       }
 
-      if (item == NULL)  // if no icon used as background, set own bg color and text mode
+      // set vertical text align
+      switch (liveicon->lines[i].v_align)
       {
-        GUI_SetTextMode(liveicon->lines[i].text_mode);
-        GUI_SetBkColor(liveicon->lines[i].bk_color);
+
+        case CENTER:
+          loc.y = liveicon->lines[i].pos.y  - BYTE_HEIGHT / 2;
+          break;
+
+        case BOTTOM:
+          loc.y = liveicon->lines[i].pos.y - BYTE_HEIGHT;
+          break;
+
+        default:
+          loc.y = liveicon->lines[i].pos.y;
+          break;
       }
 
       GUI_SetColor(liveicon->lines[i].fn_color);
       setFontSize(liveicon->lines[i].font);
 
-      switch (liveicon->lines[i].h_align)
+      if (redrawIcon || liveicon->iconIndex == ICON_NULL)  // if icon is not set, set bg color and text mode from line values
       {
-        case LEFT:
-          GUI_DispString(loc.x, loc.y, liveicon->lines[i].text);
-          break;
-
-        case CENTER:
-          GUI_DispStringCenter(loc.x, loc.y, liveicon->lines[i].text);
-          break;
-
-        case RIGHT:
-          GUI_DispStringRight(loc.x, loc.y, liveicon->lines[i].text);
-          break;
-
-        default:
-          break;
+        GUI_SetTextMode(liveicon->lines[i].text_mode);
+        GUI_SetBkColor(liveicon->lines[i].bk_color);
       }
+
+      if (redrawIcon || liveicon->iconIndex == ICON_NULL)
+        GUI_DispString(iconPt.x + loc.x, iconPt.y + loc.y, liveicon->lines[i].text);
+      else
+        GUI_DispStringOnIcon(liveicon->iconIndex, iconPt, loc, liveicon->lines[i].text);
     }
   }
 
   GUI_RestoreColorDefault();
-
-  if (item != NULL)
-    ICON_PrepareReadEnd();
 }  // showLiveInfo
 
 void displayExhibitHeader(const char * titleStr, const char * unitStr)
@@ -1079,7 +1084,7 @@ KEY_VALUES menuKeyGetValue(void)
           }
           else if (MENU_IS(menuPrinting))
           {
-            if (isPrinting() || infoHost.printing == true)
+            if (isPrinting() || isHostPrinting())
               tempkey = (KEY_VALUES)KEY_GetValue(COUNT(rect_of_keyPS), rect_of_keyPS);
             else
               tempkey = (KEY_VALUES)KEY_GetValue(COUNT(rect_of_keyPS_end), rect_of_keyPS_end);
@@ -1233,20 +1238,22 @@ void loopCheckBackPress(void)
 // Non-UI background loop tasks
 void loopBackEnd(void)
 {
-  // Get Gcode command from the file to be printed
-  loopPrintFromTFT();  // handle a print from TFT, if any
-  // Parse and send Gcode commands in the queue
+  // Get gcode command from the file to be printed
+  loopPrintFromTFT();  // handle a print from TFT media, if any
+
+  // Parse and send gcode commands in the queue
   sendQueueCmd();
+
   // Parse the received slave response information
   parseACK();
 
   if (GET_BIT(infoSettings.general_settings, INDEX_FILE_COMMENT_PARSING) == 1)  // if file comment parsing is enabled
   {
-    parseComment();  // Parse comment from gCode file
+    parseComment();  // Parse comment from gcode file
   }
 
   #ifdef SERIAL_PORT_2
-    // Parse the received Gcode from other UART, such as: ESP3D, etc...
+    // Parse the received gcode from other UART, such as ESP3D etc...
     parseRcvGcode();
   #endif
 
@@ -1264,7 +1271,7 @@ void loopBackEnd(void)
 
   if (infoMachineSettings.onboardSD == ENABLED)
   {
-    loopPrintFromOnboardSD();  // handle a print from (remote) onboard media, if any
+    loopPrintFromOnboard();  // handle a print from (remote) onboard media, if any
   }
 
   #ifdef USB_FLASH_DRIVE_SUPPORT
@@ -1306,7 +1313,7 @@ void loopBackEnd(void)
 
   // Query RRF status
   rrfStatusQuery();
-} 
+}
 
 // UI-related background loop tasks
 void loopFrontEnd(void)

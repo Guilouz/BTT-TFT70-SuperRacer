@@ -162,20 +162,20 @@
     #define STRING_PROCESS_COMPLETED      "Process completed!"
     #define STRING_PROCESS_ABORTED        "Process aborted!"
 
-    // TFT SD, USB Disk, Onboard SD, Filament Runout Process Commands / Status / Info
-    #define STRING_TFTSD                  "TFT SD"
-    #define STRING_READ_TFTSD_ERROR       "Σφάλμα ανάγνωσης κάρτας SD οθόνης!"
-    #define STRING_TFTSD_INSERTED         "Η κάρτα έχει εισαχθεί!"
-    #define STRING_TFTSD_REMOVED          "Η κάρτα αφαιρέθηκε!"
-    #define STRING_TFTSD_NOT_DETECTED     "No SD Card detected."
-    #define STRING_USB_DISK               "USB Δίσκος"
-    #define STRING_READ_USB_DISK_ERROR    "Σφάλμα ανάγνωσης USB Δίσκου!"
-    #define STRING_USB_DISK_INSERTED      "Ο USB Δίσκος έχει εισαχθεί!"
-    #define STRING_USB_DISK_REMOVED       "Ο USB Δίσκος αφαιρέθηκε!"
-    #define STRING_USB_DISK_NOT_DETECTED  "No USB Disk detected."
-    #define STRING_ONBOARDSD              "Ενσωματωμένη κάρτα SD"
-    #define STRING_ONBOARDUSB             "OnboardUSB"
-    #define STRING_READ_ONBOARDSD_ERROR   "Σφάλμα ανάγνωσης ενσωματωμένης κάρτας SD!"
+    // TFT Media, Onboard Media, Filament Runout Process Commands / Status / Info
+    #define STRING_TFT_SD                 "TFT SD"
+    #define STRING_TFT_SD_READ_ERROR      "Σφάλμα ανάγνωσης κάρτας SD οθόνης!"
+    #define STRING_TFT_SD_INSERTED        "Η κάρτα έχει εισαχθεί!"
+    #define STRING_TFT_SD_REMOVED         "Η κάρτα αφαιρέθηκε!"
+    #define STRING_TFT_SD_NOT_DETECTED    "No SD Card detected."
+    #define STRING_TFT_USB                "USB Δίσκος"
+    #define STRING_TFT_USB_READ_ERROR     "Σφάλμα ανάγνωσης USB Δίσκου!"
+    #define STRING_TFT_USB_INSERTED       "Ο USB Δίσκος έχει εισαχθεί!"
+    #define STRING_TFT_USB_REMOVED        "Ο USB Δίσκος αφαιρέθηκε!"
+    #define STRING_TFT_USB_NOT_DETECTED   "No USB Disk detected."
+    #define STRING_ONBOARD_SD             "Ενσωματωμένη κάρτα SD"
+    #define STRING_ONBOARD_USB            "Ενσωματωμένη κάρτα USB"
+    #define STRING_ONBOARD_SD_READ_ERROR  "Σφάλμα ανάγνωσης ενσωματωμένης κάρτας SD!"
     #define STRING_FILAMENT_RUNOUT        "τελείωσε το νημά!"
 
     // Steppers, Print, Probe Process Commands / Status / Info
@@ -191,6 +191,8 @@
     #define STRING_DEPLOY                 "Επέκταση"
     #define STRING_STOW                   "Aπόσυρση"
     #define STRING_REPEAT                 "Επανάληψη"
+    #define STRING_HS_ON                  "HS: On"
+    #define STRING_HS_OFF                 "HS: Off"
 
     // Printer Tools
     #define STRING_NOZZLE                 "Στόμιο"

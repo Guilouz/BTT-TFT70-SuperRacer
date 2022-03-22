@@ -162,20 +162,20 @@
     #define STRING_PROCESS_COMPLETED      "Processo completato!"
     #define STRING_PROCESS_ABORTED        "Processo annullato!"
 
-    // TFT SD, USB Disk, Onboard SD, Filament Runout Process Commands / Status / Info
-    #define STRING_TFTSD                  "SD schermo"
-    #define STRING_READ_TFTSD_ERROR       "Errore lettura SD!"
-    #define STRING_TFTSD_INSERTED         "SD inserita"
-    #define STRING_TFTSD_REMOVED          "SD rimossa"
-    #define STRING_TFTSD_NOT_DETECTED     "No SD Card detected."
-    #define STRING_USB_DISK               "Pen drive"
-    #define STRING_READ_USB_DISK_ERROR    "Errore lettura pen drive"
-    #define STRING_USB_DISK_INSERTED      "Pen drive inserita!"
-    #define STRING_USB_DISK_REMOVED       "Pen drive rimossa!"
-    #define STRING_USB_DISK_NOT_DETECTED  "No USB Disk detected."
-    #define STRING_ONBOARDSD              "SD su SKR"
-    #define STRING_ONBOARDUSB             "OnboardUSB"
-    #define STRING_READ_ONBOARDSD_ERROR   "Errore lettura SD su SKR!"
+    // TFT Media, Onboard Media, Filament Runout Process Commands / Status / Info
+    #define STRING_TFT_SD                 "SD card"
+    #define STRING_TFT_SD_READ_ERROR      "Errore lettura SD card!"
+    #define STRING_TFT_SD_INSERTED        "SD card inserita"
+    #define STRING_TFT_SD_REMOVED         "SD card rimossa"
+    #define STRING_TFT_SD_NOT_DETECTED    "SD card non rilevata!"
+    #define STRING_TFT_USB                "Pen drive"
+    #define STRING_TFT_USB_READ_ERROR     "Errore lettura pen drive!"
+    #define STRING_TFT_USB_INSERTED       "Pen drive inserita"
+    #define STRING_TFT_USB_REMOVED        "Pen drive rimossa"
+    #define STRING_TFT_USB_NOT_DETECTED   "Pen drive non rilevata!"
+    #define STRING_ONBOARD_SD             "SD scheda"
+    #define STRING_ONBOARD_USB            "USB scheda"
+    #define STRING_ONBOARD_SD_READ_ERROR  "Errore lettura media su scheda!"
     #define STRING_FILAMENT_RUNOUT        "Filamento finito!"
 
     // Steppers, Print, Probe Process Commands / Status / Info
@@ -191,6 +191,8 @@
     #define STRING_DEPLOY                 "Estrai"
     #define STRING_STOW                   "Ritrai"
     #define STRING_REPEAT                 "Ripeti"
+    #define STRING_HS_ON                  "HS: On"
+    #define STRING_HS_OFF                 "HS: Off"
 
     // Printer Tools
     #define STRING_NOZZLE                 "Hotend"

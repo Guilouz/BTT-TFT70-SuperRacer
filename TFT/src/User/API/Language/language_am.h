@@ -162,20 +162,20 @@
     #define STRING_PROCESS_COMPLETED      "Process completed!"
     #define STRING_PROCESS_ABORTED        "Process aborted!"
 
-    // TFT SD, USB Disk, Onboard SD, Filament Runout Process Commands / Status / Info
-    #define STRING_TFTSD                  "TFT SD"
-    #define STRING_READ_TFTSD_ERROR       "TFTSD հիշողության սարքը չկա"
-    #define STRING_TFTSD_INSERTED         "Card inserted!"
-    #define STRING_TFTSD_REMOVED          "Card removed!"
-    #define STRING_TFTSD_NOT_DETECTED     "No SD Card detected."
-    #define STRING_USB_DISK               "U Disk"
-    #define STRING_READ_USB_DISK_ERROR    "Read U Disk error!"
-    #define STRING_USB_DISK_INSERTED      "U Disk inserted!"
-    #define STRING_USB_DISK_REMOVED       "U Disk removed!"
-    #define STRING_USB_DISK_NOT_DETECTED  "No USB Disk detected."
-    #define STRING_ONBOARDSD              "OnboardSD"
-    #define STRING_ONBOARDUSB             "OnboardUSB"
-    #define STRING_READ_ONBOARDSD_ERROR   "OnboardSD հիշողության սարքը չկա"
+    // TFT Media, Onboard Media, Filament Runout Process Commands / Status / Info
+    #define STRING_TFT_SD                 "TFT SD"
+    #define STRING_TFT_SD_READ_ERROR      "TFTSD հիշողության սարքը չկա"
+    #define STRING_TFT_SD_INSERTED        "Card inserted!"
+    #define STRING_TFT_SD_REMOVED         "Card removed!"
+    #define STRING_TFT_SD_NOT_DETECTED    "No SD Card detected."
+    #define STRING_TFT_USB                "U Disk"
+    #define STRING_TFT_USB_READ_ERROR     "Read U Disk error!"
+    #define STRING_TFT_USB_INSERTED       "U Disk inserted!"
+    #define STRING_TFT_USB_REMOVED        "U Disk removed!"
+    #define STRING_TFT_USB_NOT_DETECTED   "No USB Disk detected."
+    #define STRING_ONBOARD_SD             "OnboardSD"
+    #define STRING_ONBOARD_USB            "OnboardUSB"
+    #define STRING_ONBOARD_SD_READ_ERROR  "OnboardSD հիշողության սարքը չկա"
     #define STRING_FILAMENT_RUNOUT        "Filament runout!"
 
     // Steppers, Print, Probe Process Commands / Status / Info
@@ -191,6 +191,8 @@
     #define STRING_DEPLOY                 "Deploy"
     #define STRING_STOW                   "Stow"
     #define STRING_REPEAT                 "Repeat"
+    #define STRING_HS_ON                  "HS: On"
+    #define STRING_HS_OFF                 "HS: Off"
 
     // Printer Tools
     #define STRING_NOZZLE                 "Գլխիկ"

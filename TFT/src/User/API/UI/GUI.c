@@ -6,6 +6,7 @@ uint16_t foreGroundColor = WHITE;
 uint16_t backGroundColor = BLACK;
 GUI_TEXT_MODE guiTextMode = GUI_TEXTMODE_NORMAL;
 GUI_NUM_MODE guiNumMode = GUI_NUMMODE_SPACE;
+uint16_t *iconBuffer;
 
 void GUI_SetColor(uint16_t color)
 {
@@ -605,83 +606,56 @@ void GUI_DispOne(int16_t sx, int16_t sy, const CHAR_INFO *pInfo)
 {
   if (pInfo->bytes == 0) return;
 
-  uint8_t x = 0,
-          y = 0,
-          j = 0,
-          i = 0;
+  uint8_t x = 0;
+  uint8_t y = 0;
+  uint8_t j = 0;
+  uint8_t i = 0;
   uint16_t bitMapSize = (pInfo->pixelHeight * pInfo->pixelWidth / 8);
   uint8_t  font[bitMapSize];
   uint32_t temp = 0;
 
   W25Qxx_ReadBuffer(font, pInfo->bitMapAddr, bitMapSize);
 
-  if (guiTextMode == GUI_TEXTMODE_TRANS)
+  for (x = 0; x < pInfo->pixelWidth; x++)
   {
-    for (x=0; x < pInfo->pixelWidth; x++)
+    for (j = 0; j < (pInfo->pixelHeight + 8 - 1) / 8; j++)
     {
-      for (j=0; j < (pInfo->pixelHeight + 8-1)/8; j++)
-      {
-        temp <<= 8;
-        temp |= font[i++];
-      }
-
-      for (y=0;y < pInfo->pixelHeight;y++)
-      {
-        if (temp & (1<<(pInfo->pixelHeight-1)))
-          GUI_DrawPixel(sx, sy+y, foreGroundColor);
-        temp <<= 1;
-      }
-      sx++;
+      temp <<= 8;
+      temp |= font[i++];
     }
-  }
-  else if (guiTextMode == GUI_TEXTMODE_NORMAL)
-  {
-    for (x=0; x < pInfo->pixelWidth; x++)
+    for (y = 0; y < pInfo->pixelHeight; y++)
     {
-      for (j=0; j < (pInfo->pixelHeight + 8-1)/8; j++)
+      if (temp & (1 << (pInfo->pixelHeight - 1)))  // draw text pixel
       {
-        temp <<= 8;
-        temp |= font[i++];
+        GUI_DrawPixel(sx, sy + y, foreGroundColor);
       }
+      else  // draw background pixel
+      {
+        switch (guiTextMode)
+        {
+          case GUI_TEXTMODE_NORMAL:
+            GUI_DrawPixel(sx, sy + y, backGroundColor);
+            break;
 
-      for (y=0;y < pInfo->pixelHeight;y++)
-      {
-        if (temp & (1<<(pInfo->pixelHeight-1)))
-          GUI_DrawPixel(sx, sy+y, foreGroundColor);
-        else
-          GUI_DrawPixel(sx, sy+y, backGroundColor);
-        temp <<= 1;
-      }
-      sx++;
-    }
-  }
-  else  // GUI_TEXTMODE_ON_ICON
-  {
-    for (x=0; x < pInfo->pixelWidth; x++)
-    {
-      for (j=0; j < (pInfo->pixelHeight + 8-1)/8; j++)
-      {
-        temp <<= 8;
-        temp |= font[i++];
-      }
+          case GUI_TEXTMODE_ON_ICON:
+            GUI_DrawPixel(sx, sy + y, iconBuffer[(pInfo->pixelWidth * y) + x]);
+            break;
 
-      for (y=0;y < pInfo->pixelHeight;y++)
-      {
-        if (temp & (1<<(pInfo->pixelHeight-1)))
-          GUI_DrawPixel(sx, sy+y, foreGroundColor);
-        else
-          GUI_DrawPixel(sx, sy+y, ICON_ReadPixel(sx, sy+y));
-        temp <<= 1;
+          default:
+            break;
+        }
       }
-      sx++;
+      temp <<= 1;
     }
+    sx++;
   }
 }
 
 void _GUI_DispString(int16_t x, int16_t y, const uint8_t *p)
 {
-  CHAR_INFO info;
   if (p == NULL) return;
+
+  CHAR_INFO info;
 
   while (*p)
   {
@@ -694,9 +668,10 @@ void _GUI_DispString(int16_t x, int16_t y, const uint8_t *p)
 
 const uint8_t* _GUI_DispLenString(int16_t x, int16_t y, const uint8_t *p, uint16_t pixelWidth, bool truncate)
 {
+  if (p == NULL) return NULL;
+
   CHAR_INFO info;
   uint16_t curPixelWidth = 0;
-  if (p == NULL) return NULL;
 
   if (truncate) pixelWidth -= BYTE_HEIGHT;
 
@@ -843,6 +818,29 @@ void _GUI_DispStringInPrectEOL(const GUI_RECT *rect, const uint8_t *p)
   _GUI_DispStringInRectEOL(rect->x0, rect->y0, rect->x1, rect->y1, p);
 }
 
+void _GUI_DispStringOnIcon(uint16_t iconIndex, GUI_POINT iconPoint, GUI_POINT textPos, const uint8_t *p)
+{
+  if (p == NULL) return;
+
+  CHAR_INFO info;
+  uint16_t _iconBuffer[LARGE_BYTE_WIDTH * LARGE_BYTE_HEIGHT];
+
+  iconBuffer = _iconBuffer;
+  GUI_SetTextMode(GUI_TEXTMODE_ON_ICON);
+
+  while (*p)
+  {
+    getCharacterInfo(p, &info);
+    ICON_ReadBuffer(iconBuffer, textPos.x, textPos.y, info.pixelWidth, info.pixelHeight, iconIndex);
+    GUI_DispOne(iconPoint.x + textPos.x, iconPoint.y + textPos.y, &info);
+
+    textPos.x += info.pixelWidth;
+    p += info.bytes;
+  }
+
+  GUI_SetTextMode(GUI_TEXTMODE_NORMAL);
+}
+
 const uint32_t GUI_Pow10[10] = {1, 10, 100, 1000, 10000, 100000, 1000000, 10000000, 100000000, 1000000000};
 
 void GUI_DispDec(int16_t x, int16_t y, int32_t num, uint8_t len, uint8_t leftOrRight)
@@ -970,7 +968,7 @@ const uint8_t* _GUI_DispLenLabel(int16_t x, int16_t y, uint16_t index, uint16_t 
 {
   uint8_t tempstr[MAX_LANG_LABEL_LENGTH];
   if (loadLabelText(tempstr, index) == false) return NULL;
-   return _GUI_DispLenString(x, y, tempstr, pixelWidth, truncate);
+  return _GUI_DispLenString(x, y, tempstr, pixelWidth, truncate);
 }
 
 void _GUI_DispLabelRight(int16_t x, int16_t y, uint16_t index)
@@ -1013,6 +1011,13 @@ void _GUI_DispLabelInPrectEOL(const GUI_RECT *rect, uint16_t index)
   uint8_t tempstr[MAX_LANG_LABEL_LENGTH];
   if (loadLabelText(tempstr, index) == false) return;
   _GUI_DispStringInPrectEOL(rect, tempstr);
+}
+
+void _GUI_DispLabelOnIcon(uint16_t iconIndex, GUI_POINT iconPoint, GUI_POINT textPos, uint16_t index)
+{
+  uint8_t tempstr[MAX_LANG_LABEL_LENGTH];
+  if (loadLabelText(tempstr, index) == false) return;
+  _GUI_DispStringOnIcon(iconIndex, iconPoint, textPos, tempstr);
 }
 
 /****************************************************     Widget    *******************************************************************/
@@ -1172,7 +1177,7 @@ void GUI_DrawButton(const BUTTON *button, uint8_t pressed)
   GUI_FillCircle(sx + radius,     ey - radius - 1, radius);
   GUI_FillCircle(ex - radius - 1, ey - radius - 1, radius);
 
-  for (uint16_t i=0; i<lineWidth ;i++)
+  for (uint16_t i=0; i < lineWidth ;i++)
   {
     GUI_HLine(sx + radius, sy + i,      ex - radius);
     GUI_HLine(sx + radius, ey - 1 - i,  ex - radius);
@@ -1204,9 +1209,9 @@ void GUI_DrawWindow(const WINDOW *window, const uint8_t *title, const uint8_t *i
 
   uint16_t title_height = window->titleHeight;
   // uint16_t action_height = window->actionBarHeight;
-  uint16_t title_txt_y0 = w_rect.y0 + (title_height - BYTE_HEIGHT) / 2;                      // top y point fot title text display
-  uint16_t title_y1 = window->rect.y0 + window->titleHeight;                                 // bottom y point of title bar
-  uint16_t action_y0 = (actionBar) ? window->rect.y1 - window->actionBarHeight : w_rect.y1;  // set action bar height to 0 to maximize text area;
+  uint16_t title_txt_y0 = w_rect.y0 + (title_height - BYTE_HEIGHT) / 2;
+  uint16_t title_y1 = window->rect.y0 + window->titleHeight;
+  uint16_t action_y0 = (actionBar) ? window->rect.y1 - window->actionBarHeight : w_rect.y1;
   uint8_t margin = BYTE_WIDTH / 2;
 
   // draw title background
@@ -1262,14 +1267,11 @@ void GUI_DrawWindow(const WINDOW *window, const uint8_t *title, const uint8_t *i
   GUI_DrawRect(w_rect.x0, title_y1 - 1, w_rect.x1, title_y1 + 1);
 
   if (actionBar)
-  { // draw actionbar accent line
+  {  // draw actionbar accent line
     GUI_SetColor(GRAY);
     GUI_DrawRect(w_rect.x0, action_y0 - 1, w_rect.x1, action_y0 + 1);
   }
-  else
-  {
-    w_rect.y1 -= window->actionBarHeight;
-  }
+
   // draw window border
   GUI_SetColor(window->lineColor);
 

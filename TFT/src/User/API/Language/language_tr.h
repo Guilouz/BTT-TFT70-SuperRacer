@@ -162,20 +162,20 @@
     #define STRING_PROCESS_COMPLETED      "Proses tamamlandı!"
     #define STRING_PROCESS_ABORTED        "Proses durduruldu!"
 
-    // TFT SD, USB Disk, Onboard SD, Filament Runout Process Commands / Status / Info
-    #define STRING_TFTSD                  "SD Kart"
-    #define STRING_READ_TFTSD_ERROR       "SD kart okunamadı!"
-    #define STRING_TFTSD_INSERTED         "SD Kart Takıldı!"
-    #define STRING_TFTSD_REMOVED          "SD Kart Çıkarıldı!"
-    #define STRING_TFTSD_NOT_DETECTED     "No SD Card detected."
-    #define STRING_USB_DISK               "USB Disk"
-    #define STRING_READ_USB_DISK_ERROR    "USB disk okunamadı!"
-    #define STRING_USB_DISK_INSERTED      "USB Disk Takıldı!"
-    #define STRING_USB_DISK_REMOVED       "USB Disk Çıkarıldı!"
-    #define STRING_USB_DISK_NOT_DETECTED  "No USB Disk detected."
-    #define STRING_ONBOARDSD              "Dahili SD"
-    #define STRING_ONBOARDUSB             "OnboardUSB"
-    #define STRING_READ_ONBOARDSD_ERROR   "Dahili SD Okunamadı!"
+    // TFT Media, Onboard Media, Filament Runout Process Commands / Status / Info
+    #define STRING_TFT_SD                 "SD Kart"
+    #define STRING_TFT_SD_READ_ERROR      "SD kart okunamadı!"
+    #define STRING_TFT_SD_INSERTED        "SD Kart Takıldı!"
+    #define STRING_TFT_SD_REMOVED         "SD Kart Çıkarıldı!"
+    #define STRING_TFT_SD_NOT_DETECTED    "No SD Card detected."
+    #define STRING_TFT_USB                "USB Disk"
+    #define STRING_TFT_USB_READ_ERROR     "USB disk okunamadı!"
+    #define STRING_TFT_USB_INSERTED       "USB Disk Takıldı!"
+    #define STRING_TFT_USB_REMOVED        "USB Disk Çıkarıldı!"
+    #define STRING_TFT_USB_NOT_DETECTED   "No USB Disk detected."
+    #define STRING_ONBOARD_SD             "Dahili SD"
+    #define STRING_ONBOARD_USB            "Dahili USB"
+    #define STRING_ONBOARD_SD_READ_ERROR  "Dahili SD Okunamadı!"
     #define STRING_FILAMENT_RUNOUT        "Filaman Bitti!"
 
     // Steppers, Print, Probe Process Commands / Status / Info
@@ -191,6 +191,8 @@
     #define STRING_DEPLOY                 "Aç"
     #define STRING_STOW                   "Kapat"
     #define STRING_REPEAT                 "Tekrarla"
+    #define STRING_HS_ON                  "HS: On"
+    #define STRING_HS_OFF                 "HS: Off"
 
     // Printer Tools
     #define STRING_NOZZLE                 "Nozül"
