@@ -13,6 +13,11 @@ Si vous aimez mon travail, n'hésitez pas à me soutenir en me payant une 🍺 o
 
 ## Téléchargement
 
+**ATTENTION ! Les nouveaux modèles d'écran TFT70 sont des versions GD35F407, il faut donc utiliser l'archive portant la mention "GD".**
+
+![Capture d’écran 2022-03-22 à 23 39 43](https://user-images.githubusercontent.com/12702322/159588062-f9656dc9-8738-4f0e-8a61-78aee8b7ecdf.jpg)
+
+
 **Firmware disponible [ici](https://github.com/Guilouz/BTT-TFT70-SuperRacer/releases).**
 
 Le firmware Marlin pour FLSUN Super Racer configuré pour cet écran se trouve [ici](https://github.com/Guilouz/Marlin-SuperRacer-SKR2.0-LGX).
