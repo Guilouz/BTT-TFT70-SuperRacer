@@ -2,12 +2,12 @@
 #define _LANGUAGE_CZ_H_
 
     // config.ini Parameter Settings - Screen Settings and Feature Settings
+    #define STRING_LANGUAGE               "Čeština"
     #define STRING_EMULATED_M600          "Emulace M600"
     #define STRING_EMULATED_M109_M190     "Emulace M109 / M190"
     #define STRING_EVENT_LED              "LED události"
     #define STRING_FILE_COMMENT_PARSING   "Analýzovat komentáře"
     #define STRING_ROTATED_UI             "Otočit UI"
-    #define STRING_LANGUAGE               "Čeština"
     #define STRING_ACK_NOTIFICATION       "Styl oznámení ACK"
     #define STRING_FILES_SORT_BY          "Řazení souboru"
     #define STRING_FILES_LIST_MODE        "Soubory jako seznam"
@@ -36,7 +36,7 @@
     #define STRING_LCD_IDLE_BRIGHTNESS    "LCD snížení jasu"
     #define STRING_LCD_IDLE_TIME          "LCD snížení jasu po"
     #define STRING_LCD_LOCK_ON_IDLE       "Blok. dotek při zatmavení"
-    #define STRING_LED_ALWAYS_ON          "LED always ON"
+    #define STRING_LED_ALWAYS_ON          "LED vždy zapnuto"
     #define STRING_KNOB_LED_COLOR         "Rotační knob LED"
     #define STRING_KNOB_LED_IDLE          "Rotační knob LED idle"
     #define STRING_START_GCODE_ENABLED    "Spustit Gcode před tiskem"
@@ -59,7 +59,7 @@
     #define STRING_STEALTH_CHOP           "TMC Tichý režim"
     #define STRING_DELTA_CONFIGURATION    "Delta konfigurace"
     #define STRING_DELTA_TOWER_ANGLE      "Úhel věže"
-    #define STRING_DELTA_DIAGONAL_ROD     "Diagonal Rod Trim"
+    #define STRING_DELTA_DIAGONAL_ROD     "Diagonální tyč"
     #define STRING_DELTA_ENDSTOP          "Nastavení dorazu"
     #define STRING_PROBE_OFFSET           "Offset sondy"
     #define STRING_LIN_ADVANCE            "Linear Advance"

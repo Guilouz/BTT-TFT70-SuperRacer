@@ -25,6 +25,7 @@ void runMacro(const char *display_name)
 {
   running_macro_name = display_name;
   rrfShowRunningMacro();
+
   request_M98(infoFile.path);
 
   exitFolder();
@@ -60,7 +61,7 @@ void menuCallMacro(void)
   uint16_t key_num = KEY_IDLE;
   uint8_t update = 1;
   infoFile.curPage = 0;
-  infoFile.source = ONBOARD_MEDIA;
+  infoFile.source = FS_ONBOARD_MEDIA;
 
   GUI_Clear(MENU_BACKGROUND_COLOR);
   GUI_DispStringInRect(0, 0, LCD_WIDTH, LCD_HEIGHT, textSelect(LABEL_LOADING));

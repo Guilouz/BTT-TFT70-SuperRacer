@@ -80,7 +80,7 @@ bool storeCmd(const char * format, ...)
 
   if (infoCmd.count >= CMD_QUEUE_SIZE)
   {
-    reminderMessage(LABEL_BUSY, STATUS_BUSY);
+    reminderMessage(LABEL_BUSY, SYS_STATUS_BUSY);
     return false;
   }
 
@@ -102,7 +102,7 @@ void mustStoreCmd(const char * format, ...)
 
   if (infoCmd.count >= CMD_QUEUE_SIZE)
   {
-    reminderMessage(LABEL_BUSY, STATUS_BUSY);
+    reminderMessage(LABEL_BUSY, SYS_STATUS_BUSY);
     loopProcessToCondition(&isFullCmdQueue);  // wait for a free slot in the queue in case the queue is currently full
   }
 
@@ -151,7 +151,7 @@ bool storeCmdFromUART(SERIAL_PORT_INDEX portIndex, const CMD cmd)
 
   if (infoCmd.count >= CMD_QUEUE_SIZE)
   {
-    reminderMessage(LABEL_BUSY, STATUS_BUSY);
+    reminderMessage(LABEL_BUSY, SYS_STATUS_BUSY);
     return false;
   }
 
@@ -171,7 +171,7 @@ void mustStoreCacheCmd(const char * format, ...)
 {
   if (infoCacheCmd.count >= CMD_QUEUE_SIZE)
   {
-    reminderMessage(LABEL_BUSY, STATUS_BUSY);
+    reminderMessage(LABEL_BUSY, SYS_STATUS_BUSY);
     loopProcessToCondition(&isFullCmdQueue);  // wait for a free slot in the queue in case the queue is currently full
   }
 
@@ -211,12 +211,6 @@ static inline bool getCmd(void)
   cmd_base_index = cmd_index = 0;
 
   return (cmd_port_index == PORT_1);  // if gcode is originated by TFT (SERIAL_PORT), return true
-}
-
-void updateCmd(const char * buf)
-{
-  strcat(cmd_ptr, buf);       // append buf to gcode
-  cmd_len = strlen(cmd_ptr);  // new length of gcode
 }
 
 // Send gcode cmd to printer and remove leading gcode cmd from infoCmd queue.
@@ -315,9 +309,9 @@ bool initRemoteTFT()
   // e.g. "N1 M23 SD:/test/cap2.gcode*36\n" -> "SD:/test/cap2.gcode*36\n"
   //
   if (cmd_seen_from(cmd_base_index, "SD:") || cmd_seen_from(cmd_base_index, "S "))
-    infoFile.source = TFT_SD;   // set source first
+    infoFile.source = FS_TFT_SD;   // set source first
   else if (cmd_seen_from(cmd_base_index, "U:") || cmd_seen_from(cmd_base_index, "U "))
-    infoFile.source = TFT_USB;  // set source first
+    infoFile.source = FS_TFT_USB;  // set source first
   else
     return false;
 
@@ -441,12 +435,6 @@ void synchNoWaitHeating(uint8_t index)
   if (cmd_seen('S'))
   {
     heatSyncTargetTemp(index, cmd_value());
-  }
-  else if (!cmd_seen('\n'))
-  {
-    char buf[12];
-    sprintf(buf, "S%u\n", heatGetTargetTemp(index));
-    updateCmd(buf);
     heatSetSendWaiting(index, false);
   }
 }
@@ -513,7 +501,7 @@ void sendQueueCmd(void)
           if (isPrinting() && infoMachineSettings.firmwareType != FW_REPRAPFW)  // abort printing by "M0" in RepRapFirmware
           {
             // pause if printing from TFT media and purge M0/M1 command
-            if (infoFile.source < ONBOARD_MEDIA)
+            if (infoFile.source < FS_ONBOARD_MEDIA)
             {
               sendCmd(true, avoid_terminal);
               printPause(true, PAUSE_M0);
@@ -583,10 +571,10 @@ void sendQueueCmd(void)
           case 24:  // M24
             if (!fromTFT)
             {
-              // NOTE: If the file was selected (with M23) from onboard media, infoFile.source will be set to ONBOARD_MEDIA_REMOTE
+              // NOTE: If the file was selected (with M23) from onboard media, infoFile.source will be set to FS_ONBOARD_MEDIA_REMOTE
               //       by the startRemotePrint function called in parseAck.c during M23 ACK parsing
 
-              if (infoFile.source < ONBOARD_MEDIA)  // if a file was selected from TFT media with M23
+              if (infoFile.source < FS_ONBOARD_MEDIA)  // if a file was selected from TFT media with M23
               {
                 // firstly purge the gcode to avoid a possible reprocessing or infinite nested loop in
                 // case the function loopProcess() is invoked by the following function printPause()
@@ -643,7 +631,7 @@ void sendQueueCmd(void)
                   Serial_Puts(cmd_port, ".\n");
                 }
 
-                sprintf(buf, "%s printing byte %d/%d\n", (infoFile.source == TFT_SD) ? "TFT SD" : "TFT USB", getPrintCur(), getPrintSize());
+                sprintf(buf, "%s printing byte %d/%d\n", (infoFile.source == FS_TFT_SD) ? "TFT SD" : "TFT USB", getPrintCur(), getPrintSize());
                 Serial_Puts(cmd_port, buf);
                 Serial_Puts(cmd_port, "ok\n");
 
@@ -665,7 +653,7 @@ void sendQueueCmd(void)
                 if (openRemoteTFT(true))  // if file was successfully open, switch to TFT writing mode
                 {
                   writing_mode = TFT_WRITING;
-                  reminderMessage(LABEL_LISTENING, STATUS_LISTENING);
+                  reminderMessage(LABEL_LISTENING, SYS_STATUS_LISTENING);
                 }
 
                 sendCmd(true, avoid_terminal);
@@ -674,7 +662,7 @@ void sendQueueCmd(void)
               else  // if it's a request to onboard media, switch to onboard writing mode and forward the command to onboard
               {
                 writing_mode = ONBOARD_WRITING;
-                reminderMessage(LABEL_LISTENING, STATUS_LISTENING);
+                reminderMessage(LABEL_LISTENING, SYS_STATUS_LISTENING);
               }
             }
             break;
@@ -842,13 +830,6 @@ void sendQueueCmd(void)
             {
               heatSyncUpdateSeconds(cmd_value());
             }
-            else if (!cmd_seen('\n'))
-            {
-              char buf[12];
-
-              sprintf(buf, "S%u\n", heatGetUpdateSeconds());
-              updateCmd(buf);
-            }
           }
           break;
 
@@ -880,9 +861,7 @@ void sendQueueCmd(void)
         // no break here. The data processing of M109 is the same as that of M104 below
         case 104:  // M104
           if (fromTFT)
-          {
             synchNoWaitHeating(cmd_seen('T') ? cmd_value() : heatGetCurrentHotend());
-          }
           break;
 
         case 114:  // M114
@@ -923,9 +902,7 @@ void sendQueueCmd(void)
         // no break here. The data processing of M190 is the same as that of M140 below
         case 140:  // M140
           if (fromTFT)
-          {
             synchNoWaitHeating(BED);
-          }
           break;
 
         case 191:  // M191
@@ -937,9 +914,7 @@ void sendQueueCmd(void)
         // no break here. The data processing of M191 is the same as that of M141 below
         case 141:  // M141
           if (fromTFT)
-          {
             synchNoWaitHeating(CHAMBER);
-          }
           break;
 
         case 200:  // M200 filament diameter

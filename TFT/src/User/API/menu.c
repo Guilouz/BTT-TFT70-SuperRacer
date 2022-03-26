@@ -224,7 +224,7 @@ const GUI_RECT rect_of_keyPS[] = { // PS = PRINT SCREEN, This template is used t
   {START_X+PS_ICON_LG_WIDTH*0+PS_ICON_SPACE_X*0,                    PS_ICON_START_Y+PS_ICON_HEIGHT*1+PS_ICON_SPACE_Y*1,
    START_X+PS_ICON_LG_WIDTH*1+PS_ICON_SPACE_X*0+PS_ICON_SM_WIDTH*0, PS_ICON_START_Y+PS_ICON_HEIGHT*2+PS_ICON_SPACE_Y*1},
   // layer area
- {START_X+PS_ICON_LG_WIDTH*1+PS_ICON_SPACE_X*1,                    PS_ICON_START_Y+PS_ICON_HEIGHT*1+PS_ICON_SPACE_Y*1,
+  {START_X+PS_ICON_LG_WIDTH*1+PS_ICON_SPACE_X*1,                    PS_ICON_START_Y+PS_ICON_HEIGHT*1+PS_ICON_SPACE_Y*1,
    START_X+PS_ICON_LG_WIDTH*2+PS_ICON_SPACE_X*1+PS_ICON_SM_WIDTH*0, PS_ICON_START_Y+PS_ICON_HEIGHT*2+PS_ICON_SPACE_Y*1},
   // speed area
   {START_X+PS_ICON_LG_WIDTH*0+PS_ICON_SPACE_X*0,                    1*ICON_HEIGHT+1*SPACE_Y+ICON_START_Y+PS_ICON_HEIGHT*1+PS_ICON_SPACE_Y*1,
@@ -302,22 +302,22 @@ const GUI_RECT rect_of_keyPS_draw[] = { // VERTICAL GUI Printing menu for drawin
 const GUI_RECT rect_of_keyPS_end[] = {
 #ifdef PORTRAIT_MODE
   // hotend area VERTICAL GUI
-  {START_X+PS_ICON_LG_WIDTH*0+PS_ICON_SPACE_X*0,                  PS_ICON_START_Y+PS_ICON_HEIGHT*0+PS_ICON_SPACE_Y*0,
+  {START_X+PS_ICON_LG_WIDTH*0+PS_ICON_SPACE_X*0,                    PS_ICON_START_Y+PS_ICON_HEIGHT*0+PS_ICON_SPACE_Y*0,
    START_X+PS_ICON_LG_WIDTH*1+PS_ICON_SPACE_X*0+PS_ICON_SM_WIDTH*0, PS_ICON_START_Y+PS_ICON_HEIGHT*1+PS_ICON_SPACE_Y*0},
   // bed area
-  {START_X+PS_ICON_LG_WIDTH*1+PS_ICON_SPACE_X*1,                  PS_ICON_START_Y+PS_ICON_HEIGHT*0+PS_ICON_SPACE_Y*0,
+  {START_X+PS_ICON_LG_WIDTH*1+PS_ICON_SPACE_X*1,                    PS_ICON_START_Y+PS_ICON_HEIGHT*0+PS_ICON_SPACE_Y*0,
    START_X+PS_ICON_LG_WIDTH*2+PS_ICON_SPACE_X*1+PS_ICON_SM_WIDTH*0, PS_ICON_START_Y+PS_ICON_HEIGHT*1+PS_ICON_SPACE_Y*0},
   // fan area
-  {START_X+PS_ICON_LG_WIDTH*0+PS_ICON_SPACE_X*0,                  1*ICON_HEIGHT+1*SPACE_Y+ICON_START_Y,
+  {START_X+PS_ICON_LG_WIDTH*0+PS_ICON_SPACE_X*0,                    1*ICON_HEIGHT+1*SPACE_Y+ICON_START_Y,
    START_X+PS_ICON_LG_WIDTH*0+PS_ICON_SPACE_X*0+PS_ICON_SM_WIDTH*1, 1*ICON_HEIGHT+1*SPACE_Y+ICON_START_Y+PS_ICON_HEIGHT*1},
   // timer area
-  {START_X+PS_ICON_LG_WIDTH*0+PS_ICON_SPACE_X*0,                  PS_ICON_START_Y+PS_ICON_HEIGHT*1+PS_ICON_SPACE_Y*1,
+  {START_X+PS_ICON_LG_WIDTH*0+PS_ICON_SPACE_X*0,                    PS_ICON_START_Y+PS_ICON_HEIGHT*1+PS_ICON_SPACE_Y*1,
    START_X+PS_ICON_LG_WIDTH*1+PS_ICON_SPACE_X*0+PS_ICON_SM_WIDTH*0, PS_ICON_START_Y+PS_ICON_HEIGHT*2+PS_ICON_SPACE_Y*1},
   // layer area
-  {START_X+PS_ICON_LG_WIDTH*1+PS_ICON_SPACE_X*1,                  PS_ICON_START_Y+PS_ICON_HEIGHT*1+PS_ICON_SPACE_Y*1,
+  {START_X+PS_ICON_LG_WIDTH*1+PS_ICON_SPACE_X*1,                    PS_ICON_START_Y+PS_ICON_HEIGHT*1+PS_ICON_SPACE_Y*1,
    START_X+PS_ICON_LG_WIDTH*2+PS_ICON_SPACE_X*1+PS_ICON_SM_WIDTH*0, PS_ICON_START_Y+PS_ICON_HEIGHT*2+PS_ICON_SPACE_Y*1},
   // speed area
-  {START_X+PS_ICON_LG_WIDTH*0+PS_ICON_SPACE_X*0,                  1*ICON_HEIGHT+1*SPACE_Y+ICON_START_Y+PS_ICON_HEIGHT*1+PS_ICON_SPACE_Y*1,
+  {START_X+PS_ICON_LG_WIDTH*0+PS_ICON_SPACE_X*0,                    1*ICON_HEIGHT+1*SPACE_Y+ICON_START_Y+PS_ICON_HEIGHT*1+PS_ICON_SPACE_Y*1,
    START_X+PS_ICON_LG_WIDTH*0+PS_ICON_SPACE_X*0+PS_ICON_SM_WIDTH*1, 1*ICON_HEIGHT+1*SPACE_Y+ICON_START_Y+PS_ICON_HEIGHT*2+PS_ICON_SPACE_Y*1},
 
   // 1st bottom icon
@@ -554,9 +554,9 @@ static const LABEL *curTitle = NULL;
 static const GUI_RECT *curRect = NULL;  // current menu layout grid
 static uint16_t curRectCount = 0;       // current menu layout rect count
 
-static REMINDER reminder = {{0, 0, LCD_WIDTH, TITLE_END_Y}, 0, STATUS_DISCONNECTED, LABEL_UNCONNECTED};
-static REMINDER volumeReminder = {{0, 0, LCD_WIDTH, TITLE_END_Y}, 0, STATUS_IDLE, LABEL_NULL};
-static REMINDER busySign = {{LCD_WIDTH - 5, 0, LCD_WIDTH, 5}, 0, STATUS_BUSY, LABEL_BUSY};
+static REMINDER reminder = {{0, 0, LCD_WIDTH, TITLE_END_Y}, 0, SYS_STATUS_DISCONNECTED, LABEL_UNCONNECTED};
+static REMINDER volumeReminder = {{0, 0, LCD_WIDTH, TITLE_END_Y}, 0, SYS_STATUS_IDLE, LABEL_NULL};
+static REMINDER busySign = {{LCD_WIDTH - 5, 0, LCD_WIDTH, 5}, 0, SYS_STATUS_BUSY, LABEL_BUSY};
 
 MENUITEMS *getCurMenuItems(void)
 {
@@ -577,7 +577,7 @@ GUI_POINT getIconStartPoint(int index)
 
 uint8_t *labelGetAddress(const LABEL *label)
 {
-  if (label->index == LABEL_NULL)  // No content in label
+  if (label == NULL || label->index == LABEL_NULL)  // No content in label
     return NULL;
   if (label->index < LABEL_NUM)  // Index of language
     return textSelect(label->index);
@@ -695,7 +695,7 @@ void volumeReminderMessage(int16_t inf, SYS_STATUS status)
 
 void busyIndicator(SYS_STATUS status)
 {
-  if (status == STATUS_BUSY)
+  if (status == SYS_STATUS_BUSY)
   {
     GUI_SetColor(MENU_BUSY_DOT_COLOR);
     GUI_FillCircle(busySign.rect.x0, (busySign.rect.y1 - busySign.rect.y0) / 2, (busySign.rect.x1-busySign.rect.x0) / 2);
@@ -709,25 +709,25 @@ void loopReminderClear(void)
 {
   switch (reminder.status)
   {
-    case STATUS_IDLE:
+    case SYS_STATUS_IDLE:
       return;
 
-    case STATUS_BUSY:
+    case SYS_STATUS_BUSY:
       if (isFullCmdQueue())
         return;
       break;
 
-    case STATUS_DISCONNECTED:
+    case SYS_STATUS_DISCONNECTED:
       if (infoHost.connected == false)
         return;
       break;
 
-    case STATUS_LISTENING:
+    case SYS_STATUS_LISTENING:
       if (GET_BIT(infoSettings.general_settings, INDEX_LISTENING_MODE) == 1 || isWritingMode() == true)
         return;
       break;
 
-    case STATUS_NORMAL:
+    case SYS_STATUS_NORMAL:
       if (OS_GetTimeMs() < reminder.time)
         return;
       break;
@@ -736,13 +736,13 @@ void loopReminderClear(void)
       return;
   }
 
-  reminder.status = STATUS_IDLE;  // Clear status message
+  reminder.status = SYS_STATUS_IDLE;  // Clear status message
   menuDrawTitle();
 }
 
 void loopVolumeReminderClear(void)
 {
-  if (volumeReminder.status != STATUS_NORMAL)
+  if (volumeReminder.status != SYS_STATUS_NORMAL)
   {
     return;
   }
@@ -751,7 +751,7 @@ void loopVolumeReminderClear(void)
     return;
   }
 
-  volumeReminder.status = STATUS_IDLE;  // Clear status message
+  volumeReminder.status = SYS_STATUS_IDLE;  // Clear status message
   menuDrawTitle();
 }
 
@@ -759,16 +759,16 @@ void loopBusySignClear(void)
 {
   switch (busySign.status)
   {
-    case STATUS_IDLE:
+    case SYS_STATUS_IDLE:
       return;
 
-    case STATUS_BUSY:
+    case SYS_STATUS_BUSY:
      if (OS_GetTimeMs() < busySign.time)
         return;
      break;
   }
 
-  busySign.status = STATUS_IDLE;  // clear busy signal status
+  busySign.status = SYS_STATUS_IDLE;  // clear busy signal status
 
   if (menuType == MENU_TYPE_FULLSCREEN)
     curMenuRedrawHandle();
@@ -814,7 +814,7 @@ void menuDrawTitle(void)
     drawToast(true);
     return;
   }
-  
+
   // draw title
   uint8_t *titleString = labelGetAddress(curTitle);
   uint16_t start_y = (TITLE_END_Y - BYTE_HEIGHT) / 2;
@@ -840,7 +840,7 @@ void menuDrawTitle(void)
   GUI_SetBkColor(infoSettings.bg_color);
 
   // draw reminder/storage status
-  if (reminder.status != STATUS_IDLE)
+  if (reminder.status != SYS_STATUS_IDLE)
   {
     GUI_SetColor(infoSettings.reminder_color);
     GUI_SetBkColor(infoSettings.title_bg_color);
@@ -928,8 +928,8 @@ void menuDrawListPage(const LISTITEMS *listItems)
 // Show live info text on icons
 void showLiveInfo(uint8_t index, const LIVE_INFO * liveicon, bool redrawIcon)
 {
-  GUI_RECT *iconRect = MENU_IS(menuPrinting) ? rect_of_keyPS : curRect;
-  GUI_POINT iconPt = {iconRect[index].x0, iconRect[index].y0};
+  const GUI_RECT *iconRect = MENU_IS(menuPrinting) ? rect_of_keyPS : curRect;
+  const GUI_POINT iconPt = {iconRect[index].x0, iconRect[index].y0};
 
   if (redrawIcon)
     ICON_ReadDisplay(iconPt.x, iconPt.y, liveicon->iconIndex);
@@ -939,6 +939,7 @@ void showLiveInfo(uint8_t index, const LIVE_INFO * liveicon, bool redrawIcon)
     if (liveicon->enabled[i] == true)
     {
       GUI_POINT loc;
+
       switch (liveicon->lines[i].h_align)
       {
         case CENTER:
@@ -957,7 +958,6 @@ void showLiveInfo(uint8_t index, const LIVE_INFO * liveicon, bool redrawIcon)
       // set vertical text align
       switch (liveicon->lines[i].v_align)
       {
-
         case CENTER:
           loc.y = liveicon->lines[i].pos.y  - BYTE_HEIGHT / 2;
           break;
