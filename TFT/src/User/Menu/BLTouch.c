@@ -32,6 +32,12 @@ void menuBLTouch(void)
     }
   };
 
+  if (infoMachineSettings.firmwareType == FW_MARLIN)
+  {
+    mustStoreCmd("M401 H\n");       // check the state of BLTouch HighSpeed mode
+    mustStoreCmd(SERVO_GCODE, 90);  // if Marlin version has no BLTouch HS mode report capability the probe will deploy by "M401 H" so it needs to be stowed back
+  }
+
   menuDrawPage(&BLTouchItems);
 
   while (MENU_IS(menuBLTouch))
