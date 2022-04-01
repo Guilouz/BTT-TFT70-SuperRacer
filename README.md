@@ -13,9 +13,11 @@ Si vous aimez mon travail, n'hésitez pas à me soutenir en me payant une 🍺 o
 
 ## Téléchargement
 
-**ATTENTION ! Les nouveaux modèles d'écran TFT70 sont des versions GD35F407, il faut donc utiliser l'archive portant la mention "GD".**
+**ATTENTION ! Les nouveaux modèles d'écran TFT70 sont des versions GD32F407, il faut donc utiliser l'archive portant la mention "GD".**
 
 ![Capture d’écran 2022-03-22 à 23 39 43](https://user-images.githubusercontent.com/12702322/159588062-f9656dc9-8738-4f0e-8a61-78aee8b7ecdf.jpg)
+
+![TFT70-GD](https://user-images.githubusercontent.com/12702322/161349457-14366b62-50da-4890-a4b5-baa75b391fa9.jpg)
 
 
 **Firmware disponible [ici](https://github.com/Guilouz/BTT-TFT70-SuperRacer/releases).**
