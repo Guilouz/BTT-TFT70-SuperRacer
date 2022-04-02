@@ -253,7 +253,7 @@ static inline void reDrawPrintingValue(uint8_t icon_pos, uint8_t draw_type)
         break;
     }
   }
- else
+  else
   {
     lvIcon.enabled[0] = false;
   }
@@ -555,7 +555,6 @@ void menuPrinting(void)
     if (nowFan[currentFan] != fanGetCurSpeed(currentFan))
     {
       nowFan[currentFan] = fanGetCurSpeed(currentFan);
-      RAPID_SERIAL_LOOP();  // perform backend printing loop before drawing to avoid printer idling
       reDrawPrintingValue(ICON_POS_FAN, LIVE_INFO_BOTTOM_ROW);
     }
 

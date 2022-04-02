@@ -13,7 +13,7 @@
 
 /**
  * Serial Ports (Primary and Supplementary)
- * Serial ports connected to devices such as Printer, ESP3D, OctoPrint, and other Controllers.
+ * Serial ports connected to devices such as Printer, ESP3D, OctoPrint and other Controllers.
  * In order to successfully establish a communication through a serial port, set a baudrate
  * matching the baudrate configured on the connected device.
  * Disable the serial port when it is not in use and/or not connected to a device (floating) to
@@ -1073,7 +1073,7 @@
  * Cooling fans have index from 0 to 5.
  * Controller fan has index 6 and 7 (Active and Idle).
  */
-#define FAN_DISPLAY_ID {"F0 ", "F1 ", "F2 ", "F3 ", "F4 ", "F5 ", "CtA", "CtI"}
+#define FAN_DISPLAY_ID {"Fan ", "Fan 1 ", "Fan 2 ", "Fan 3 ", "Fan 4 ", "Fan 5 ", "CtA", "CtI"}
 #define FAN_CMD        {"M106 P0 S%d\n", "M106 P1 S%d\n", "M106 P2 S%d\n", "M106 P3 S%d\n", "M106 P4 S%d\n", "M106 P5 S%d\n", \
                         "M710 S%d\n",    "M710 I%d\n" }
 
@@ -1270,7 +1270,7 @@
 #define QUICK_EEPROM_BUTTON  // Default: uncommented (enabled)
 
 /**
- * Toast Notification Duration (in MilliSeconds)
+ * Toast Notification Duration (in seconds)
  * Set the duration for displaying toast notification on top of the screen.
  */
 #define TOAST_DURATION 3  // in sec. Default: 3
