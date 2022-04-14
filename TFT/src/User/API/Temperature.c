@@ -200,7 +200,7 @@ void heatSetUpdateSeconds(uint8_t seconds)
   heat_update_seconds = seconds;
 
   if (infoMachineSettings.autoReportTemp && !heat_update_waiting)
-    heat_update_waiting = storeCmd("M155 S%u\n", heatGetUpdateSeconds());
+    heat_update_waiting = storeCmd("M155 ");
 }
 
 // Get query temperature seconds
@@ -270,7 +270,7 @@ void loopCheckHeater(void)
   {
     if (OS_GetTimeMs() > AUTOREPORT_TIMEOUT && !heat_update_waiting)
     {
-      heat_update_waiting = storeCmd("M155 S%u\n", heatGetUpdateSeconds());
+      heat_update_waiting = storeCmd("M155 ");
 
       if (heat_update_waiting)
         updateNextHeatCheckTime();  // set next timeout for temperature auto-report
@@ -336,7 +336,7 @@ void loopCheckHeater(void)
       lastTarget[i] = heater.T[i].target;
 
       if ( GET_BIT(heat_send_waiting, i) != true)
-        SET_BIT_VALUE(heat_send_waiting, i, storeCmd("%s S%u\n", heatCmd[i], heatGetTargetTemp(i)));
+        SET_BIT_VALUE(heat_send_waiting, i, storeCmd("%s ", heatCmd[i]));
     }
   }
 }

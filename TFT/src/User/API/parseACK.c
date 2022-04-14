@@ -110,6 +110,7 @@ bool syncL2CacheFromL1(uint8_t port)
 static bool ack_cmp(const char * str)
 {
   uint16_t i;
+
   for (i = 0; i < dmaL2Cache_len && str[i] != 0; i++)
   {
     if (str[i] != dmaL2Cache[i])
@@ -117,6 +118,7 @@ static bool ack_cmp(const char * str)
   }
   if (str[i] != 0)  // if end of str is not reached, there was no match
     return false;
+
   return true;
 }
 
@@ -134,12 +136,14 @@ static bool ack_seen(const char * str)
   {
     for (i = 0; i < str_len && str[i] == dmaL2Cache[ack_index + i]; i++)
     {}
+
     if (i == str_len)  // if end of str is reached, a match was found
     {
       ack_index += i;
       return true;
     }
   }
+
   return false;
 }
 
@@ -158,12 +162,14 @@ static bool ack_continue_seen(const char * str)
   {
     for (i = 0; i < str_len && str[i] == dmaL2Cache[ack_index + i]; i++)
     {}
+
     if (i == str_len)  // if end of str is reached, a match was found
     {
       ack_index += i;
       return true;
     }
   }
+
   ack_index = ack_index_orig;
   return false;
 }
@@ -173,28 +179,32 @@ static float ack_value()
   return (strtod(&dmaL2Cache[ack_index], NULL));
 }
 
-// read the value after "/", if exists
+// read the value after "/", if any
 static float ack_second_value()
 {
   char * secondValue = strchr(&dmaL2Cache[ack_index], '/');
+
   if (secondValue != NULL)
-  {
     return (strtod(secondValue + 1, NULL));
-  }
   else
-  {
     return -0.5;
-  }
 }
 
 void ack_values_sum(float * data)
 {
   while (((dmaL2Cache[ack_index] < '0') || (dmaL2Cache[ack_index] > '9')) && dmaL2Cache[ack_index] != '\n')
+  {
     ack_index++;
+  }
+
   *data += ack_value();
+
   while ((((dmaL2Cache[ack_index] >= '0') && (dmaL2Cache[ack_index] <= '9')) ||
           (dmaL2Cache[ack_index] == '.')) && (dmaL2Cache[ack_index] != '\n'))
+  {
     ack_index++;
+  }
+
   if (dmaL2Cache[ack_index] != '\n')
     ack_values_sum(data);
 }
@@ -202,6 +212,7 @@ void ack_values_sum(float * data)
 void ackPopupInfo(const char * info)
 {
   bool show_dialog = true;
+
   if (MENU_IS(menuTerminal) ||
       (MENU_IS(menuStatus) && info == magic_echo))
     show_dialog = false;
@@ -221,13 +232,9 @@ void ackPopupInfo(const char * info)
 
     // show notification based on notificaiton settings
     if (infoSettings.ack_notification == 1)
-    {
       addNotification(DIALOG_TYPE_INFO, (char *)info, (char *)dmaL2Cache + ack_index, show_dialog);
-    }
     else if (infoSettings.ack_notification == 2)
-    {
       addToast(DIALOG_TYPE_INFO, dmaL2Cache);  // show toast notificaion if turned on
-    }
   }
   else
   {
@@ -256,19 +263,18 @@ bool processKnownEcho(void)
   {
     if (knownEcho[i].notifyType == ECHO_NOTIFY_NONE)
       return isKnown;
-    //if (forceIgnore[i] == 0)
-    //{
-      if (knownEcho[i].notifyType == ECHO_NOTIFY_TOAST)
-      {
-        addToast(DIALOG_TYPE_INFO, dmaL2Cache);
-      }
-      else if (knownEcho[i].notifyType == ECHO_NOTIFY_DIALOG)
-      {
-        BUZZER_PLAY(SOUND_NOTIFY);
-        addNotification(DIALOG_TYPE_INFO, (char *)magic_echo, (char *)dmaL2Cache + ack_index, true);
-      }
-    //}
+
+    if (knownEcho[i].notifyType == ECHO_NOTIFY_TOAST)
+    {
+      addToast(DIALOG_TYPE_INFO, dmaL2Cache);
+    }
+    else if (knownEcho[i].notifyType == ECHO_NOTIFY_DIALOG)
+    {
+      BUZZER_PLAY(SOUND_NOTIFY);
+      addNotification(DIALOG_TYPE_INFO, (char *)magic_echo, (char *)dmaL2Cache + ack_index, true);
+    }
   }
+
   return isKnown;
 }
 
@@ -278,13 +284,21 @@ void hostActionCommands(void)
   {
     uint16_t index = ack_index;  // save the current index for further usage
 
-    if (ack_seen("Data Left"))  // parsing printing data left
-    { // format: Data Left <XXXX>/<YYYY> (e.g. Data Left 123/12345)
-      setPrintProgress(ack_value(), ack_second_value());
-    }
-    else if (ack_seen("Time Left"))  // parsing printing time left
-    { // format: Time Left <XX>h<YY>m<ZZ>s (e.g. Time Left 02h04m06s)
+    if (ack_seen("Time Left"))  // parsing printing time left
+    {
+      // format: Time Left <XX>h<YY>m<ZZ>s (e.g. Time Left 02h04m06s)
       parsePrintRemainingTime((char *)dmaL2Cache + ack_index);
+    }
+    else if (ack_seen("Layer Left"))  // parsing printing layer left
+    {
+      // format: Layer Left <XXXX>/<YYYY> (e.g. Layer Left 51/940)
+      setPrintLayerNumber(ack_value());
+      setPrintLayerCount(ack_second_value());
+    }
+    else if (ack_seen("Data Left"))  // parsing printing data left
+    {
+      // format: Data Left <XXXX>/<YYYY> (e.g. Data Left 123/12345)
+      setPrintProgress(ack_value(), ack_second_value());
     }
     else
     {
@@ -321,9 +335,7 @@ void hostActionCommands(void)
     setPrintPause(HOST_STATUS_PAUSING, PAUSE_EXTERNAL);
 
     if (ack_seen("filament_runout"))
-    {
       setRunoutAlarmTrue();
-    }
   }
   else if (ack_seen(":resume") || ack_seen(":resumed"))
   {
@@ -449,9 +461,9 @@ void parseACK(void)
         requestCommandInfo.inResponse = true;
         requestCommandInfo.inWaitResponse = false;
       }
-      else if ((requestCommandInfo.error_num > 0 && ack_seen(requestCommandInfo.errorMagic[0]))
-            || (requestCommandInfo.error_num > 1 && ack_seen(requestCommandInfo.errorMagic[1]))
-            || (requestCommandInfo.error_num > 2 && ack_seen(requestCommandInfo.errorMagic[2])))
+      else if ((requestCommandInfo.error_num > 0 && ack_seen(requestCommandInfo.errorMagic[0])) ||
+               (requestCommandInfo.error_num > 1 && ack_seen(requestCommandInfo.errorMagic[1])) ||
+               (requestCommandInfo.error_num > 2 && ack_seen(requestCommandInfo.errorMagic[2])))
       { // parse onboard media error
         requestCommandInfo.done = true;
         requestCommandInfo.inResponse = false;
@@ -535,12 +547,18 @@ void parseACK(void)
       if (ack_cmp("ok"))  // if "ok N10 P15 B3\n", "ok T:16.13 /0.00 B:16.64 /0.00 @:0 B@:0\n" etc...
         infoHost.wait = false;
 
+      // suppress "wait" from terminal
+      if (ack_cmp("wait"))
+      {
+        avoid_terminal = !infoSettings.terminal_ack;
+      }
+
       //----------------------------------------
       // Pushed / polled / on printing parsed responses
       //----------------------------------------
 
       // parse and store temperatures
-      if ((ack_seen("@") && ack_seen("T:")) || ack_seen("T0:"))
+      else if ((ack_seen("@") && ack_seen("T:")) || ack_seen("T0:"))
       {
         heatSetCurrentTemp(NOZZLE0, ack_value() + 0.5f);
 
@@ -655,8 +673,11 @@ void parseACK(void)
         // NOTE: this block is not reached in case of printing from onboard media because printStart() will call
         //       request_M23_M36() that will be managed in parseAck() by the block "onboard media gcode command response"
 
+        // parse file name.
+        // Format: "File opened: <file name> Size: <YYYY>" (e.g. "File opened: 1A29A~1.GCO Size: 6974")
+        //
         char file_name[MAX_PATH_LEN];
-        char * end_string = " Size:";  // File opened: 1A29A~1.GCO Size: 6974
+        char * end_string = " Size:";
 
         uint16_t start_index = ack_index;
         uint16_t end_index = ack_continue_seen(end_string) ? (ack_index - strlen(end_string)) : start_index;
@@ -680,10 +701,10 @@ void parseACK(void)
       {
         setPrintResume(HOST_STATUS_PRINTING);
 
-        // parsing printing data
-        // format: SD printing byte <XXXX>/<YYYY> (e.g. SD printing byte 123/12345)
+        // parse file data progress.
+        // Format: "SD printing byte <XXXX>/<YYYY>" (e.g. "SD printing byte 123/12345")
+        //
         setPrintProgress(ack_value(), ack_second_value());
-        //powerFailedCache(position);
       }
       // parse and store M24, printing from (remote) onboard media completed
       else if (infoMachineSettings.onboardSD == ENABLED &&
@@ -980,9 +1001,9 @@ void parseACK(void)
         else if (ack_seen("Z")) i = STEPPER_INDEX_Z;
         else if (ack_seen("E")) i = STEPPER_INDEX_E0;
 
-        if (i < STEPPER_INDEX_E0)  // if "X", "X1", "X2", "Y", "Y1", "Y2", "Z", "Z1" or "Z2"
+        if (i < STEPPER_INDEX_E0)  // if "X", "X1", "X2", "Y", "Y1", "Y2", "Z", "Z1", "Z2", "Z3", "Z4"
         {
-          if (ack_value() > 0)  // if "X"->0, "X1"->0, "X2"->1, "Y"->2, "Y1"->2, "Y2"->3, "Z"->4, "Z1"->4, "Z2"->5
+          if (ack_value() > 0)  // if "X"->0, "X1"->0, "X2"->1, "Y"->2, "Y1"->2, "Y2"->3, "Z"->4, "Z1"->4, "Z2"->5, "Z3"->6, "Z4"->7
             i += ack_value() - 1;
         }
 
@@ -1079,7 +1100,7 @@ void parseACK(void)
         infoMachineSettings.autoReportTemp = ack_value();
 
         if (infoMachineSettings.autoReportTemp)
-          storeCmd("M155 S%u\n", heatGetUpdateSeconds());
+          storeCmd("M155 ");
       }
       else if (ack_seen("Cap:AUTOREPORT_POS:"))
       {
@@ -1186,7 +1207,7 @@ void parseACK(void)
     }
 
   parse_end:
-    if (avoid_terminal != true)
+    if (avoid_terminal != true && MENU_IS(menuTerminal))
     {
       terminalCache(dmaL2Cache, dmaL2Cache_len, ack_port_index, SRC_TERMINAL_ACK);
     }

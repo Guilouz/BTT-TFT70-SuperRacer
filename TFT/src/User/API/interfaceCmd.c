@@ -49,10 +49,12 @@ bool isNotEmptyCmdQueue(void)
 bool isEnqueued(const CMD cmd)
 {
   bool found = false;
+
   for (int i = 0; i < infoCmd.count && !found; ++i)
   {
     found = strcmp(cmd, infoCmd.queue[(infoCmd.index_r + i) % CMD_QUEUE_SIZE].gcode) == 0;
   }
+
   return found;
 }
 
@@ -127,6 +129,7 @@ void mustStoreScript(const char * format, ...)
   char * p = script;
   uint16_t i = 0;
   CMD cmd;
+
   for (;;)
   {
     char c = *p++;
@@ -190,6 +193,7 @@ bool moveCacheToCmd(void)
   storeCmd("%s", infoCacheCmd.queue[infoCacheCmd.index_r].gcode);
   infoCacheCmd.count--;
   infoCacheCmd.index_r = (infoCacheCmd.index_r + 1) % CMD_QUEUE_SIZE;
+
   return true;
 }
 
@@ -213,6 +217,12 @@ static inline bool getCmd(void)
   return (cmd_port_index == PORT_1);  // if gcode is originated by TFT (SERIAL_PORT), return true
 }
 
+void updateCmd(const char * buf)
+{
+  strcat(cmd_ptr, buf);       // append buf to gcode
+  cmd_len = strlen(cmd_ptr);  // new length of gcode
+}
+
 // Send gcode cmd to printer and remove leading gcode cmd from infoCmd queue.
 bool sendCmd(bool purge, bool avoidTerminal)
 {
@@ -226,8 +236,10 @@ bool sendCmd(bool purge, bool avoidTerminal)
     // dump serial data sent to debug port
     Serial_Puts(SERIAL_DEBUG_PORT, serialPort[cmd_port_index].id);  // serial port ID (e.g. "2" for SERIAL_PORT_2)
     Serial_Puts(SERIAL_DEBUG_PORT, ">>");
+
     if (purge)
       Serial_Puts(SERIAL_DEBUG_PORT, purgeStr);
+
     Serial_Puts(SERIAL_DEBUG_PORT, cmd_ptr);
   #endif
 
@@ -237,13 +249,15 @@ bool sendCmd(bool purge, bool avoidTerminal)
       Serial_Puts(SERIAL_PORT, cmd_ptr);
     else
       rrfSendCmd(cmd_ptr);
+
     setCurrentAckSrc(cmd_port_index);
   }
 
-  if (!avoidTerminal)
+  if (!avoidTerminal && MENU_IS(menuTerminal))
   {
     if (purge)
       terminalCache(purgeStr, strlen(purgeStr), cmd_port_index, SRC_TERMINAL_GCODE);
+
     terminalCache(cmd_ptr, cmd_len, cmd_port_index, SRC_TERMINAL_GCODE);
   }
 
@@ -282,6 +296,7 @@ static bool cmd_seen(char code)
       return true;
     }
   }
+
   return false;
 }
 
@@ -289,6 +304,17 @@ static bool cmd_seen(char code)
 static int32_t cmd_value(void)
 {
   return (strtol(&cmd_ptr[cmd_index], NULL, 10));
+}
+
+// Get the int after "/", if any.
+static int32_t cmd_second_value(void)
+{
+  char * secondValue = strchr(&cmd_ptr[cmd_index], '/');
+
+  if (secondValue != NULL)
+    return (strtol(secondValue + 1, NULL, 10));
+  else
+    return -0.5;
 }
 
 // Get the float after "code". Call after cmd_seen(code).
@@ -435,6 +461,12 @@ void synchNoWaitHeating(uint8_t index)
   if (cmd_seen('S'))
   {
     heatSyncTargetTemp(index, cmd_value());
+  }
+  else if (!cmd_seen('\n'))
+  {
+    char buf[12];
+    sprintf(buf, "S%u\n", heatGetTargetTemp(index));
+    updateCmd(buf);
     heatSetSendWaiting(index, false);
   }
 }
@@ -830,6 +862,13 @@ void sendQueueCmd(void)
             {
               heatSyncUpdateSeconds(cmd_value());
             }
+            else if (!cmd_seen('\n'))
+            {
+              char buf[12];
+
+              sprintf(buf, "S%u\n", heatGetUpdateSeconds());
+              updateCmd(buf);
+            }
           }
           break;
 
@@ -861,7 +900,9 @@ void sendQueueCmd(void)
         // no break here. The data processing of M109 is the same as that of M104 below
         case 104:  // M104
           if (fromTFT)
+          {
             synchNoWaitHeating(cmd_seen('T') ? cmd_value() : heatGetCurrentHotend());
+          }
           break;
 
         case 114:  // M114
@@ -872,9 +913,21 @@ void sendQueueCmd(void)
           break;
 
         case 117:  // M117
-          if (cmd_seen_from(cmd_base_index, "Time Left"))
+          if (cmd_seen_from(cmd_base_index, "Time Left"))  // parsing printing time left
           {
+            // format: Time Left <XX>h<YY>m<ZZ>s (e.g. Time Left 02h04m06s)
             parsePrintRemainingTime(&cmd_ptr[cmd_index]);  // cmd_index was set by cmd_seen_from function
+          }
+          else if (cmd_seen_from(cmd_base_index, "Layer Left"))  // parsing printing layer left
+          {
+            // format: Layer Left <XXXX>/<YYYY> (e.g. Layer Left 51/940)
+            setPrintLayerNumber(cmd_value());
+            setPrintLayerCount(cmd_second_value());
+          }
+          else if (cmd_seen_from(cmd_base_index, "Data Left"))  // parsing printing data left
+          {
+            // format: Data Left <XXXX>/<YYYY> (e.g. Data Left 123/12345)
+            setPrintProgress(cmd_value(), cmd_second_value());
           }
           else
           {
@@ -902,7 +955,9 @@ void sendQueueCmd(void)
         // no break here. The data processing of M190 is the same as that of M140 below
         case 140:  // M140
           if (fromTFT)
+          {
             synchNoWaitHeating(BED);
+          }
           break;
 
         case 191:  // M191
@@ -914,7 +969,9 @@ void sendQueueCmd(void)
         // no break here. The data processing of M191 is the same as that of M141 below
         case 141:  // M141
           if (fromTFT)
+          {
             synchNoWaitHeating(CHAMBER);
+          }
           break;
 
         case 200:  // M200 filament diameter

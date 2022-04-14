@@ -12,6 +12,7 @@ typedef struct
   uint32_t   remainingTime;       // current remaining time in sec (if set with M73 or M117)
   uint16_t   layerNumber;
   uint16_t   layerCount;
+  uint8_t    prevProgress;
   uint8_t    progress;
   bool       progressFromSlicer;  // 1: progress controlled by Slicer (if set with M73)
   bool       runout;              // 1: runout in printing, 0: idle
@@ -166,16 +167,27 @@ void setPrintProgressPercentage(uint8_t percentage)
   infoPrinting.progress = percentage;
 }
 
-void updatePrintProgress(void)
+bool updatePrintProgress(void)
 {
-  if (infoPrinting.progressFromSlicer)  // avoid to update progress if it is controlled by slicer
-    return;
+  uint8_t prevProgress = infoPrinting.prevProgress;
 
-  // in case not printing or a wrong size was set, we consider progress as 100%
-  if (infoPrinting.size == 0)  // avoid a division for 0 (a crash) and set progress to 100%
-    infoPrinting.progress = 100;
+  if (!infoPrinting.progressFromSlicer)  // avoid to update progress if it is controlled by slicer
+  {
+  // in case not printing, a wrong size was set or current position at the end of file we consider progress as 100%
+  if (infoPrinting.size <= infoPrinting.cur)
+      infoPrinting.progress = 100;
   else
-    infoPrinting.progress = MIN((uint32_t)((infoPrinting.cur - infoPrinting.offset) * 100 / (infoPrinting.size - infoPrinting.offset)), 100);
+    infoPrinting.progress = (uint8_t)((float)(infoPrinting.cur - infoPrinting.offset) / (infoPrinting.size - infoPrinting.offset) * 100);
+  }
+
+  if (infoPrinting.progress != prevProgress)
+  {
+    infoPrinting.prevProgress = infoPrinting.progress;
+
+    return true;
+  }
+
+  return false;
 }
 
 uint8_t getPrintProgress(void)
@@ -501,7 +513,6 @@ void printAbort(void)
 
     case FS_ONBOARD_MEDIA:
     case FS_ONBOARD_MEDIA_REMOTE:
-
       // several M108 are sent to Marlin because consecutive blocking operations
       // such as heating bed, extruder may defer processing of M524
       breakAndContinue();
@@ -701,19 +712,19 @@ void setPrintAbort(void)
 
 void setPrintPause(HOST_STATUS hostStatus, PAUSE_TYPE pauseType)
 {
-  // in case print was completed or printAbort() is aborting the print,
-  // nothing to do (infoHost.status must be set to "HOST_STATUS_IDLE"
-  // in case it is "HOST_STATUS_STOPPING" just to finalize the print abort)
-  if (infoHost.status <= HOST_STATUS_STOPPING)
-  {
-    infoHost.status = HOST_STATUS_IDLE;  // wakeup printAbort() if waiting for print completion
-    return;
-  }
-
   if (infoPrinting.printing)
   {
     infoPrinting.pause = true;
     infoPrinting.pauseType = pauseType;
+  }
+
+  // in case host is not printing, print was completed or printAbort() is aborting the print,
+  // nothing to do (infoHost.status must be set to "HOST_STATUS_IDLE" in case it is
+  // "HOST_STATUS_STOPPING" just to finalize the print abort)
+  if (infoHost.status <= HOST_STATUS_STOPPING)
+  {
+    infoHost.status = HOST_STATUS_IDLE;  // wakeup printAbort() if waiting for print completion
+    return;
   }
 
   // in case of printing from Marlin Mode (infoPrinting.printing set to "false") or printing from remote host
@@ -727,13 +738,13 @@ void setPrintPause(HOST_STATUS hostStatus, PAUSE_TYPE pauseType)
 
 void setPrintResume(HOST_STATUS hostStatus)
 {
-  // in case print was completed or printAbort() is aborting the print,
+  // no need to check it is printing when setting the value to "false"
+  infoPrinting.pause = false;
+
+  // in case host is not printing, print was completed or printAbort() is aborting the print,
   // nothing to do (infoHost.status must never be changed)
   if (infoHost.status <= HOST_STATUS_STOPPING)
     return;
-
-  // no need to check it is printing when setting the value to "false"
-  infoPrinting.pause = false;
 
   // in case of printing from Marlin Mode (infoPrinting.printing set to "false") or printing from remote host
   // (e.g. OctoPrint) or infoSettings.m27_active set to "false", infoHost.status is always forced to
@@ -802,7 +813,8 @@ void loopPrintFromTFT(void)
     bool comment_parsing = (GET_BIT(infoSettings.general_settings, INDEX_FILE_COMMENT_PARSING) == 1 &&
                             read_char == ';') ? true : false;
 
-    for ( ; ip_cur < ip_size; ip_cur++)  // continue to parse the line (e.g. comment) until command end flag
+    // continue to parse the line (e.g. comment) until command end flag
+    for ( ; ip_cur < ip_size; ip_cur++, infoPrinting.offset++ /*count non-gcode size*/)
     {
       if (f_read(ip_file, &read_char, 1, &br) != FR_OK)
       { // in case of error reading from file, force a print abort
@@ -836,8 +848,6 @@ void loopPrintFromTFT(void)
             comment_parsing = false;
         }
       }
-
-      infoPrinting.offset++;  // count non-gcode size
     }
   }
 
