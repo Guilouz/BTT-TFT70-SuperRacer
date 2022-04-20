@@ -676,7 +676,6 @@ void GUI_DispOne(int16_t sx, int16_t sy, const CHAR_INFO *pInfo)
         temp <<= 8;
         temp |= font[i++];
       }
-
       for (y = 0; y < h; y++)
       {
         if (temp & pixel)                             // draw text pixel

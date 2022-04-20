@@ -116,6 +116,7 @@ static bool ack_cmp(const char * str)
     if (str[i] != dmaL2Cache[i])
       return false;
   }
+
   if (str[i] != 0)  // if end of str is not reached, there was no match
     return false;
 
