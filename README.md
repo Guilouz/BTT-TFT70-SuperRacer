@@ -209,10 +209,10 @@ Pour obtenir les informations (pourcentage, temps écoulé, temps restant et nom
 
 ![Capture d’écran 2022-04-22 à 01 06 31](https://user-images.githubusercontent.com/12702322/164565636-ac8964bc-620b-43ad-990b-4f2b6b76805e.jpg)
 
-**Sous Windows :** Copiez le fichier `BigTreeTechRemotePrinting.py` dans le répertoire < br/>
+**Sous Windows :** Copiez le fichier `BigTreeTechRemotePrinting.py` dans le répertoire <br />
 `C:\Program Files\Ultimaker Cura x.xx.x\plugins\PostProcessingPlugin\scripts`
 
-**Sous MacOS :** Copiez le fichier `BigTreeTechRemotePrinting.py` dans le répertoire < br/>
+**Sous MacOS :** Copiez le fichier `BigTreeTechRemotePrinting.py` dans le répertoire <br />
 `/Applications/Ultimaker Cura.app/Contents/Resources/plugins/plugins/PostProcessingPlugin/scripts`
 
 <br />
