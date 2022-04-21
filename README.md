@@ -64,7 +64,7 @@ Structure du dossier des polices et des icônes :
 
 **Étape 2 :** Insérez la carte SD dans le port SD de l'écran et réinitialisez ce dernier (ou redémarrez votre imprimante) pour démarrer le processus de mise à jour.
 
-⚠️ Ne pas mettre à jour les icônes et / ou les polices entraîneront des icônes manquantes et / ou du texte illisible ⚠️
+⚠️ Ne pas mettre à jour les icônes et / ou les polices entraîneront des icônes manquantes et / ou du texte illisible.
 
 <br />
 
@@ -205,10 +205,13 @@ Cela signifie que seul Octoprint contrôlera l'impression et ce n'est qu'à la f
 
 Ces commandes peuvent être enregistrées dans les paramètres Octoprint section Script GCode.
 
-Pour obtenir les informations (pourcentage, temps écoulé et temps restant) sur l'écran il est nécessaire d'utiliser l'extension de post-traitement `Display Progress on LCD` sous Cura avec cette configuration :
+Pour obtenir les informations (pourcentage, temps écoulé, temps restant et nombre de couches) sur l'écran il est nécessaire d'utiliser l'extension de post-traitement Cura `BigTreeTech Remote Printing` disponible ici [BigTreeTech Remote Printing Cura Plugin.zip](https://github.com/Guilouz/BTT-TFT70-SuperRacer/files/8535623/BigTreeTech.Remote.Printing.Cura.Plugin.zip) avec cette configuration :
 
-![Capture d’écran 2021-12-04 à 12 37 24](https://user-images.githubusercontent.com/12702322/144708676-e66995c0-2ca4-449e-bc57-0104ec7f0f90.jpg)
+![Capture d’écran 2022-04-22 à 01 06 31](https://user-images.githubusercontent.com/12702322/164565636-ac8964bc-620b-43ad-990b-4f2b6b76805e.jpg)
 
+**Sous Windows :** Copiez le fichier `BigTreeTechRemotePrinting.py` dans le répertoire `C:\Program Files\Ultimaker Cura x.xx.x\plugins\PostProcessingPlugin\scripts`
+
+**Sous MacOS :** Copiez le fichier `BigTreeTechRemotePrinting.py` dans le répertoire `/Applications/Ultimaker Cura.app/Contents/Resources/plugins/plugins/PostProcessingPlugin/scripts`
 
 <br />
 
