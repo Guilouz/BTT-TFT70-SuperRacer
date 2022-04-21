@@ -214,8 +214,8 @@
 #define PERSISTENT_INFO 1  // Default: 0
 
 /**
- * Temperature ACK In Terminal
- * Show temperature ACK in Terminal menu.
+ * Temperature And Wait ACK In Terminal
+ * Show "temperature" and "wait" ACK in Terminal menu.
  *   Options: [disable: 0, enable: 1]
  */
 #define TERMINAL_ACK 0  // Default: 0
