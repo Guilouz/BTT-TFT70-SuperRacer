@@ -207,7 +207,7 @@ Ces commandes peuvent être enregistrées dans les paramètres Octoprint section
 
 Pour obtenir les informations (pourcentage, temps écoulé, temps restant et nombre de couches) sur l'écran il est nécessaire d'utiliser l'extension de post-traitement Cura `BigTreeTech Remote Printing` disponible ici [BigTreeTech Remote Printing Cura Plugin.zip](https://github.com/Guilouz/BTT-TFT70-SuperRacer/files/8535623/BigTreeTech.Remote.Printing.Cura.Plugin.zip) avec cette configuration :
 
-![Capture d’écran 2022-04-22 à 01 06 31](https://user-images.githubusercontent.com/12702322/164565636-ac8964bc-620b-43ad-990b-4f2b6b76805e.jpg)
+<img width="700" alt="Cura Plugin" src="https://user-images.githubusercontent.com/12702322/165191375-71e247b2-a740-46e8-a5c6-06d5b5ea668a.png">
 
 **Sous Windows :** Copiez le fichier `BigTreeTechRemotePrinting.py` dans le répertoire <br />
 `C:\Program Files\Ultimaker Cura x.xx.x\plugins\PostProcessingPlugin\scripts`
