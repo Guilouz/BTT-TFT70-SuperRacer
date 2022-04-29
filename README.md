@@ -267,8 +267,8 @@ Pour obtenir les informations (pourcentage, temps écoulé, temps restant et nom
 ## Reprise après coupure de courant
 
 - La reprise après coupure de courant n’est fonctionnelle que lors de l’impression via les ports SD et USB de l’écran.
-- Cette fonctionnalité est activée par défaut, elle créée un fichier nommé PLR à la racine de la carte SD et/ou clé USB qui enregistre l’état au fur et à mesure de l’impression.
-- Si vous n’utilisez pas cette fonctionnalité désactivez-la pour préserver la carte SD et/ou clé USB via **Menu - Options - Paramètres - Reprise après coupure**.
+- Cette fonctionnalité est désactivée par défaut, elle créée un fichier nommé PLR à la racine de la carte SD et/ou clé USB qui enregistre l’état au fur et à mesure de l’impression.
+- Si vous n’utilisez pas cette fonctionnalité laissez-la désactivée pour préserver la carte SD et/ou clé USB ou activez-la via **Menu - Options - Paramètres - Reprise après coupure**.
 - Pour reprendre l’impression après coupure, il suffit de se rendre à nouveau à l’emplacement de votre fichier gCode, l’écran demandera alors si vous désirez reprendre ou non l’impression.
 
 <br />
