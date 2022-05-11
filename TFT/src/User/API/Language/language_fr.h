@@ -297,6 +297,7 @@
     #define STRING_ABL_SLOT_EEPROM        "Se souvenir de l'emplacement au prochain redémarrage ?\n(Sauvegarde EEPROM)"
     #define STRING_ABL_Z                  "Z Fade"
     #define STRING_LEVEL_CORNER           "L Corner"
+    #define STRING_LEVEL_CORNER_INFO      "La distance de bord est inférieure au décalage X/Y du palpeur et certains points cibles pourraient ne pas être accessibles.\nVoulez-vous utiliser une distance de bord sûre ?"
     #define STRING_P_OFFSET               "Z Offset"
     #define STRING_H_OFFSET               "H Offset"
     #define STRING_DISTANCE               "Distance"

@@ -983,6 +983,7 @@ void showLiveInfo(uint8_t index, const LIVE_INFO * liveicon, bool redrawIcon)
       {
         GUI_SetTextMode(liveicon->lines[i].text_mode);
         GUI_SetBkColor(liveicon->lines[i].bk_color);
+
         GUI_DispString(iconPt.x + loc.x, iconPt.y + loc.y, liveicon->lines[i].text);
       }
       else

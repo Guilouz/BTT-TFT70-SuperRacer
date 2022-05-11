@@ -213,7 +213,7 @@ double numPadFloat(uint8_t * title, double old_val, double reset_val, bool negat
   uint8_t nowIndex;
   uint8_t lastIndex = 0;
   char ParameterBuf[FLOAT_BUF_LENGTH + 1] = {0};
-  uint8_t prec = (old_val == 0) ? 0 : 3;
+  uint8_t prec = (old_val == 0) ? 0 : 4;
   bool valueFirstPress = true;
 
   sprintf(ParameterBuf, "%.*f", prec, old_val);
