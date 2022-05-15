@@ -562,11 +562,9 @@ void parseACK(void)
       else if ((ack_seen("@") && ack_seen("T:")) || ack_seen("T0:"))
       {
         heatSetCurrentTemp(NOZZLE0, ack_value() + 0.5f);
+        heatSyncTargetTemp(NOZZLE0, ack_second_value() + 0.5f);
 
-        if (!heatGetSendWaiting(NOZZLE0))
-          heatSyncTargetTemp(NOZZLE0, ack_second_value() + 0.5f);
-
-        for (uint8_t i = 0; i < MAX_HEATER_COUNT; i++)
+        for (uint8_t i = 1; i < MAX_HEATER_COUNT; i++)
         {
           if (!heaterDisplayIsValid(i))
             continue;
@@ -574,9 +572,7 @@ void parseACK(void)
           if (ack_seen(heaterID[i]))
           {
             heatSetCurrentTemp(i, ack_value() + 0.5f);
-
-            if (!heatGetSendWaiting(i))
-              heatSyncTargetTemp(i, ack_second_value() + 0.5f);
+            heatSyncTargetTemp(i, ack_second_value() + 0.5f);
           }
         }
 
@@ -867,6 +863,22 @@ void parseACK(void)
         if (ack_seen("Y: ")) y = ack_value();
         if (ack_seen("Z: ")) levelingSetProbedPoint(x, y, ack_value());  // save probed Z value
       }
+      // parse and store Delta Calibration settings
+      #if DELTA_PROBE_TYPE != 0
+      else if (ack_seen("Calibration OK"))
+      {
+        BUZZER_PLAY(SOUND_SUCCESS);
+        if (infoMachineSettings.EEPROM == 1)
+          {
+            setDialogText(LABEL_DELTA_CONFIGURATION, LABEL_EEPROM_SAVE_INFO, LABEL_CONFIRM, LABEL_CANCEL);
+            showDialog(DIALOG_TYPE_SUCCESS, saveEepromSettings, NULL, NULL);
+          }
+        else
+          {
+            popupReminder(DIALOG_TYPE_SUCCESS, LABEL_DELTA_CONFIGURATION, LABEL_PROCESS_COMPLETED);
+          } 
+      } 
+      #endif
 
       //----------------------------------------
       // Parameter / M503 / M115 parsed responses
@@ -1104,7 +1116,7 @@ void parseACK(void)
         infoMachineSettings.autoReportTemp = ack_value();
 
         if (infoMachineSettings.autoReportTemp)
-          storeCmd("M155 ");
+          storeCmd("M155 S%u\n", heatGetUpdateSeconds());
       }
       else if (ack_seen("Cap:AUTOREPORT_POS:"))
       {
