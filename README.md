@@ -209,11 +209,17 @@ Pour obtenir les informations (pourcentage, temps écoulé, temps restant et nom
 
 <img width="700" alt="Cura Plugin" src="https://user-images.githubusercontent.com/12702322/165191375-71e247b2-a740-46e8-a5c6-06d5b5ea668a.png">
 
-**Sous Windows :** Copiez le fichier `BigTreeTechRemotePrinting.py` dans le répertoire <br />
+**Sous Windows (Cura ≤ 4.13.1) :** Copiez le fichier `BigTreeTechRemotePrinting.py` dans le répertoire <br />
 `C:\Program Files\Ultimaker Cura x.xx.x\plugins\PostProcessingPlugin\scripts`
 
-**Sous MacOS :** Copiez le fichier `BigTreeTechRemotePrinting.py` dans le répertoire <br />
+**Sous Windows (Cura ≥ 5.0.0) :** Copiez le fichier `BigTreeTechRemotePrinting.py` dans le répertoire <br />
+`C:\Program Files\Ultimaker Cura x.xx.x\share\cura\plugins\PostProcessingPlugin\scripts`
+
+**Sous MacOS (Cura ≤ 4.13.1) :** Copiez le fichier `BigTreeTechRemotePrinting.py` dans le répertoire <br />
 `/Applications/Ultimaker Cura.app/Contents/Resources/plugins/plugins/PostProcessingPlugin/scripts`
+
+**Sous MacOS (Cura ≥ 5.0.0) :** Copiez le fichier `BigTreeTechRemotePrinting.py` dans le répertoire <br />
+`/Applications/Ultimaker Cura.app/Contents/Resources/share/cura/plugins/PostProcessingPlugin/scripts`
 
 <br />
 
