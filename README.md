@@ -26,6 +26,12 @@ Le firmware Marlin pour FLSUN Super Racer configuré pour cet écran se trouve [
 
 <br />
 
+## Support
+
+Support disponible sur le serveur Discord de JSTECH à cette adresse : https://discord.gg/NS4zYd23dX
+
+<br />
+
 ## Mise à jour du firmware
 
 La mise à jour du firmware TFT se fait en trois étapes décrites ci-dessous et comprend jusqu'à quatre éléments :
