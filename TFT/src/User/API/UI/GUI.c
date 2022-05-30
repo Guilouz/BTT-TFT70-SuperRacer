@@ -606,88 +606,49 @@ void GUI_DispOne(int16_t sx, int16_t sy, const CHAR_INFO *pInfo)
 {
   if (pInfo->bytes == 0) return;
 
-  uint8_t w = pInfo->pixelWidth;
-  uint8_t h = pInfo->pixelHeight;
-  uint16_t bitMapSize = (h * w / 8);
-  uint8_t font[bitMapSize];
   uint8_t x = 0;
   uint8_t y = 0;
   uint8_t j = 0;
   uint8_t i = 0;
-  uint8_t jj = (h + 8 - 1) / 8;
-  uint32_t pixel = 1 << (h - 1);
+  uint16_t bitMapSize = (pInfo->pixelHeight * pInfo->pixelWidth / 8);
+  uint8_t  font[bitMapSize];
   uint32_t temp = 0;
 
   W25Qxx_ReadBuffer(font, pInfo->bitMapAddr, bitMapSize);
 
-  // NOTE: the following code was split intentionally for speedup performance despite some more flash usage
-
-  if (guiTextMode == GUI_TEXTMODE_TRANS)
+  for (x = 0; x < pInfo->pixelWidth; x++)
   {
-    for (x = 0; x < w; x++)
+    for (j = 0; j < (pInfo->pixelHeight + 8 - 1) / 8; j++)
     {
-      for (j = 0; j < jj; j++)
-      {
-        temp <<= 8;
-        temp |= font[i++];
-      }
-
-      for (y = 0; y < h; y++)
-      {
-        if (temp & pixel)  // draw text pixel
-          GUI_DrawPixel(sx, sy + y, foreGroundColor);
-
-        temp <<= 1;
-      }
-
-      sx++;
-    }
-  }
-  else  // if GUI_TEXTMODE_NORMAL or GUI_TEXTMODE_ON_ICON
-  {
-    uint16_t _buf[h * w];
-    uint16_t *buf;
-    GUI_RECT limit = {0};
-
-    if (guiTextMode == GUI_TEXTMODE_NORMAL)
-      buf = _buf;
-    else  // if GUI_TEXTMODE_ON_ICON, use iconBuffer
-      buf = iconBuffer;
-
-    if (pixel_limit_flag == 1)
-    {
-      if (sx < pixel_limit_rect.x0)
-        limit.x0 = pixel_limit_rect.x0 - sx;
-
-      if (sx + w >= pixel_limit_rect.x1)
-        limit.x1 = sx + w - pixel_limit_rect.x1;
-
-      if (sy < pixel_limit_rect.y0)
-        limit.y0 = pixel_limit_rect.y0 - sy;
-
-      if (sy + h >= pixel_limit_rect.y1)
-        limit.y1 = sy + h - pixel_limit_rect.y1;
+      temp <<= 8;
+      temp |= font[i++];
     }
 
-    for (x = 0; x < w; x++)
+    for (y = 0; y < pInfo->pixelHeight; y++)
     {
-      for (j = 0; j < jj; j++)
+      if (temp & (1 << (pInfo->pixelHeight - 1)))  // draw text pixel
       {
-        temp <<= 8;
-        temp |= font[i++];
+        GUI_DrawPixel(sx, sy + y, foreGroundColor);
       }
-      for (y = 0; y < h; y++)
+      else  // draw background pixel
       {
-        if (temp & pixel)                             // draw text pixel
-          buf[(y * w) + x] = foreGroundColor;
-        else if (guiTextMode == GUI_TEXTMODE_NORMAL)  // draw background pixel
-          buf[(y * w) + x] = backGroundColor;
+        switch (guiTextMode)
+        {
+          case GUI_TEXTMODE_NORMAL:
+            GUI_DrawPixel(sx, sy + y, backGroundColor);
+            break;
 
-        temp <<= 1;
+          case GUI_TEXTMODE_ON_ICON:
+            GUI_DrawPixel(sx, sy + y, iconBuffer[(pInfo->pixelWidth * y) + x]);
+            break;
+
+          default:
+            break;
+        }
       }
+      temp <<= 1;
     }
-
-    lcd_buffer_display(sx, sy, w, h, buf, &limit);
+    sx++;
   }
 }
 

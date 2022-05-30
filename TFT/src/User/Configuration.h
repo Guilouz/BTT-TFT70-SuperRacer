@@ -1,7 +1,7 @@
 #ifndef _CONFIGURATION_H_
 #define _CONFIGURATION_H_
 
-#define CONFIG_VERSION 20220321
+#define CONFIG_VERSION 20220518
 
 //====================================================================================================
 //=============================== Settings Configurable On config.ini ================================
@@ -233,6 +233,25 @@
  *   Options: [disable: 0, enable: 1]
  */
 #define NOTIFICATION_M117 0  // Default: 0
+
+/** 
+ * Progress Source
+ * This sets the source of the progress calculation, gcode file advance based or time based.
+ *   In file mode it is a simple file progress, it tells you the percentage of the gcodes
+ * executed. It doesn't reflect the amount of work done, only in a very few cases (ex. a 2D
+ * shape expanded vertically like a cylinder, cube, etc)
+ *   Time based mode is very close to the real amount of work done, but it is still not perfect,
+ * it relies on the estimate the slicer has done. It needs info from the slicer, the elapsed
+ * time or the remaining time, if it's missing, the progress source defaults to file progress
+ * mode. If no "M73 R" is present in the gcode file than it requires "file_comment_parsing" to
+ * be enabled.
+ *
+ * NOTE: If "M73 P" is present in the gcode file than file or time based progress will be
+ *       overriden by that.
+ *
+ *   Options: [File progress mode: 0, Time based progress: 1]
+ */
+#define PROG_SOURCE 1
 
 /**
  * Progress Numeric Display Mode During Print
@@ -613,7 +632,7 @@
  * Used by the Probe Offset menu for the Z offset tuning process.
  * If enabled, after homing a probing in the center of the bed is performed and then the nozzle
  * is moved to the XY probing point.
- * If disabled, after homing the nozzle is moved directly to the XY honing point. This is useful
+ * If disabled, after homing the nozzle is moved directly to the XY homing point. This is useful
  * in case Marlin firmware is configured to use the probe for Z axis homing (e.g.
  * USE_PROBE_FOR_Z_HOMING enabled in Marlin firmware) to avoid a second probing after homing.
  *
