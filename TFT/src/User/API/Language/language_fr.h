@@ -74,11 +74,11 @@
     #define STRING_TRAVEL_ACCELERATION    "Lors des déplacements"
     #define STRING_RETRACT_LENGTH         "Longueur"
     #define STRING_RETRACT_SWAP_LENGTH    "Longueur (multi-extrudeurs)"
-    #define STRING_RETRACT_FEEDRATE       "Vitesse"
+    #define STRING_RETRACT_FEEDRATE       "Vitesse (mm/min)"
     #define STRING_RETRACT_Z_LIFT         "Hauteur du décalage en Z"
     #define STRING_RECOVER_LENGTH         "Longueur supplémentaire"
     #define STRING_SWAP_RECOVER_LENGTH    "Longueur de swap (multi-extrudeurs)"
-    #define STRING_RECOVER_FEEDRATE       "Vitesse"
+    #define STRING_RECOVER_FEEDRATE       "Vitesse (mm/min)"
     #define STRING_SWAP_RECOVER_FEEDRATE  "Vitesse de swap (multi-extrudeurs)"
 
     // Save / Load

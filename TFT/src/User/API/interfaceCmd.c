@@ -855,7 +855,6 @@ void sendQueueCmd(void)
 
             if (cmd_seen('S'))
               heatSyncUpdateSeconds(cmd_value());
-
           }
           break;
 
