@@ -56,6 +56,8 @@
     #define STRING_FWRECOVER              "Récupération firmware"
     #define STRING_RETRACT_AUTO           "Rétraction firmware automatique"
     #define STRING_HOTEND_OFFSET          "Décalage de la 2ème buse"
+    #define STRING_HOTEND_PID             "PID Buse"
+    #define STRING_BED_PID                "PID Plateau"
     #define STRING_STEALTH_CHOP           "StealthChop TMC"
     #define STRING_DELTA_CONFIGURATION    "Réglages Delta"
     #define STRING_DELTA_TOWER_ANGLE      "Corrections d'angle des tours"
