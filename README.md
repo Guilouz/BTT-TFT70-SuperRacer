@@ -285,6 +285,38 @@ Pour obtenir les informations (pourcentage, temps écoulé, temps restant et nom
 
 <br />
 
+## BigTreeTech 3D Plugin pour Cura
+
+Ce plugin Cura permet d'afficher la visualisation 3D des fichiers GCodes sur l'écran.
+
+![BigTreeTech 3D Plugin](https://user-images.githubusercontent.com/12702322/172964765-0d2d51ce-ab91-4f04-93e6-90bdc1866408.png)
+
+**Installation :**
+
+- Activez les aperçus de modèles en désactivant le mode liste via `Menu` / `Options` / `Ecran` / `Interface` / `Fichiers en mode liste`.
+- Téléchargez le fichier zip du plugin :
+  - Pour **Cura ≤ 4.13.1** : [BigTreeTech 3D Plugin - Cura 4.0-.zip](https://github.com/Guilouz/BTT-TFT70-SuperRacer/files/8874637/BigTreeTech.3D.Plugin.-.Cura.4.0-.zip)
+  - Pour **Cura ≥ 5.0.0** : [BigTreeTech 3D Plugin - Cura 5.0+.zip](https://github.com/Guilouz/BTT-TFT70-SuperRacer/files/8874640/BigTreeTech.3D.Plugin.-.Cura.5.0%2B.zip)
+- Dézippez l'archive et copiez les 3 dossiers `BigTree3DPlugin`, `BigTreeExtension` et `BigTreeRemovableDriveOutputDevice` comme suit :
+
+  - **Sous Windows (Cura ≤ 4.13.1) :** Dans le répertoire <br />
+`C:\Program Files\Ultimaker Cura x.xx.x\plugins\`
+
+ - **Sous Windows (Cura ≥ 5.0.0) :** Dans le répertoire <br />
+`C:\Program Files\Ultimaker Cura x.xx.x\share\cura\plugins`
+
+ - **Sous MacOS (Cura ≤ 4.13.1) :** Dans le répertoire <br />
+`/Applications/Ultimaker Cura.app/Contents/Resources/plugins/plugins`
+
+ - **Sous MacOS (Cura ≥ 5.0.0) :** Dans le répertoire <br />
+`/Applications/Ultimaker Cura.app/Contents/Resources/share/cura/plugins`
+
+- Slicez un modèle sous Cura, cliquez sur la petite flèche vers le haut à droite et sélectionnez `Save as BigTree3D format`.
+
+![Cura](https://user-images.githubusercontent.com/12702322/172966538-c581d2c9-39dd-4972-98a7-16d733bcbd2e.jpg)
+
+<br />
+
 ## Afficher plus de statistiques à la fin de l'impression
 
 Des statistiques telles que la longueur du filament, le poids du filament et le coût du filament peuvent être intégrées dans le gCode. 
