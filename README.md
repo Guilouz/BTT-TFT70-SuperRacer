@@ -211,21 +211,16 @@ Cela signifie que seul Octoprint contrôlera l'impression et ce n'est qu'à la f
 
 Ces commandes peuvent être enregistrées dans les paramètres Octoprint section Script GCode.
 
-Pour obtenir les informations (pourcentage, temps écoulé, temps restant et nombre de couches) sur l'écran il est nécessaire d'utiliser l'extension de post-traitement Cura `BigTreeTech Remote Printing` disponible ici [BigTreeTech Remote Printing Cura Plugin.zip](https://github.com/Guilouz/BTT-TFT70-SuperRacer/files/8535623/BigTreeTech.Remote.Printing.Cura.Plugin.zip) avec cette configuration :
+Pour obtenir les informations (pourcentage, temps écoulé, temps restant et nombre de couches) sur l'écran il est nécessaire d'utiliser l'extension de post-traitement Cura `BigTreeTech Remote Printing` disponible ici [BigTreeTech Remote Printing Cura Plugin.zip](https://github.com/Guilouz/BTT-TFT70-SuperRacer/files/8535623/BigTreeTech.Remote.Printing.Cura.Plugin.zip).
+
+**1.** Démarrez Cura et allez dans l'onglet `Aide` -> `Afficher le dossier de configuration`.
+
+**2.** Copiez le fichier `BigTreeTechRemotePrinting.py` dans le dossier "scripts".
+
+**3.** Quittez Cura et redémarrez-le, vous pouvez maintenant utiliser le plugin en allant dans l'onglet `Extensions` -> `Post-traitement` -> `Modifier le G-Code` -> `Ajouter un script` -> `BigtreeTech Remote Printing` en utilisant cette configuration :
 
 <img width="700" alt="Cura Plugin" src="https://user-images.githubusercontent.com/12702322/165191375-71e247b2-a740-46e8-a5c6-06d5b5ea668a.png">
 
-**Sous Windows (Cura ≤ 4.13.1) :** Copiez le fichier `BigTreeTechRemotePrinting.py` dans le répertoire <br />
-`C:\Program Files\Ultimaker Cura x.xx.x\plugins\PostProcessingPlugin\scripts`
-
-**Sous Windows (Cura ≥ 5.0.0) :** Copiez le fichier `BigTreeTechRemotePrinting.py` dans le répertoire <br />
-`C:\Program Files\Ultimaker Cura x.xx.x\share\cura\plugins\PostProcessingPlugin\scripts`
-
-**Sous MacOS (Cura ≤ 4.13.1) :** Copiez le fichier `BigTreeTechRemotePrinting.py` dans le répertoire <br />
-`/Applications/Ultimaker Cura.app/Contents/Resources/plugins/plugins/PostProcessingPlugin/scripts`
-
-**Sous MacOS (Cura ≥ 5.0.0) :** Copiez le fichier `BigTreeTechRemotePrinting.py` dans le répertoire <br />
-`/Applications/Ultimaker Cura.app/Contents/Resources/share/cura/plugins/PostProcessingPlugin/scripts`
 
 <br />
 
