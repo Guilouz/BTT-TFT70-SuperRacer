@@ -292,11 +292,13 @@ Ce plugin Cura permet d'afficher la visualisation 3D des fichiers GCodes sur l'�
 
 **2.** Téléchargez le fichier zip du plugin : [BigTreeTech 3D Plugin.zip](https://github.com/Guilouz/BTT-TFT70-SuperRacer/files/8884453/BigTreeTech.3D.Plugin.zip)
 
-**3.** Dézippez l'archive et copiez les 3 dossiers `BigTree3DPlugin`, `BigTreeExtension` et `BigTreeRemovableDriveOutputDevice` dans le dossier `plugins`.
+**3.** Démarrez Cura et allez dans l'onglet `Aide` -> `Afficher le dossier de configuration`.
 
-**4.** Quittez Cura et redémarrez-le.
+**4.** Dézippez l'archive et copiez les 3 dossiers `BigTree3DPlugin`, `BigTreeExtension` et `BigTreeRemovableDriveOutputDevice` dans le dossier `plugins`.
 
-**5.** Slicez un modèle puis cliquez sur la petite flèche vers le haut à droite et sélectionnez `Save as BigTree3D format`.
+**5.** Quittez Cura et redémarrez-le.
+
+**6.** Slicez un modèle puis cliquez sur la petite flèche vers le haut à droite et sélectionnez `Save as BigTree3D format`.
 
 ![Cura](https://user-images.githubusercontent.com/12702322/172966538-c581d2c9-39dd-4972-98a7-16d733bcbd2e.jpg)
 
