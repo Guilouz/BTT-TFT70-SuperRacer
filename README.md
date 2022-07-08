@@ -215,7 +215,7 @@ Pour obtenir les informations (pourcentage, temps écoulé, temps restant et nom
 
 **1.** Démarrez Cura et allez dans l'onglet `Aide` -> `Afficher le dossier de configuration`.
 
-**2.** Copiez le fichier `BigTreeTechRemotePrinting.py` dans le dossier "scripts".
+**2.** Copiez le fichier `BigTreeTechRemotePrinting.py` dans le dossier `scripts`.
 
 **3.** Quittez Cura et redémarrez-le, vous pouvez maintenant utiliser le plugin en allant dans l'onglet `Extensions` -> `Post-traitement` -> `Modifier le G-Code` -> `Ajouter un script` -> `BigtreeTech Remote Printing` en utilisant cette configuration :
 
