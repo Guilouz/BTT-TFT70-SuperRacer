@@ -288,23 +288,15 @@ Ce plugin Cura permet d'afficher la visualisation 3D des fichiers GCodes sur l'�
 
 **Installation :**
 
-- Activez les aperçus de modèles en désactivant le mode liste via `Menu` / `Options` / `Ecran` / `Interface` / `Fichiers en mode liste`.
-- Téléchargez le fichier zip du plugin : [BigTreeTech 3D Plugin.zip](https://github.com/Guilouz/BTT-TFT70-SuperRacer/files/8884453/BigTreeTech.3D.Plugin.zip)
-- Dézippez l'archive et copiez les 3 dossiers `BigTree3DPlugin`, `BigTreeExtension` et `BigTreeRemovableDriveOutputDevice` comme suit :
+**1.** Activez les aperçus de modèles en désactivant le mode liste via `Menu` / `Options` / `Ecran` / `Interface` / `Fichiers en mode liste`.
 
-  - Sous **Windows (Cura ≤ 4.13.1) :** Dans le répertoire <br />
-`C:\Program Files\Ultimaker Cura x.xx.x\plugins\`
+**2.** Téléchargez le fichier zip du plugin : [BigTreeTech 3D Plugin.zip](https://github.com/Guilouz/BTT-TFT70-SuperRacer/files/8884453/BigTreeTech.3D.Plugin.zip)
 
-  - Sous **Windows (Cura ≥ 5.0.0) :** Dans le répertoire <br />
-`C:\Program Files\Ultimaker Cura x.xx.x\share\cura\plugins`
+**3.** Dézippez l'archive et copiez les 3 dossiers `BigTree3DPlugin`, `BigTreeExtension` et `BigTreeRemovableDriveOutputDevice` dans le dossier `plugins`.
 
-  - Sous **MacOS (Cura ≤ 4.13.1) :** Dans le répertoire <br />
-`/Applications/Ultimaker Cura.app/Contents/Resources/plugins/plugins`
+**4.** Quittez Cura et redémarrez-le.
 
-  - Sous **MacOS (Cura ≥ 5.0.0) :** Dans le répertoire <br />
-`/Applications/Ultimaker Cura.app/Contents/Resources/share/cura/plugins`
-
-- Slicez un modèle sous Cura, cliquez sur la petite flèche vers le haut à droite et sélectionnez `Save as BigTree3D format`.
+**5.** Slicez un modèle puis cliquez sur la petite flèche vers le haut à droite et sélectionnez `Save as BigTree3D format`.
 
 ![Cura](https://user-images.githubusercontent.com/12702322/172966538-c581d2c9-39dd-4972-98a7-16d733bcbd2e.jpg)
 
