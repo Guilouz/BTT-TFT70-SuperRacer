@@ -855,6 +855,7 @@ void sendQueueCmd(void)
 
             if (cmd_seen('S'))
               heatSyncUpdateSeconds(cmd_value());
+
           }
           break;
 
@@ -1098,6 +1099,12 @@ void sendQueueCmd(void)
           if (cmd_seen('D')) setParameter(P_BED_PID, 2, cmd_float());
           break;
         }
+
+        case 306:  // M306
+          if (getMpcTuningStatus() == REQUESTED && cmd_seen('T'))  // only if requested by GUI
+            setMpcTuningStatus(STARTED);
+
+          break;
 
         case 355:  // M355
           if (cmd_seen('S'))
