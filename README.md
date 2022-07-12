@@ -157,7 +157,7 @@ Pour éditer le fichier **config.ini** suivez les instructions [ici](config_inst
    <td align="center"><img src="https://user-images.githubusercontent.com/54359396/99251566-d77e5a00-280d-11eb-9c7a-0e7c0111eedd.png" alt="The Round Miracle" width ="390" height="260"></td>
   </tr>
   <tr>
-    <td align="center">Remplacez le dossier 'TFT70' par celui-ci :<br><a href="https://github.com/Guilouz/BTT-TFT70-SuperRacer/files/9097158/TFT70_Unified_Material.zip)">TFT70_Unified_Material.zip</a></td>
+    <td align="center">Remplacez le dossier 'TFT70' par celui-ci :<br><a href="https://github.com/Guilouz/BTT-TFT70-SuperRacer/files/9097158/TFT70_Unified_Material.zip">TFT70_Unified_Material.zip</a></td>
     <td align="center">Remplacez le dossier 'TFT70' par celui-ci :<br><a href="https://github.com/Guilouz/BTT-TFT70-SuperRacer/files/9097159/TFT70_The_Round_Miracle.zip">TFT70_The_Round_Miracle.zip</a></td>
   </tr>
 </table>
